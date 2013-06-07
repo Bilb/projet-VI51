@@ -26,6 +26,7 @@ public class Game extends JFrame{
 		}
 		else 
 			System.err.println("");
+
 		
 	}
 
