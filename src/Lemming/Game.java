@@ -1,23 +1,47 @@
 package Lemming;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
+import javax.swing.JFrame;
 
-	private Level currentLevel;
+public class Game extends JFrame{
 
-	private List<Integer> levels;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4172777326765469302L;
 
-	private Environment environment;
+	private Level currentLevel = null;
+
+	private List<Integer> levels = new ArrayList<>();
+
+	private Environment environment = null;
 
 	private Lemming lemmings;
 
 	public void launch(Level level) {
-
+		if(levels.contains(level)) {
+			
+		}
+		else 
+			System.err.println("");
+		
 	}
 
 	public void stop() {
 
+	}
+	
+	public Game() {
+		super("test");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		new Game();
 	}
 
 }
