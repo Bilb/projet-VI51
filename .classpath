@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/julien/Documents/Etudes/UTBM/UV/GI/GI 4/VI51/TP/Sources/vecmath-1.5.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
