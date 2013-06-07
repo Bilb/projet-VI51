@@ -25,7 +25,7 @@ public class LemmingBody {
 		int dx = sens.dx;
 		int dy = action.dy;
 		
-		myEnvironment.get().move(dx, dy);
+		myEnvironment.get().move(this, dx, dy);
 	}
 	
 	public List<Perception> getPerceptions() {
@@ -77,6 +77,11 @@ public class LemmingBody {
 	
 	public void setCellCoord(CellCoord cellCoord) {
 		this.cellCoord = cellCoord;
+	}
+	
+	public void setCellCoord(int x, int y) {
+		CellCoord newCellCoord = new CellCoord(x, y);
+		setCellCoord(newCellCoord);
 	}
 
 	public void setPixelCoord(PixelCoord pixelCoord) {
