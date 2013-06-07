@@ -2,15 +2,28 @@ package Lemming;
 
 public enum TerrainType {
 	
-	
+	/**
+	 * De l'eau : c'est un danger pour le lemming!
+	 */
 	WATER(true, false, true) {
 	},
 
 	EMPTY(false, false, true) {
 	},
+	
+	EXIT(false, false, true) {
+	},
+	
+	GROUND(false, true, false) {
+	},
+	
+	ROCK(false, false, false) {
+	},
 
 	ENTRANCE(false,false,true) {
 	};
+	
+	
 
 
 	TerrainType(boolean isDanger, boolean isDiggable, boolean isTraversable) {
@@ -20,12 +33,5 @@ public enum TerrainType {
 	}
 	
 	
-	public final Boolean isDanger;
-	public final Boolean isDiggable;
-	public final Boolean isTraversable;
-	
-	
-
-
 
 }
