@@ -33,9 +33,7 @@ public enum TerrainType {
 	}
 	
 	
-	public final boolean isDanger;
-	public final boolean isDiggable;
-	public final boolean isTraversable;
+
 }
 
 
