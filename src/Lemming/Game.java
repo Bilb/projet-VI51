@@ -13,7 +13,7 @@ public class Game {
 	private Lemming lemmings;
 
 	public void launch(Level level) {
-
+		
 	}
 
 	public void stop() {
