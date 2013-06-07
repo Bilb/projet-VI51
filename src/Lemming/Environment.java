@@ -44,7 +44,6 @@ public class Environment {
 		
 	}
 
-
 	public List<Perception> getPerceptions(LemmingBody body) {
 		
 		CellCoord bodyPosition = body.getCellCoord();
@@ -69,6 +68,10 @@ public class Environment {
 		return percLst;
 	}
 
+	public void kill(LemmingBody lemmingBody) {
+		
+	}
+	
 	public void move(LemmingBody body, int dx, int dy) {
 		
 			CellCoord bodyPosition = body.getCellCoord();
