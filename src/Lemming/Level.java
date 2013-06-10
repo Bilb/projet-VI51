@@ -34,8 +34,12 @@ public class Level {
 	private int nbLemmings;
 
 	private int timeBetweenTwoLemmings;
+	
+	public Level(int numLevel) throws FileNotFoundException {
+		load(numLevel);
+	}
 
-	public void load(int numLevel) throws FileNotFoundException {
+	private void load(int numLevel) throws FileNotFoundException {
 
 		File levelFile = new File(FILE_PREFIX + numLevel + FILE_SUFFIX);
 

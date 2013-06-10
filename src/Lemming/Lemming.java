@@ -16,12 +16,13 @@ public class Lemming {
 
 	public void live() {
 		List<Perception> perc = lemmingBody.getPerceptions();
-		if(( (TerrainType)perc.get(5)).isDanger || (lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall())) { // 5 is the perception of the terrain where is the lemming
+		/*if(( (TerrainType)perc.get(5)).isDanger || (lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall())) { // 5 is the perception of the terrain where is the lemming
 			suicide();
 		}
 		else {
 			executeAction(choseAction(perc));
-		}
+		}*/
+		//todo
 	}
 	
 	public Action choseAction(List<Perception> perceptions) {

@@ -6,7 +6,7 @@ import java.util.List;
 import javax.vecmath.Point2d;
 
 
-/* TODO : Faire attention à l'ordre DX DY dans les arrays*/
+/* TODO : Faire attention a l'ordre DX DY dans les arrays*/
 public class Environment {
 
 	
@@ -18,11 +18,13 @@ public class Environment {
 	
 	private Point2d envSize;
 
-	private List<LemmingBody> lemmingBody;
+	private List<LemmingBody> lemmingBodies;
 	
 	public Environment (Point2d  size, int [][] envmap, CellCoord spawnPosition, int nbLemmings) {
 		//Spawn position of all the lemmings in the environment 
 		this.spawnPos=spawnPosition;
+		
+		envSize = size;
 		
 		//We retrieve all the terrain types to easily set them in the map array 
 		TerrainType[] terrains = TerrainType.values();
@@ -36,11 +38,11 @@ public class Environment {
 		}
 		
 		// We store the lemmings into the array of agent of the environmnent
-		this.lemmingBody=new LinkedList<LemmingBody>();
-		for(int nbLem=0;nbLem<nbLemmings; nbLem++)
+		this.lemmingBodies=new LinkedList<LemmingBody>();
+		/*for(int nbLem=0;nbLem<nbLemmings; nbLem++)
 		{
-			this.lemmingBody.add(new LemmingBody());																			//                      TODO : Revoir les paramètres du constructeur
-		}
+			this.lemmingBody.add(new LemmingBody());																			//                      TODO : Revoir les paramï¿½tres du constructeur
+		}*/
 		
 	}
 
@@ -87,7 +89,7 @@ public class Environment {
 			}
 			this.applyGravity(body);
 			
-			//Glearning.getActionPerformed(  VOIr comment récuperer l'action et le isPrformed
+			//Glearning.getActionPerformed(  VOIr comment rï¿½cuperer l'action et le isPrformed
 		}
 	
 
@@ -95,14 +97,14 @@ public class Environment {
 		
 		CellCoord bodyPosition = body.getCellCoord();
 		
-		if(map[bodyPosition.getY()+1][bodyPosition.getX()].isTraversable && !body.hasParachute) {
+		/*if(map[bodyPosition.getY()+1][bodyPosition.getX()].isTraversable && !body.hasParachute()) {
 			move(body, 0, +1);
 			body.setCurrentFall(body.getCurrentFall()+1);
 		}
 		else
 		{
 			body.setCurrentFall(0);
-		}
+		}*/
 	}
 	
 		
@@ -122,12 +124,17 @@ public class Environment {
 		this.map = map;
 	}
 
-	public LemmingBody getLemmingBody() {
-		return this.lemmingBody;
+	public List<LemmingBody> getLemmingBody() {
+		return this.lemmingBodies;
+	}
+	
+	
+	public Point2d getEnvSize() {
+		return envSize;
 	}
 
-	public void setLemmingBody(LemmingBody lemmingBody) {
-		this.lemmingBody = lemmingBody;
-	}
+	/*public void setLemmingBody(List<LemmingBody> lemmingBody) {
+		this.lemmingBodies = lemmingBody;
+	}*/
 
 }
