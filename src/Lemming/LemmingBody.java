@@ -3,13 +3,13 @@ package Lemming;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class LemmingBody {
+public class LemmingBody extends PixelCosmetic {
 
 	private Sens sens;
+	private Boolean parachute;
 	private final int supportedFall = 3;
 	private int currentFall;
 	private CellCoord cellCoord;
-	private PixelCoord pixelCoord;
 	private Action currentAction;
 	private WeakReference<Environment> myEnvironment;
 	
@@ -18,15 +18,17 @@ public class LemmingBody {
 		sens = Sens.RIGHT;
 		currentFall = 0;
 		currentAction = Action.Walk;
+		parachute = false;
 		myEnvironment = new WeakReference<Environment>(environment);
 		this.cellCoord = cellCoord;
-		this.pixelCoord = cellCoord.toPixelCoord();
+		previousPosition = cellCoord;
+		pixelCoord = cellCoord.toPixelCoord();
 	}
 
 	public void doAction(Action action) {
 		int dx = sens.dx;
 		int dy = action.dy;
-		
+		currentAction = action;
 		myEnvironment.get().move(this, dx, dy);
 	}
 	
@@ -59,10 +61,6 @@ public class LemmingBody {
 		return cellCoord;
 	}
 	
-	public PixelCoord getPixelCoord() {
-		return pixelCoord;
-	}
-	
 	public Action getCurrentAction() {
 		return currentAction;
 	}
@@ -86,11 +84,10 @@ public class LemmingBody {
 		//pixelCoord = cellCoord.toPixelCoord();
 	}
 
-	public void setPixelCoord(int x, int y) {
-		this.pixelCoord.set(x, y);
-	}
-	
+
 	public void setCurrentAction(Action currentAction) {
 		this.currentAction = currentAction;
 	}
+	
+
 }

@@ -12,7 +12,6 @@ public class PixelCoord extends Coord {
 	}
 	
 	
-	
 	public CellCoord toCellCoord() {
 		
 		return new CellCoord(getX()/Game.CellDim, getY()/Game.CellDim);

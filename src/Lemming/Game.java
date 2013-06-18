@@ -20,7 +20,7 @@ public class Game extends JFrame implements Runnable{
 	 * 
 	 */
 	private static final long serialVersionUID = -4172777326765469302L;
-//	public static final long frameTime = 33;
+	public static final long frameTime = 33;
 
 	public static final int CellDim = 60;
 
@@ -184,11 +184,20 @@ public class Game extends JFrame implements Runnable{
 				generator.run();
 			}
 			try {
-				Thread.currentThread().sleep(10);
+				//Thread.currentThread();
+				Thread.sleep(frameTime);
 
 				if(lemmings != null) {
 					for (Lemming lemming : lemmings) {
-						lemming.live();
+						LemmingBody lb = lemming.getLemmingBody();
+						if(lb.getUpdatePixel()) {
+							//System.out.println("pixel update true");
+							lb.updatePixelPosition(lb.getCellCoord());
+						}
+						else {
+							lemming.live();
+							//System.out.println("live");
+						}
 					}
 					
 				}

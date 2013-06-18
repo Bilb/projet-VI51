@@ -7,7 +7,7 @@ public class Lemming {
 	private CellCoord cellCoord;
 	private LemmingBody lemmingBody;
 	private Action action;
-	
+	private Boolean test = true;
 	Lemming(CellCoord cellCoord_, LemmingBody lemmingBody_) {
 		cellCoord = cellCoord_;
 		lemmingBody = lemmingBody_;
@@ -15,6 +15,7 @@ public class Lemming {
 	}
 
 	public void live() {
+		
 		List<Perception> perc = lemmingBody.getPerceptions();
 		/*if(( (TerrainType)perc.get(5)).isDanger || (lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall())) { // 5 is the perception of the terrain where is the lemming
 			suicide();
@@ -23,7 +24,10 @@ public class Lemming {
 			executeAction(choseAction(perc));
 		}*/
 		//todo
-		executeAction(Action.Walk);
+		//if(test){
+			executeAction(Action.Walk);
+			//test = false;
+		//}
 	}
 	
 	public Action choseAction(List<Perception> perceptions) {
@@ -69,6 +73,8 @@ public class Lemming {
 	public void setAction(Action action) {
 		this.action = action;
 	}
+	
+
 
 	
 }

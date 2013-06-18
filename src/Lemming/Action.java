@@ -11,7 +11,7 @@ public enum Action {
 	Drill(-1) {
 	},
 
-	Parachute(1) {
+	Parachute(0) {
 	},
 
 	Walk(0) {
@@ -20,12 +20,12 @@ public enum Action {
 	Block(0) {
 	};
 	
+	
 	Action(int dy) {
 		this.dy = dy;
 	}
 	
 	public int dy;
-	public boolean parachute;
 
 
 }

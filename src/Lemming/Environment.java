@@ -82,38 +82,29 @@ public class Environment{
 	public void move(LemmingBody body, int dx, int dy) {
 		
 			CellCoord bodyPosition = body.getCellCoord();
-			//boolean isPerformed = false;
-			// obtention de la position a tester en pixel
-			//PixelCoord p = new PixelCoord(body.getPixelCoord().getX()+dx,body.getPixelCoord().getY()+dy);
-			int newpX=body.getPixelCoord().getX()+dx;
-			int newpY=body.getPixelCoord().getY()+dy;
+
 			
-			int newX = bodyPosition.getX();
-			int newY = bodyPosition.getY();
+			int newX = bodyPosition.getX()+dx;
+			int newY = bodyPosition.getY()+dy;	
+			int groundOfPos = bodyPosition.getY()+1;
 			
-			// conversion de la nouvelle position en pixel en position de cellule
-			if(newpX > bodyPosition.toPixelCoord().getX()){
-				newX += 1;
+			// on tombe ?
+			if(groundOfPos < this.envSize.y  && map[groundOfPos][bodyPosition.getX()].isTraversable && dy != -1) {
+				applyGravity(body);
 			}
-			else if(newpX < bodyPosition.toPixelCoord().getX()) {
-				newX -= 1;
+			// on avance ?
+			else if (Math.abs(dx) == 1 && Math.abs(dy) == 0) {	// mouvement de marche
+				if(newX<this.envSize.x && newY<this.envSize.y && groundOfPos < this.envSize.y ) {
+					// la case de destination peut acceuilir le lemming
+					// la case de départ est soutenu et permet la marche
+					if(	map[newY][newX].isTraversable && !map[groundOfPos][bodyPosition.getX()].isTraversable) {
+						System.out.println("move: newX: " + newX +  "newY:" + newY);
+						body.setUpdatePixel(bodyPosition);
+						body.setCellCoord(newX, newY);
+					}
+				}
 			}
 			
-			if(newpY > bodyPosition.toPixelCoord().getY()){
-				newY += 1;
-			}
-			else if(newpY < bodyPosition.toPixelCoord().getY()) {
-				newY -= 1;
-			}
-			if(newX<this.envSize.x && newY<this.envSize.y) {
-				if(map[newY][newX].isTraversable) {
-					System.out.println("move: newX: " + newX +  "newY:" + newY);
-					body.setCellCoord(newX, newY);
-					body.setPixelCoord(newpX,newpY);
-				//	isPerformed=true;
-				}				
-			}
-			this.applyGravity(body);
 			
 			//Glearning.getActionPerformed(  VOIr comment rï¿½cuperer l'action et le isPrformed
 		}
@@ -121,18 +112,17 @@ public class Environment{
 
 	private void applyGravity(LemmingBody body) {
 		
-		CellCoord bodyPosition = body.getCellCoord();
 		
-		/*if(map[bodyPosition.getY()+1][bodyPosition.getX()].isTraversable && !body.hasParachute()) {
-			move(body, 0, +1);
-			body.setCurrentFall(body.getCurrentFall()+1);
-		}
-		else
-		{
-			body.setCurrentFall(0);
-		}*/
+		CellCoord bodyPosition = body.getCellCoord();
+		int newX = bodyPosition.getX();
+		int newY = bodyPosition.getY()+1;
+		body.setUpdatePixel(bodyPosition);
+		body.setCellCoord(newX, newY);
+		
+
 	}
 	
+
 		
 	public CellCoord getExitPos() {
 		return exitPos;
