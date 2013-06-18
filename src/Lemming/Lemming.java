@@ -23,6 +23,7 @@ public class Lemming {
 			executeAction(choseAction(perc));
 		}*/
 		//todo
+		executeAction(Action.Walk);
 	}
 	
 	public Action choseAction(List<Perception> perceptions) {

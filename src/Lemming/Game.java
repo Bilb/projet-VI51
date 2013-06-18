@@ -3,7 +3,10 @@ package Lemming;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,26 +14,30 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
-public class Game extends JFrame{
+public class Game extends JFrame implements Runnable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4172777326765469302L;
+//	public static final long frameTime = 33;
 
 	public static final int CellDim = 60;
 
 	private Level currentLevel = null;
 
+
+
 	//private List<Integer> levels = new ArrayList<>();
 	private int currentLevelId = 1;
 
 	private Environment environment = null;
+	private LemmingGenerator generator = null;
 
 	private JPanel panel;
 	private LevelPanel level;
 
-	private Lemming lemmings;
+	private List<Lemming> lemmings;
 	private JButton startButton;
 	private JButton stopButton;
 
@@ -47,7 +54,15 @@ public class Game extends JFrame{
 			}*/
 			
 			environment = new Environment(new Point2d(currentLevel.getWidth(), currentLevel.getHeight()), 
-					currentLevel.getMap() , new CellCoord(10, 10), 0);
+					currentLevel.getMap() , currentLevel.getSpawnPosition(), 0);
+			generator = new LemmingGenerator(
+					this
+					, currentLevel.getNbLemmings()
+					, currentLevel.getTimeBetweenTwoLemmings()
+					, currentLevel.getSpawnPosition()
+					, environment
+			);
+			new Thread(this).start();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(Game.this, 
@@ -62,12 +77,14 @@ public class Game extends JFrame{
 
 	public void stop() {
 
+			Thread.currentThread().interrupt();		
 	}
 
 	public Game() {
 		super("Projet VI51 - Lemmings");
 		setUpUi();
 		setSize(1000,800);
+		lemmings=new LinkedList<Lemming>();
 		//SwingUtilities.invokeLater(level);
 		new Thread(level).start();
 
@@ -98,6 +115,7 @@ public class Game extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("stopclick");
+				stop();
 			}
 		});
 
@@ -137,4 +155,48 @@ public class Game extends JFrame{
 			return null;
 	}
 
+	public void addLemming(Lemming lemming) {
+		lemmings.add(lemming);
+		environment.addLemmingBody(lemming.getLemmingBody());
+	}
+	
+	public List<Lemming> getLemmings() {
+		return lemmings;
+	}
+
+	public void setLemmings(List<Lemming> lemmings) {
+		this.lemmings = lemmings;
+	}
+	
+	public Level getCurrentLevel() {
+		return currentLevel;
+	}
+	
+	public Environment getEnvironment() {
+		return environment;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while (true) {
+			if(generator != null) {
+				generator.run();
+			}
+			try {
+				Thread.currentThread().sleep(10);
+
+				if(lemmings != null) {
+					for (Lemming lemming : lemmings) {
+						lemming.live();
+					}
+					
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	}
 }

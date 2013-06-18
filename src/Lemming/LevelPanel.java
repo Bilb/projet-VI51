@@ -3,6 +3,9 @@ package Lemming;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -21,7 +24,7 @@ public class LevelPanel extends JPanel implements Runnable {
 	private Image ground;
 	private Image sky;
 	private Image water;
-
+	private Image lemming;
 
 
 
@@ -42,7 +45,7 @@ public class LevelPanel extends JPanel implements Runnable {
 		ground = (new ImageIcon("images/ground.png")).getImage();
 		sky = (new ImageIcon("images/sky.png")).getImage();
 		water = (new ImageIcon("images/water.png")).getImage();
-
+		lemming = (new ImageIcon("images/lemming.png").getImage());
 		setFocusable(true);
 	}
 
@@ -55,7 +58,7 @@ public class LevelPanel extends JPanel implements Runnable {
 		super.paintComponent(g);
 		if(game != null) {
 			TerrainType[][] map = game.getCurrentEnvironmentMap();
-			Point2d envSize = game.getCurrentEnvironmentSize();
+			Point2d envSize = (Point2d) game.getCurrentEnvironmentSize();
 			
 			/* affichage de la map */
 			if(map != null && envSize != null) {
@@ -76,7 +79,6 @@ public class LevelPanel extends JPanel implements Runnable {
 						case EMPTY:
 							image = sky;
 							break;
-
 						default:
 							image = null;
 							System.err.println("No image to display for terrain " + terrain + " in LevelPanel print");
@@ -88,10 +90,23 @@ public class LevelPanel extends JPanel implements Runnable {
 					}
 				}
 			}
+		
+
+			/* affichage des agents */
+			if(game.getEnvironment() != null) {
+				//System.out.println("test");
+				LinkedList<LemmingBody> lemmingsBodies = game.getEnvironment().getLemmingBodies();
+				if(!lemmingsBodies.isEmpty()) {
+					for (LemmingBody lemmingBody : lemmingsBodies) {
+						if(lemmingBody != null) {
+							//System.out.println("draw lemming at: " + lemmingBody.getPixelCoord().getX() +"-" + lemmingBody.getPixelCoord().getX());
+							g.drawImage(lemming, lemmingBody.getPixelCoord().getX(),lemmingBody.getPixelCoord().getY(), this);
+					
+						}
+					}
+				}
+			}	
 		}
-
-		/* affichage des agents */
-
 	}
 
 	@Override

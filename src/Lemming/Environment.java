@@ -7,10 +7,10 @@ import javax.vecmath.Point2d;
 
 
 /* TODO : Faire attention a l'ordre DX DY dans les arrays*/
-public class Environment {
+public class Environment{
 
 	
-	private CellCoord spawnPos;
+	//private CellCoord spawnPos;
 	
 	private CellCoord exitPos;
 
@@ -18,11 +18,9 @@ public class Environment {
 	
 	private Point2d envSize;
 
-	private List<LemmingBody> lemmingBodies;
+	private LinkedList<LemmingBody> lemmingBodies;
 	
 	public Environment (Point2d  size, int [][] envmap, CellCoord spawnPosition, int nbLemmings) {
-		//Spawn position of all the lemmings in the environment 
-		this.spawnPos=spawnPosition;
 		
 		envSize = size;
 		
@@ -39,10 +37,7 @@ public class Environment {
 		
 		// We store the lemmings into the array of agent of the environmnent
 		this.lemmingBodies=new LinkedList<LemmingBody>();
-		/*for(int nbLem=0;nbLem<nbLemmings; nbLem++)
-		{
-			this.lemmingBody.add(new LemmingBody());																			//                      TODO : Revoir les param�tres du constructeur
-		}*/
+
 		
 	}
 
@@ -51,17 +46,27 @@ public class Environment {
 		CellCoord bodyPosition = body.getCellCoord();
 		List<Perception> percLst = new LinkedList<Perception>();
 		
+		int downY = bodyPosition.getY()+1;
+		int upY = bodyPosition.getY()-1;
+		int frontX = bodyPosition.getX()+body.getSens().dx;
 		//Get the data from the frustrum 
 		//down
-		percLst.add(new TerrainPerception(this.map[bodyPosition.getY()+1][bodyPosition.getX()]));
-		// down next
-		percLst.add(new TerrainPerception(this.map[bodyPosition.getY()+1][bodyPosition.getX()+body.getSens().dx]));
+		if(downY <this.envSize.y) {
+			percLst.add(new TerrainPerception(this.map[bodyPosition.getY()+1][bodyPosition.getX()]));
+			// down next
+			if(frontX < this.envSize.x)
+				percLst.add(new TerrainPerception(this.map[bodyPosition.getY()+1][bodyPosition.getX()+body.getSens().dx]));
+		}
 		//next
-		percLst.add(new TerrainPerception(this.map[bodyPosition.getY()][bodyPosition.getX()+body.getSens().dx]));
-		//up next
-		percLst.add(new TerrainPerception(this.map[bodyPosition.getY()-1][bodyPosition.getX()+body.getSens().dx]));
+		if(frontX < this.envSize.x) {
+			percLst.add(new TerrainPerception(this.map[bodyPosition.getY()][bodyPosition.getX()+body.getSens().dx]));
+			//up next
+			if(upY >= 0)
+				percLst.add(new TerrainPerception(this.map[bodyPosition.getY()-1][bodyPosition.getX()+body.getSens().dx]));
+		}
 		//up
-		percLst.add(new TerrainPerception(this.map[bodyPosition.getY()-1][bodyPosition.getX()]));
+		if(upY >=0)
+			percLst.add(new TerrainPerception(this.map[bodyPosition.getY()-1][bodyPosition.getX()]));
 		//bodyPos
 		percLst.add(new TerrainPerception(this.map[bodyPosition.getY()][bodyPosition.getX()]));
 		//Exit position
@@ -77,14 +82,35 @@ public class Environment {
 	public void move(LemmingBody body, int dx, int dy) {
 		
 			CellCoord bodyPosition = body.getCellCoord();
-			boolean isPerformed =false;
-			int newX=bodyPosition.getX()+dx;
-			int newY=bodyPosition.getY()+dy;
+			//boolean isPerformed = false;
+			// obtention de la position a tester en pixel
+			//PixelCoord p = new PixelCoord(body.getPixelCoord().getX()+dx,body.getPixelCoord().getY()+dy);
+			int newpX=body.getPixelCoord().getX()+dx;
+			int newpY=body.getPixelCoord().getY()+dy;
 			
-			if(newX<=this.envSize.x && newY<=this.envSize.y) {
+			int newX = bodyPosition.getX();
+			int newY = bodyPosition.getY();
+			
+			// conversion de la nouvelle position en pixel en position de cellule
+			if(newpX > bodyPosition.toPixelCoord().getX()){
+				newX += 1;
+			}
+			else if(newpX < bodyPosition.toPixelCoord().getX()) {
+				newX -= 1;
+			}
+			
+			if(newpY > bodyPosition.toPixelCoord().getY()){
+				newY += 1;
+			}
+			else if(newpY < bodyPosition.toPixelCoord().getY()) {
+				newY -= 1;
+			}
+			if(newX<this.envSize.x && newY<this.envSize.y) {
 				if(map[newY][newX].isTraversable) {
+					System.out.println("move: newX: " + newX +  "newY:" + newY);
 					body.setCellCoord(newX, newY);
-					isPerformed=true;
+					body.setPixelCoord(newpX,newpY);
+				//	isPerformed=true;
 				}				
 			}
 			this.applyGravity(body);
@@ -124,8 +150,8 @@ public class Environment {
 		this.map = map;
 	}
 
-	public List<LemmingBody> getLemmingBody() {
-		return this.lemmingBodies;
+	public LinkedList<LemmingBody> getLemmingBodies() {
+		return lemmingBodies;
 	}
 	
 	
@@ -136,5 +162,9 @@ public class Environment {
 	/*public void setLemmingBody(List<LemmingBody> lemmingBody) {
 		this.lemmingBodies = lemmingBody;
 	}*/
+	
+	public void addLemmingBody(LemmingBody lbody) {
+		lemmingBodies.add(lbody);
+	}
 
 }

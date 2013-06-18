@@ -23,11 +23,18 @@ public class Level {
 
 	public static final String MAP_CONFIG = "MAP";
 
-
+	public static final String SPAWN_POSITION = "SPAWN_POSITION";
 
 	private int width = -1;
 
 	private int height = -1;
+	
+	private CellCoord spawnPosition;
+
+
+
+
+
 
 	private int[][] map;
 
@@ -100,6 +107,16 @@ public class Level {
 
 
 				}
+				else if(line.contains(SPAWN_POSITION)) {
+					rest = line.substring(SPAWN_POSITION.length() + 1);
+					String currentValue;
+					currentValue = rest.substring(0,1);
+					int x = Integer.parseInt(currentValue);
+					currentValue = rest.substring(2,3);
+					int y = Integer.parseInt(currentValue);
+					System.out.println("read spawn_position:" + x + "-" + y);
+					spawnPosition = new CellCoord(x, y);
+				}
 
 			}
 		} catch (IOException e) {
@@ -145,6 +162,14 @@ public class Level {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public CellCoord getSpawnPosition() {
+		return spawnPosition;
+	}
+
+	public void setSpawnPosition(CellCoord spawnPosition) {
+		this.spawnPosition = spawnPosition;
 	}
 
 

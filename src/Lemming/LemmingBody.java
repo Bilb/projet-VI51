@@ -19,6 +19,8 @@ public class LemmingBody {
 		currentFall = 0;
 		currentAction = Action.Walk;
 		myEnvironment = new WeakReference<Environment>(environment);
+		this.cellCoord = cellCoord;
+		this.pixelCoord = cellCoord.toPixelCoord();
 	}
 
 	public void doAction(Action action) {
@@ -80,12 +82,12 @@ public class LemmingBody {
 	}
 	
 	public void setCellCoord(int x, int y) {
-		CellCoord newCellCoord = new CellCoord(x, y);
-		setCellCoord(newCellCoord);
+		cellCoord.set(x, y);
+		//pixelCoord = cellCoord.toPixelCoord();
 	}
 
-	public void setPixelCoord(PixelCoord pixelCoord) {
-		this.pixelCoord = pixelCoord;
+	public void setPixelCoord(int x, int y) {
+		this.pixelCoord.set(x, y);
 	}
 	
 	public void setCurrentAction(Action currentAction) {
