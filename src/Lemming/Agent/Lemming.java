@@ -92,7 +92,8 @@ public class Lemming {
 
 		/* si il n'y a pas de FallInfluence, c'est que l'on ne tombe pas, ou plus. 
 		 * On reset le currentFall du body */
-		//TODO : � voir comment �a se g�re avec le Q learning
+		//TODO : a voir comment ca se gere avec le Q learning : peut être que si on le reset
+		// ici, il ne se rendra jamais compte qu'il s'ecrase comme une merde !
 		if(!fallInfluencePresent) {
 			lemmingBody.setCurrentFall(0);
 		}

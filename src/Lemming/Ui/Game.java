@@ -88,7 +88,7 @@ public class Game extends JFrame implements Runnable{
 	
 	private void resizeFrameToLevelSize() {
 		if(currentLevel != null) {
-			setSize(currentLevel.getWidth() * Game.CellDim, currentLevel.getHeight() * Game.CellDim);
+			setSize(currentLevel.getWidth() * Game.CellDim, currentLevel.getHeight() * Game.CellDim + 20);
 			setLocationRelativeTo(null);
 		}
 		
