@@ -1,0 +1,4 @@
+* Implémenter les influences (retour d'actions réalisées ou pas, chute de x cases)
+* Implementer les actions (dig, climb etc...)
+* Q learning
+* pas d'appel à live lors de la réalisation d'une action (on attend d'avoir fini le déplacemment vant de penser)
