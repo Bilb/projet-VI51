@@ -1,9 +1,16 @@
-package Lemming;
+package Lemming.Environment;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.vecmath.Point2d;
+
+import Lemming.CellCoord;
+import Lemming.Agent.LemmingBody;
+import Lemming.Influence.FallInfluence;
+import Lemming.Perception.ExitPerception;
+import Lemming.Perception.Perception;
+import Lemming.Perception.TerrainPerception;
 
 
 /* TODO : Faire attention a l'ordre DX DY dans les arrays*/

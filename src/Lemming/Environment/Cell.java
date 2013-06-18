@@ -1,8 +1,10 @@
-package Lemming;
+package Lemming.Environment;
+
+import Lemming.CellCoord;
 
 public class Cell {
 
-	Cell(TerrainType terrainType_, CellCoord cellCoord_) {
+	public Cell(TerrainType terrainType_, CellCoord cellCoord_) {
 		terrainType = terrainType_;
 		cellCoord = cellCoord_;
 	}

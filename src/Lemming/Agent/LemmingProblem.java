@@ -1,4 +1,4 @@
-package Lemming;
+package Lemming.Agent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,8 @@ import java.util.Random;
 
 import javax.vecmath.Point2d;
 
-import Lemming.Action.LemmingActionType;
+import Lemming.Agent.Action.LemmingActionType;
+import Lemming.Perception.Perception;
 
 import fr.utbm.gi.vi51.learning.qlearning.DefaultQState;
 import fr.utbm.gi.vi51.learning.qlearning.QFeedback;

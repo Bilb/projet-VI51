@@ -1,5 +1,7 @@
 package Lemming;
 
+import Lemming.Ui.Game;
+
 public abstract class PixelCosmetic {
 	protected Boolean updatePixel = false;
 	protected PixelCoord pixelCoord;
@@ -7,8 +9,8 @@ public abstract class PixelCosmetic {
 	protected float speedX = 1;
 	protected float speedY = 1;
 	
-	// méthode pour le déplacement graphique des éléments pixel par pixel
-	// appelé uniquement si updatePixel est à vrai
+	// mï¿½thode pour le dï¿½placement graphique des ï¿½lï¿½ments pixel par pixel
+	// appelï¿½ uniquement si updatePixel est ï¿½ vrai
 	public void updatePixelPosition(CellCoord nextPosition) {
 
 			if(nextPosition != previousPosition) {

@@ -1,5 +1,7 @@
 package Lemming;
 
+import Lemming.Ui.Game;
+
 public class PixelCoord extends Coord {
 
 	

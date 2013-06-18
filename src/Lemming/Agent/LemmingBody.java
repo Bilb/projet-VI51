@@ -1,11 +1,17 @@
-package Lemming;
+package Lemming.Agent;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import Lemming.Action.LemmingActionType;
+import Lemming.CellCoord;
+import Lemming.PixelCosmetic;
+import Lemming.Sens;
+import Lemming.Agent.Action.LemmingActionType;
+import Lemming.Environment.Environment;
+import Lemming.Influence.Influence;
+import Lemming.Perception.Perception;
 
 public class LemmingBody extends PixelCosmetic {
 

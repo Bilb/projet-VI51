@@ -1,10 +1,15 @@
-package Lemming;
+package Lemming.Agent;
 
 import java.util.List;
 
 import javax.vecmath.Point2d;
 
-import Lemming.Action.LemmingActionType;
+import Lemming.CellCoord;
+import Lemming.Agent.Action.LemmingActionType;
+import Lemming.Influence.FallInfluence;
+import Lemming.Influence.Influence;
+import Lemming.Influence.MoveInfluence;
+import Lemming.Perception.Perception;
 import fr.utbm.gi.vi51.learning.qlearning.DefaultQState;
 import fr.utbm.gi.vi51.learning.qlearning.QLearning;
 

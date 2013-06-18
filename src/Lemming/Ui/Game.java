@@ -1,4 +1,4 @@
-package Lemming;
+package Lemming.Ui;
 
 import java.awt.BorderLayout;
 import java.io.FileNotFoundException;
@@ -9,6 +9,13 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
+
+import Lemming.Agent.Lemming;
+import Lemming.Agent.LemmingBody;
+import Lemming.Environment.Environment;
+import Lemming.Environment.LemmingGenerator;
+import Lemming.Environment.Level;
+import Lemming.Environment.TerrainType;
 
 public class Game extends JFrame implements Runnable{
 

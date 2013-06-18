@@ -1,4 +1,4 @@
-package Lemming;
+package Lemming.Influence;
 
 public class MoveInfluence extends Influence {
 	private boolean movementSuccess;

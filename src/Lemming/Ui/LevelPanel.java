@@ -1,4 +1,4 @@
-package Lemming;
+package Lemming.Ui;
 
 
 import java.awt.Graphics;
@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
+
+import Lemming.Agent.LemmingBody;
+import Lemming.Environment.TerrainType;
 
 public class LevelPanel extends JPanel implements Runnable {
 

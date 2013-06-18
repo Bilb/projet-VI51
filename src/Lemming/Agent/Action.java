@@ -1,4 +1,4 @@
-package Lemming;
+package Lemming.Agent;
 
 import fr.utbm.gi.vi51.learning.qlearning.QAction;
 import fr.utbm.gi.vi51.learning.qlearning.QComparable;
