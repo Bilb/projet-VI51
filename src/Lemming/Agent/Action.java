@@ -29,7 +29,7 @@ public class Action implements QAction{
 			dy = -1;
 			break;
 		case Drill:
-			dy = 1;
+			dy = +1;
 			break;
 		default:
 			dy = 0;

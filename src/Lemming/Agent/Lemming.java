@@ -42,13 +42,13 @@ public class Lemming {
 	public void live() {
 		consumeInfluences();
 		List<Perception> perceptions = lemmingBody.getPerceptions();
-		
-		
 
-			TerrainPerception tp = (TerrainPerception) perceptions.get(2);
-				if(!tp.getTerrainElement().isTraversable) {
-					executeAction(new Action(LemmingActionType.Climb));
-				}
+
+
+		TerrainPerception tp = (TerrainPerception) perceptions.get(2);
+		if(!tp.getTerrainElement().isTraversable) {
+			executeAction(new Action(LemmingActionType.Climb));
+		}
 		else{			
 			executeAction(new Action(LemmingActionType.Walk));
 		}
@@ -61,12 +61,9 @@ public class Lemming {
 
 		if(action != null) {
 			if(action.getLemmingActionType() == LemmingActionType.Walk) {
-				
+
 			}
 		}*/
-
-
-		executeAction(new Action(LemmingActionType.Walk));
 	}
 
 

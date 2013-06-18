@@ -26,6 +26,8 @@ public class LemmingProblem implements QProblem<DefaultQState, Action> {
 	private static final float noimpact = 0.f;
 	private static final float bad = -0.5f;
 	private static final float verybad = -1f;
+	
+	private static final int NBSTATES = 16;
 
 
 	private DefaultQState currentState;
@@ -44,7 +46,7 @@ public class LemmingProblem implements QProblem<DefaultQState, Action> {
 	public LemmingProblem() {
 
 		/* ajouter les etats possible de notre système */
-		states = new DefaultQState[16];
+		states = new DefaultQState[NBSTATES];
 		actions = new ArrayList<>();
 
 		states[0] = new DefaultQState(0, "pas de proie présente");
@@ -90,7 +92,7 @@ public class LemmingProblem implements QProblem<DefaultQState, Action> {
 
 	@Override
 	public DefaultQState getRandomState() {
-		return states[generator.nextInt(16)];
+		return states[generator.nextInt(NBSTATES)];
 	}
 
 	@Override

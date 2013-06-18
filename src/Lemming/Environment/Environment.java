@@ -110,9 +110,9 @@ public class Environment{
 			int newY = bodyPosition.getY()+dy;	
 			int groundOfPos = bodyPosition.getY()+1;
 			
-			// si on tombe 
+			// si on tombe
 			if(groundOfPos < this.envSize.y  && map[groundOfPos][bodyPosition.getX()].isTraversable && dy != -1) {
-				System.out.println("move bodyPosition:" + bodyPosition + "   " + map[groundOfPos][bodyPosition.getX()]);
+				System.out.println("applying gravity");
 				applyGravity(body);
 			}
 			// si on avance
@@ -129,7 +129,7 @@ public class Environment{
 					}
 				}
 			}
-			// on grimpe? grimper garantie une opération sans mort dans le processus
+			// on grimpe? grimper garantie une opï¿½ration sans mort dans le processus
 			else if(dy == -1) {
 				int senseX = bodyPosition.getX() + dx;
 				int cX = bodyPosition.getX();
@@ -138,11 +138,11 @@ public class Environment{
 					&& 	map[up][cX].isTraversable && 	!(map[up][senseX].isTraversable) //&& !map[up][senseX].isDanger
 					) 
 				{
-					// tant qu'il y à une paroie et de l'espace pour le lemming on poursuit
+					// tant qu'il y ï¿½ une paroie et de l'espace pour le lemming on poursuit
 					up -= 1;
 				}
 				
-				// on regarde si on a trouvé une plateforme pour grimper
+				// on regarde si on a trouvï¿½ une plateforme pour grimper
 				if(senseX<this.envSize.x && senseX >= 0 && up >= 0 && (up+1) < this.envSize.y
 					&&	map[up][senseX].isTraversable && !map[up+1][senseX].isTraversable) {
 					body.setUpdatePixel(bodyPosition);
