@@ -47,7 +47,7 @@ public class LemmingProblem implements QProblem<DefaultQState, Action> {
 
 		/* ajouter les etats possible de notre système */
 		states = new DefaultQState[NBSTATES];
-		actions = new ArrayList<>();
+		actions = new ArrayList<Action>();
 
 		states[0] = new DefaultQState(0, "pas de proie présente");
 		/* ... */

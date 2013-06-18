@@ -34,7 +34,7 @@ public class Lemming {
 	public Lemming(LemmingBody lemmingBody_) {
 		lemmingBody = lemmingBody_;
 		qProblem = new LemmingProblem();
-		qLearning = new QLearning<>(qProblem);
+		qLearning = new QLearning<DefaultQState,Action>(qProblem);
 
 
 	}
