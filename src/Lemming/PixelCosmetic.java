@@ -4,8 +4,8 @@ public abstract class PixelCosmetic {
 	protected Boolean updatePixel = false;
 	protected PixelCoord pixelCoord;
 	protected CellCoord previousPosition;
-	protected float speedX = 1;
-	protected float speedY = 1;
+	protected float speedX = 3;
+	protected float speedY = 3;
 	
 	// méthode pour le déplacement graphique des éléments pixel par pixel
 	// appelé uniquement si updatePixel est à vrai
@@ -17,6 +17,10 @@ public abstract class PixelCosmetic {
 				int offY = nextPosition.getY() - previousPosition.getY();
 				int speedSenseX = (int) (Math.signum(offX)*speedX);
 				int speedSenseY = (int) (Math.signum(offY)*speedY);
+//				System.out.println("NEXT: " + nextPosition.getX() + "Y: " + nextPosition.getY());
+//				System.out.println("previousPositionX: " + previousPosition.getX() + "Y: " + previousPosition.getY());
+//				System.out.println("speedSX: " + speedSenseX + "speedSY: " + speedSenseY);
+//				System.out.println("offX: " + offX + "speedSY: " + offY);
 				
 				// on bouge d'abord en Y
 				if(Math.abs(offY) > 0) {	

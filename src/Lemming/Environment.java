@@ -41,11 +41,10 @@ public class Environment{
 		
 	}
 
-	public List<Perception> getPerceptions(LemmingBody body) {
+	public LinkedList<Perception> getPerceptions(LemmingBody body) {
 		
 		CellCoord bodyPosition = body.getCellCoord();
-		List<Perception> percLst = new LinkedList<Perception>();
-		
+		LinkedList<Perception> percLst = new LinkedList<Perception>();
 		int downY = bodyPosition.getY()+1;
 		int upY = bodyPosition.getY()-1;
 		int frontX = bodyPosition.getX()+body.getSens().dx;
@@ -56,6 +55,12 @@ public class Environment{
 			// down next
 			if(frontX < this.envSize.x)
 				percLst.add(new TerrainPerception(this.map[bodyPosition.getY()+1][bodyPosition.getX()+body.getSens().dx]));
+			else
+				percLst.add(null);
+		}
+		else {
+			percLst.add(null);
+			percLst.add(null);
 		}
 		//next
 		if(frontX < this.envSize.x) {
@@ -63,10 +68,20 @@ public class Environment{
 			//up next
 			if(upY >= 0)
 				percLst.add(new TerrainPerception(this.map[bodyPosition.getY()-1][bodyPosition.getX()+body.getSens().dx]));
+			else {
+				
+				percLst.add(null);
+			}
+		}
+		else {
+			percLst.add(null);
+			percLst.add(null);
 		}
 		//up
 		if(upY >=0)
 			percLst.add(new TerrainPerception(this.map[bodyPosition.getY()-1][bodyPosition.getX()]));
+		else
+			percLst.add(null);
 		//bodyPos
 		percLst.add(new TerrainPerception(this.map[bodyPosition.getY()][bodyPosition.getX()]));
 		//Exit position
@@ -94,7 +109,9 @@ public class Environment{
 			}
 			// on avance ?
 			else if (Math.abs(dx) == 1 && Math.abs(dy) == 0) {	// mouvement de marche
-				if(newX<this.envSize.x && newY<this.envSize.y && groundOfPos < this.envSize.y ) {
+				if(newX<this.envSize.x 
+						&& newX	>=	0 
+						&& groundOfPos < this.envSize.y ) {
 					// la case de destination peut acceuilir le lemming
 					// la case de dÃ©part est soutenu et permet la marche
 					if(	map[newY][newX].isTraversable && !map[groundOfPos][bodyPosition.getX()].isTraversable) {
@@ -104,6 +121,41 @@ public class Environment{
 					}
 				}
 			}
+			// on grimpe? grimper garantie une opération sans mort dans le processus
+			else if(dy == -1) {
+				int senseX = bodyPosition.getX() + dx;
+				int cX = bodyPosition.getX();
+				int up = bodyPosition.getY()-1;
+				while(senseX<this.envSize.x && senseX >= 0 && up >= 0  
+					&& 	map[up][cX].isTraversable && 	!(map[up][senseX].isTraversable) //&& !map[up][senseX].isDanger
+					) 
+				{
+					// tant qu'il y à une paroie et de l'espace pour le lemming on poursuit
+					up -= 1;
+				}
+				
+				// on regarde si on a trouvé une plateforme pour grimper
+				if(senseX<this.envSize.x && senseX >= 0 && up >= 0 && (up+1) < this.envSize.y
+					&&	map[up][senseX].isTraversable && !map[up+1][senseX].isTraversable) {
+					body.setUpdatePixel(bodyPosition);
+					body.setCellCoord(senseX, up);
+					System.out.println("climb: " + up + " " + senseX + " dx :" + dx);
+				}
+			}
+			// on creuse ?
+			else if(dy == 1) {
+				int down = bodyPosition.getY()+1;
+				int cX = bodyPosition.getX();
+				if(down < envSize.y && map[down][cX].isDiggable) {
+					map[down][cX] = TerrainType.EMPTY;
+					body.setUpdatePixel(bodyPosition);
+					body.setCellCoord(cX, down);
+					System.out.println("drill: " + down + " " + cX);
+				}
+			}
+		//	else if() {
+				
+		//	}
 			
 			
 			//Glearning.getActionPerformed(  VOIr comment rÃ¯Â¿Â½cuperer l'action et le isPrformed

@@ -1,22 +1,22 @@
 package Lemming;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Lemming {
 
-	private CellCoord cellCoord;
 	private LemmingBody lemmingBody;
 	private Action action;
 	private Boolean test = true;
-	Lemming(CellCoord cellCoord_, LemmingBody lemmingBody_) {
-		cellCoord = cellCoord_;
+	Lemming(LemmingBody lemmingBody_) {
 		lemmingBody = lemmingBody_;
 		
 	}
 
 	public void live() {
 		consumeInfluences();
-		List<Perception> perc = lemmingBody.getPerceptions();
+		LinkedList<Perception> perc = lemmingBody.getPerceptions();
+
 		/*if(( (TerrainType)perc.get(5)).isDanger || (lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall())) { // 5 is the perception of the terrain where is the lemming
 			suicide();
 		}
@@ -25,7 +25,16 @@ public class Lemming {
 		}*/
 		//TODO
 		//if(test){
+
+
+
+			TerrainPerception tp = (TerrainPerception) perc.get(2);
+				if(!tp.getTerrainElement().isTraversable) {
+					executeAction(Action.Climb);
+				}
+		else{			
 			executeAction(Action.Walk);
+		}
 			//test = false;
 		//}
 	}
@@ -77,14 +86,6 @@ public class Lemming {
 	public List<Perception> getPerceptions() {
 		
 		return null;
-	}
-
-	public CellCoord getCellCoord() {
-		return cellCoord;
-	}
-
-	public void setCellCoord(CellCoord cellCoord) {
-		this.cellCoord = cellCoord;
 	}
 
 	public LemmingBody getLemmingBody() {

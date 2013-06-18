@@ -8,7 +8,7 @@ public enum Action {
 	Dig(0) {
 	},
 	
-	Drill(-1) {
+	Drill(1) {
 	},
 
 	Parachute(0) {

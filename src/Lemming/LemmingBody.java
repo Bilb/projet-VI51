@@ -3,6 +3,7 @@ package Lemming;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LemmingBody extends PixelCosmetic {
@@ -37,8 +38,8 @@ public class LemmingBody extends PixelCosmetic {
 		myEnvironment.get().move(this, dx, dy);
 	}
 	
-	public List<Perception> getPerceptions() {
-		List<Perception> perceptions;
+	public LinkedList<Perception> getPerceptions() {
+		LinkedList<Perception> perceptions;
 		
 		perceptions = myEnvironment.get().getPerceptions(this);
 		

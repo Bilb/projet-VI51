@@ -17,7 +17,7 @@ public class LemmingGenerator {
 				lastTime = System.currentTimeMillis(); //System.nanoTime();
 				if(nbLemmings - nbGeneratedLemmings > 0) {
 				// TODO Auto-generated method stub	
-					game.addLemming(new Lemming(pos,new LemmingBody(new CellCoord(pos.getX(),pos.getY()), env)));
+					game.addLemming(new Lemming(new LemmingBody(new CellCoord(pos.getX(),pos.getY()), env)));
 					nbGeneratedLemmings++;
 					System.out.println("generator: pos = " + pos.getX() + " " + pos.getY());
 				}
