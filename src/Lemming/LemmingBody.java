@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import Lemming.Action.LemmingActionType;
+
 public class LemmingBody extends PixelCosmetic {
 
 	private Sens sens;
-	private Boolean parachute;
+	private boolean parachute;
 	private final int supportedFall = 3;
 	private int currentFall;
 	private CellCoord cellCoord;
@@ -20,7 +22,7 @@ public class LemmingBody extends PixelCosmetic {
 	public LemmingBody(CellCoord cellCoord, Environment environment) {
 		sens = Sens.RIGHT;
 		currentFall = 0;
-		currentAction = Action.Walk;
+		currentAction = new Action(LemmingActionType.Walk);
 		parachute = false;
 		myEnvironment = new WeakReference<Environment>(environment);
 		this.cellCoord = cellCoord;
@@ -32,7 +34,7 @@ public class LemmingBody extends PixelCosmetic {
 
 	public void doAction(Action action) {
 		int dx = sens.dx;
-		int dy = action.dy;
+		int dy = action.getDy();
 		currentAction = action;
 		myEnvironment.get().move(this, dx, dy);
 	}

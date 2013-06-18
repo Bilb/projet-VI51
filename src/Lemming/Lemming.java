@@ -2,35 +2,69 @@ package Lemming;
 
 import java.util.List;
 
+import javax.vecmath.Point2d;
+
+import Lemming.Action.LemmingActionType;
+import fr.utbm.gi.vi51.learning.qlearning.DefaultQState;
+import fr.utbm.gi.vi51.learning.qlearning.QLearning;
+
 public class Lemming {
 
-	private CellCoord cellCoord;
+	private final static int NUMBER_OF_QLEARNING_ITERATIONS = 5;
+
+	//private CellCoord cellCoord;
 	private LemmingBody lemmingBody;
 	private Action action;
-	private Boolean test = true;
-	Lemming(CellCoord cellCoord_, LemmingBody lemmingBody_) {
-		cellCoord = cellCoord_;
+	/** The instance of the learning problem to use.
+	 */
+	private final LemmingProblem qProblem;
+
+	/** The learning algorithm.
+	 */
+	private final QLearning<DefaultQState,Action> qLearning;
+
+
+
+
+	public Lemming(CellCoord cellCoord_, LemmingBody lemmingBody_) {
 		lemmingBody = lemmingBody_;
-		
+		qProblem = new LemmingProblem();
+		qLearning = new QLearning<>(qProblem);
+
+
 	}
 
 	public void live() {
 		consumeInfluences();
-		List<Perception> perc = lemmingBody.getPerceptions();
-		/*if(( (TerrainType)perc.get(5)).isDanger || (lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall())) { // 5 is the perception of the terrain where is the lemming
-			suicide();
-		}
-		else {
-			executeAction(choseAction(perc));
+		List<Perception> perceptions = lemmingBody.getPerceptions();
+		
+		
+
+
+		// TODO
+		/*qProblem.translateCurrentState(getPosition(), perceptions);
+		qLearning.learn(NUMBER_OF_QLEARNING_ITERATIONS);
+
+		Action action = qLearning.getBestAction(qProblem.getCurrentState());
+
+
+		if(action != null) {
+			if(action.getLemmingActionType() == LemmingActionType.Walk) {
+				
+			}
 		}*/
-		//TODO
-		//if(test){
-			executeAction(Action.Walk);
-			//test = false;
-		//}
+
+
+		executeAction(new Action(LemmingActionType.Walk));
 	}
-	
-	
+
+
+	@SuppressWarnings("unused")
+	private Point2d getPosition() {
+		CellCoord cellCoord = lemmingBody.getCellCoord();
+		return new Point2d(cellCoord.getX(), cellCoord.getY());
+	}
+
 	private void consumeInfluences() {
 		boolean fallInfluencePresent = false;
 		for (Influence influence : lemmingBody.getInfluences()) {
@@ -41,26 +75,26 @@ public class Lemming {
 			}
 			else if(influence instanceof MoveInfluence) {
 				MoveInfluence moveInfluence= (MoveInfluence) influence;
-				 
+
 				if(moveInfluence.getMovementSucess()) {
-					//TODO : faire quelque chose avec ça : bad ou bon qlearning par exemple!
+					//TODO : faire quelque chose avec ca : bad ou bon qlearning par exemple!
 				}
 				else {
-					
+
 				}
 			}
 		}
-		
+
 		/* si il n'y a pas de FallInfluence, c'est que l'on ne tombe pas, ou plus. 
 		 * On reset le currentFall du body */
-		//TODO : à voir comment ça se gère avec le Q learning
+		//TODO : ï¿½ voir comment ï¿½a se gï¿½re avec le Q learning
 		if(!fallInfluencePresent) {
 			lemmingBody.setCurrentFall(0);
 		}
 	}
-	
+
 	public Action chooseAction(List<Perception> perceptions) {
-		
+
 		// QLEARNING?????
 		return action;
 	}
@@ -75,17 +109,10 @@ public class Lemming {
 	}
 
 	public List<Perception> getPerceptions() {
-		
+
 		return null;
 	}
 
-	public CellCoord getCellCoord() {
-		return cellCoord;
-	}
-
-	public void setCellCoord(CellCoord cellCoord) {
-		this.cellCoord = cellCoord;
-	}
 
 	public LemmingBody getLemmingBody() {
 		return lemmingBody;
@@ -102,8 +129,8 @@ public class Lemming {
 	public void setAction(Action action) {
 		this.action = action;
 	}
-	
 
 
-	
+
+
 }

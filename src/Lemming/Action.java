@@ -1,31 +1,68 @@
 package Lemming;
 
-public enum Action {
+import fr.utbm.gi.vi51.learning.qlearning.QAction;
+import fr.utbm.gi.vi51.learning.qlearning.QComparable;
 
-	Climb(-1) {
-	},
-
-	Dig(0) {
-	},
+public class Action implements QAction{
 	
-	Drill(-1) {
-	},
 
-	Parachute(0) {
-	},
+	private static final long serialVersionUID = 8567701969352353019L;
 
-	Walk(0) {
-	},
 
-	Block(0) {
-	};
-	
-	
-	Action(int dy) {
-		this.dy = dy;
+	public enum LemmingActionType {
+		Climb,
+		Dig,
+		Drill,
+		Parachute,
+		Walk,
+		Block
 	}
 	
-	public int dy;
+	private int dy;
+	private LemmingActionType lemmingActionType;
 
+	
+	public Action(LemmingActionType actionType) {
+		lemmingActionType = actionType;
+		switch(lemmingActionType) {
+		case Climb:
+		case Drill:
+			dy = -1;
+			break;
+		default:
+			dy = 0;
+		}
+				
+	}
+
+
+	public LemmingActionType getLemmingActionType() {
+		return lemmingActionType;
+	}
+	
+	
+	
+	@Override
+	public int toInt() {
+		return getLemmingActionType().ordinal();
+	}
+
+
+	@Override
+	public int compareTo(QComparable other) {
+		return toInt() - other.toInt();
+
+	}
+	
+	
+	@Override
+	public QAction clone() {
+		return new Action(getLemmingActionType());
+	}
+
+	
+	public int getDy() {
+		return dy;
+	}
 
 }

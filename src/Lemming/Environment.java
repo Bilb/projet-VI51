@@ -88,11 +88,12 @@ public class Environment{
 			int newY = bodyPosition.getY()+dy;	
 			int groundOfPos = bodyPosition.getY()+1;
 			
-			// on tombe ?
+			// si on tombe 
 			if(groundOfPos < this.envSize.y  && map[groundOfPos][bodyPosition.getX()].isTraversable && dy != -1) {
+				System.out.println("move bodyPosition:" + bodyPosition);
 				applyGravity(body);
 			}
-			// on avance ?
+			// si on avance
 			else if (Math.abs(dx) == 1 && Math.abs(dy) == 0) {	// mouvement de marche
 				if(newX<this.envSize.x && newY<this.envSize.y && groundOfPos < this.envSize.y ) {
 					// la case de destination peut acceuilir le lemming
@@ -112,15 +113,12 @@ public class Environment{
 
 	private void applyGravity(LemmingBody body) {
 		
-		
 		CellCoord bodyPosition = body.getCellCoord();
 		int newX = bodyPosition.getX();
 		int newY = bodyPosition.getY()+1;
 		body.setUpdatePixel(bodyPosition);
 		body.setCellCoord(newX, newY);
 		body.addInfluences(new FallInfluence(1));
-
-
 	}
 	
 
