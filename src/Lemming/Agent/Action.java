@@ -15,7 +15,8 @@ public class Action implements QAction{
 		Drill,
 		Parachute,
 		Walk,
-		Block
+		Block,
+		Turnback
 	}
 	
 	private int dy;

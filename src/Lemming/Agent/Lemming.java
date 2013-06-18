@@ -40,20 +40,52 @@ public class Lemming {
 	}
 
 	public void live() {
-		consumeInfluences();
-		List<Perception> perceptions = lemmingBody.getPerceptions();
+		if(!lemmingBody.isBlocked()) {
+			consumeInfluences();
+			List<Perception> perceptions = lemmingBody.getPerceptions();
 
+			TerrainPerception tp0 = (TerrainPerception) perceptions.get(0);
+			TerrainPerception tp1 = (TerrainPerception) perceptions.get(1);
+			TerrainPerception tp2 = (TerrainPerception) perceptions.get(2);
+			if(tp0 != null && tp0.getTerrainElement().isDiggable) {
+				executeAction(new Action(LemmingActionType.Drill));
+			}
+			else if(tp2 != null &&tp2.getTerrainElement().isDiggable){			
+				System.out.println("DIG");
+				executeAction(new Action(LemmingActionType.Dig));
+			}
+			else if(tp1 != null && tp1.getTerrainElement().isTraversable
+					&& tp2 != null && tp2.getTerrainElement().isTraversable){
+				System.out.println("BLOCK");
+				executeAction(new Action(LemmingActionType.Block));
+			}
 
+			else if(tp2 != null && !tp2.getTerrainElement().isTraversable && tp2.getTerrainElement().isSolid){
+				executeAction(new Action(LemmingActionType.Climb));
+				System.out.println("CLIMB");
+			}
 
-		TerrainPerception tp = (TerrainPerception) perceptions.get(2);
-		if(!tp.getTerrainElement().isTraversable) {
-			executeAction(new Action(LemmingActionType.Climb));
-		}
-		else{			
-			executeAction(new Action(LemmingActionType.Walk));
-		}
-		// TODO
-		/*qProblem.translateCurrentState(getPosition(), perceptions);
+			else if(tp2 != null && !tp2.getTerrainElement().isTraversable){	
+				System.out.println("TURN");
+				executeAction(new Action(LemmingActionType.Turnback));
+			}
+			else if(tp2 != null){					
+				System.out.println("WALK");
+				executeAction(new Action(LemmingActionType.Walk));
+			}
+			else {
+				executeAction(new Action(LemmingActionType.Turnback));
+			}
+			 if( lemmingBody.getCurrentFall() > 0){
+				System.out.println("PARA");
+				//executeAction(new Action(LemmingActionType.Parachute));
+				lemmingBody.setParachute(true);
+			}
+			else if(lemmingBody.getCurrentFall() == 0 ){
+				lemmingBody.setParachute(false);
+			}
+			// TODO
+			/*qProblem.translateCurrentState(getPosition(), perceptions);
 		qLearning.learn(NUMBER_OF_QLEARNING_ITERATIONS);
 
 		Action action = qLearning.getBestAction(qProblem.getCurrentState());
@@ -64,6 +96,10 @@ public class Lemming {
 
 			}
 		}*/
+		}
+		else {
+			suicide();
+		}
 	}
 
 
@@ -83,7 +119,6 @@ public class Lemming {
 			}
 			else if(influence instanceof MoveInfluence) {
 				MoveInfluence moveInfluence= (MoveInfluence) influence;
-
 				if(moveInfluence.getMovementSucess()) {
 					//TODO : faire quelque chose avec ca : bad ou bon qlearning par exemple!
 				}
@@ -96,7 +131,7 @@ public class Lemming {
 		/* si il n'y a pas de FallInfluence, c'est que l'on ne tombe pas, ou plus. 
 		 * On reset le currentFall du body */
 		//TODO : a voir comment ca se gere avec le Q learning : peut être que si on le reset
-		// ici, il ne se rendra jamais compte qu'il s'ecrase comme une merde !
+		// ici, il ne se rendra jamais compte qu'il s'ecrase comme une merde ! ben des fois il s'écrase pas..
 		if(!fallInfluencePresent) {
 			lemmingBody.setCurrentFall(0);
 		}

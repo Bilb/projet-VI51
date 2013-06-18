@@ -172,13 +172,17 @@ public class Game extends JFrame implements Runnable{
 				if(lemmings != null) {
 					for (Lemming lemming : lemmings) {
 						LemmingBody lb = lemming.getLemmingBody();
-						if(lb.getUpdatePixel()) {
-							//System.out.println("pixel update true");
-							lb.updatePixelPosition(lb.getCellCoord());
+						if(lb != null) {
+							if(lb.getUpdatePixel()) {
+								lb.updatePixelPosition(lb.getCellCoord());
+							}
+							else {
+								lemming.live();
+							}
 						}
 						else {
-							lemming.live();
-							//System.out.println("live");
+							lemmings.remove(lemming);
+							lemming = null;
 						}
 					}
 					

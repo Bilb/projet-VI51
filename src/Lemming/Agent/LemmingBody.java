@@ -18,6 +18,7 @@ public class LemmingBody extends PixelCosmetic {
 
 	private Sens sens;
 	private boolean parachute;
+	private boolean blocked;
 	private final int supportedFall = 3;
 	private int currentFall;
 	private CellCoord cellCoord;
@@ -30,7 +31,7 @@ public class LemmingBody extends PixelCosmetic {
 		sens = Sens.RIGHT;
 		currentFall = 0;
 		currentAction = new Action(LemmingActionType.Walk);
-		parachute = false;
+		setParachute(false);
 		myEnvironment = new WeakReference<Environment>(environment);
 		this.cellCoord = cellCoord;
 		previousPosition = cellCoord;
@@ -121,5 +122,26 @@ public class LemmingBody extends PixelCosmetic {
 
 	public List<Influence> getInfluences() {
 		return Collections.unmodifiableList(influences);
+	}
+
+
+	public boolean isParachute() {
+		return parachute;
+	}
+
+
+	public void setParachute(boolean parachute) {
+		this.parachute = parachute;
+	}
+
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+
+	public void setBlocked(boolean blocked) {
+		this.blocked = blocked;
+		
 	}
 }

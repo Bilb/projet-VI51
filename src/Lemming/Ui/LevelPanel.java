@@ -26,6 +26,8 @@ public class LevelPanel extends JPanel implements Runnable {
 	private Image sky;
 	private Image water;
 	private Image lemming;
+	private Image lemming_blocked;
+	private Image lemming_parachute;
 
 
 
@@ -47,6 +49,8 @@ public class LevelPanel extends JPanel implements Runnable {
 		sky = (new ImageIcon("images/sky.png")).getImage();
 		water = (new ImageIcon("images/water.png")).getImage();
 		lemming = (new ImageIcon("images/lemming.png").getImage());
+		lemming_blocked = (new ImageIcon("images/lemming_blocked.png").getImage());
+		lemming_parachute = (new ImageIcon("images/lemming_parachute.png").getImage());
 		setFocusable(true);
 	}
 
@@ -80,6 +84,9 @@ public class LevelPanel extends JPanel implements Runnable {
 						case EMPTY:
 							image = sky;
 							break;
+						case LEMMING_BLOCKED:
+							image = lemming_blocked;
+							break;
 						default:
 							image = null;
 							System.err.println("No image to display for terrain " + terrain + " in LevelPanel print");
@@ -100,8 +107,15 @@ public class LevelPanel extends JPanel implements Runnable {
 				if(!lemmingsBodies.isEmpty()) {
 					for (LemmingBody lemmingBody : lemmingsBodies) {
 						if(lemmingBody != null) {
+							Image img = null;
 							//System.out.println("draw lemming at: " + lemmingBody.getPixelCoord().getX() +"-" + lemmingBody.getPixelCoord().getX());
-							g.drawImage(lemming, lemmingBody.getPixelCoord().getX(),lemmingBody.getPixelCoord().getY(), this);
+							if(lemmingBody.isParachute()) {
+								img = lemming_parachute;
+							}
+							else {
+								img = lemming;
+							}
+							g.drawImage(img, lemmingBody.getPixelCoord().getX(),lemmingBody.getPixelCoord().getY(), this);
 					
 						}
 					}
