@@ -15,6 +15,7 @@ public class Lemming {
 	}
 
 	public void live() {
+		consumeInfluences();
 		List<Perception> perc = lemmingBody.getPerceptions();
 		/*if(( (TerrainType)perc.get(5)).isDanger || (lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall())) { // 5 is the perception of the terrain where is the lemming
 			suicide();
@@ -22,11 +23,40 @@ public class Lemming {
 		else {
 			executeAction(choseAction(perc));
 		}*/
-		//todo
+		//TODO
 		executeAction(Action.Walk);
 	}
 	
-	public Action choseAction(List<Perception> perceptions) {
+	
+	private void consumeInfluences() {
+		boolean fallInfluencePresent = false;
+		for (Influence influence : lemmingBody.getInfluences()) {
+			if(influence instanceof FallInfluence) {
+				FallInfluence fallInfluence= (FallInfluence) influence;
+				lemmingBody.setCurrentFall(lemmingBody.getCurrentFall() + fallInfluence.getNbCell());
+				fallInfluencePresent = true;
+			}
+			else if(influence instanceof MoveInfluence) {
+				MoveInfluence moveInfluence= (MoveInfluence) influence;
+				 
+				if(moveInfluence.getMovementSucess()) {
+					//TODO : faire quelque chose avec ça : bad ou bon qlearning par exemple!
+				}
+				else {
+					
+				}
+			}
+		}
+		
+		/* si il n'y a pas de FallInfluence, c'est que l'on ne tombe pas, ou plus. 
+		 * On reset le currentFall du body */
+		//TODO : à voir comment ça se gère avec le Q learning
+		if(!fallInfluencePresent) {
+			lemmingBody.setCurrentFall(0);
+		}
+	}
+	
+	public Action chooseAction(List<Perception> perceptions) {
 		
 		// QLEARNING?????
 		return action;

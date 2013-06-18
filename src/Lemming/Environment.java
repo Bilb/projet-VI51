@@ -123,14 +123,17 @@ public class Environment{
 		
 		CellCoord bodyPosition = body.getCellCoord();
 		
-		/*if(map[bodyPosition.getY()+1][bodyPosition.getX()].isTraversable && !body.hasParachute()) {
-			move(body, 0, +1);
-			body.setCurrentFall(body.getCurrentFall()+1);
+		//TODO stackoverflow :: recursivité ac move
+		if(map[bodyPosition.getY()+1][bodyPosition.getX()].isTraversable/* && !body.hasParachute()*/) {
+			//move(body, 0, +1);
+			//body.setCurrentFall(body.getCurrentFall()+1);
+			body.addInfluences(new FallInfluence(1));
 		}
 		else
 		{
-			body.setCurrentFall(0);
-		}*/
+			//body.setCurrentFall(0);
+			
+		}
 	}
 	
 		

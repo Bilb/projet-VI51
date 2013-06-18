@@ -4,8 +4,6 @@ package Lemming;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
