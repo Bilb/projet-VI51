@@ -1,4 +1,6 @@
-package Lemming;
+package Lemming.Perception;
+
+import Lemming.Environment.TerrainType;
 
 public abstract class Perception {
 	

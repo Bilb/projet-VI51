@@ -1,5 +1,7 @@
 package Lemming;
 
+import Lemming.Ui.Game;
+
 public class CellCoord extends Coord {
 	
 	public CellCoord() {
@@ -15,5 +17,13 @@ public class CellCoord extends Coord {
 		
 		return pixelCoord;
 	}
-		
+
+	@Override
+	public String toString() {
+		return "CellCoord [X=" + getX() + ", Y=" + getY() + "]";
+	}
+	
+	
+	
+	
 }

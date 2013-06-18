@@ -1,4 +1,6 @@
-package Lemming;
+package Lemming.Perception;
+
+import Lemming.CellCoord;
 
 public class ExitPerception extends Perception {
 

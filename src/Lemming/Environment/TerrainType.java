@@ -1,4 +1,4 @@
-package Lemming;
+package Lemming.Environment;
 
 public enum TerrainType {
 	

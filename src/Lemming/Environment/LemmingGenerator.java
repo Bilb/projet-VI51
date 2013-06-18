@@ -1,4 +1,9 @@
-package Lemming;
+package Lemming.Environment;
+
+import Lemming.CellCoord;
+import Lemming.Agent.Lemming;
+import Lemming.Agent.LemmingBody;
+import Lemming.Ui.Game;
 
 public class LemmingGenerator {
 
