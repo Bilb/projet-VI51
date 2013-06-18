@@ -1,6 +1,8 @@
 package Lemming;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LemmingBody extends PixelCosmetic {
@@ -12,6 +14,7 @@ public class LemmingBody extends PixelCosmetic {
 	private CellCoord cellCoord;
 	private Action currentAction;
 	private WeakReference<Environment> myEnvironment;
+	private List<Influence> influences;
 	
 	
 	public LemmingBody(CellCoord cellCoord, Environment environment) {
@@ -23,7 +26,9 @@ public class LemmingBody extends PixelCosmetic {
 		this.cellCoord = cellCoord;
 		previousPosition = cellCoord;
 		pixelCoord = cellCoord.toPixelCoord();
+		influences = new ArrayList<Influence>();
 	}
+	
 
 	public void doAction(Action action) {
 		int dx = sens.dx;
@@ -40,9 +45,25 @@ public class LemmingBody extends PixelCosmetic {
 		return perceptions;
 	}
 	
+	
+	public void addInfluences(Influence e) {
+		
+		influences.add(e);
+	}
+	
+	
+	
 	public void suicide() {
 		myEnvironment.get().kill(this);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 //---------- Getters ----------/
 	public Sens getSens() {
@@ -88,6 +109,8 @@ public class LemmingBody extends PixelCosmetic {
 	public void setCurrentAction(Action currentAction) {
 		this.currentAction = currentAction;
 	}
-	
 
+	public List<Influence> getInfluences() {
+		return Collections.unmodifiableList(influences);
+	}
 }

@@ -26,7 +26,7 @@ public class LemmingGenerator {
 		}
 	}
 		
-	// tbd
+	// TODO
 	public LemmingGenerator(Game game_, int nbLemmings_, long generationTimer_, CellCoord pos_, Environment env_){
 		game = game_;
 		nbLemmings = nbLemmings_;

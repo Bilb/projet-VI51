@@ -96,7 +96,7 @@ public class Environment{
 			else if (Math.abs(dx) == 1 && Math.abs(dy) == 0) {	// mouvement de marche
 				if(newX<this.envSize.x && newY<this.envSize.y && groundOfPos < this.envSize.y ) {
 					// la case de destination peut acceuilir le lemming
-					// la case de d�part est soutenu et permet la marche
+					// la case de départ est soutenu et permet la marche
 					if(	map[newY][newX].isTraversable && !map[groundOfPos][bodyPosition.getX()].isTraversable) {
 						System.out.println("move: newX: " + newX +  "newY:" + newY);
 						body.setUpdatePixel(bodyPosition);
@@ -106,7 +106,7 @@ public class Environment{
 			}
 			
 			
-			//Glearning.getActionPerformed(  VOIr comment r�cuperer l'action et le isPrformed
+			//Glearning.getActionPerformed(  VOIr comment rï¿½cuperer l'action et le isPrformed
 		}
 	
 
@@ -118,7 +118,8 @@ public class Environment{
 		int newY = bodyPosition.getY()+1;
 		body.setUpdatePixel(bodyPosition);
 		body.setCellCoord(newX, newY);
-		
+		body.addInfluences(new FallInfluence(1));
+
 
 	}
 	
