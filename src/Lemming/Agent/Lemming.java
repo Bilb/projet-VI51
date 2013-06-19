@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.vecmath.Point2d;
 
+import sun.nio.cs.ext.ISCII91;
+
 import Action.Action;
 import Action.Action.LemmingActionType;
 import Lemming.CellCoord;
@@ -46,7 +48,7 @@ public class Lemming {
 			consumeInfluences();
 			List<Perception> perceptions = lemmingBody.getPerceptions();
 
-			TerrainPerception tp0 = (TerrainPerception) perceptions.get(0);
+			/*TerrainPerception tp0 = (TerrainPerception) perceptions.get(0);
 			TerrainPerception tp1 = (TerrainPerception) perceptions.get(1);
 			TerrainPerception tp2 = (TerrainPerception) perceptions.get(2);
 			if(tp0 != null && tp0.getTerrainElement().isDiggable) {
@@ -57,11 +59,11 @@ public class Lemming {
 				System.out.println("DIG");
 				executeAction(LemmingActionType.Dig);
 			}
-//			else if(tp1 != null && tp1.getTerrainElement().isTraversable
-//					&& tp2 != null && tp2.getTerrainElement().isTraversable){
-//				System.out.println("BLOCK");
-//				executeAction(LemmingActionType.Block);
-//			}
+			//			else if(tp1 != null && tp1.getTerrainElement().isTraversable
+			//					&& tp2 != null && tp2.getTerrainElement().isTraversable){
+			//				System.out.println("BLOCK");
+			//				executeAction(LemmingActionType.Block);
+			//			}
 
 			else if(tp2 != null && !tp2.getTerrainElement().isTraversable && tp2.getTerrainElement().isSolid){
 				executeAction(LemmingActionType.Climb);
@@ -73,22 +75,24 @@ public class Lemming {
 				executeAction(LemmingActionType.Turnback);
 			}
 			else if(tp2 != null){					
-	System.out.println("WALK");
-	executeAction(LemmingActionType.Walk);
+				System.out.println("WALK");
+				executeAction(LemmingActionType.Walk);
 			}	
 			else {
 				executeAction(LemmingActionType.Turnback);
 			}
-			 if( lemmingBody.getCurrentFall() > 0){
+			if( lemmingBody.getCurrentFall() > 0){
 				System.out.println("PARA");
 				//executeAction(new Action(LemmingActionType.Parachute));
 				lemmingBody.setParachute(true);
 			}
 			else if(lemmingBody.getCurrentFall() == 0 ){
 				lemmingBody.setParachute(false);
-			}
+			}*/
 			// TODO
-			/*qProblem.translateCurrentState(getPosition(), perceptions);
+			CellCoord position = new CellCoord((int) getPosition().x, (int)getPosition().y);
+			qProblem.translateCurrentState(lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall(),
+					lemmingBody.isClimbing(), position, perceptions);
 		qLearning.learn(NUMBER_OF_QLEARNING_ITERATIONS);
 
 		Action action = qLearning.getBestAction(qProblem.getCurrentState());
@@ -98,7 +102,7 @@ public class Lemming {
 			if(action.getLemmingActionType() == LemmingActionType.Walk) {
 
 			}
-		}*/
+		}
 		}
 		else {
 			suicide();
@@ -106,7 +110,6 @@ public class Lemming {
 	}
 
 
-	@SuppressWarnings("unused")
 	private Point2d getPosition() {
 		CellCoord cellCoord = lemmingBody.getCellCoord();
 		return new Point2d(cellCoord.getX(), cellCoord.getY());
@@ -155,12 +158,12 @@ public class Lemming {
 			TerrainPerception tp1 = (TerrainPerception) perceptions.get(1);
 			TerrainPerception tp2 = (TerrainPerception) perceptions.get(2);
 			TerrainPerception tp3 = (TerrainPerception) perceptions.get(3);
-			
+
 			if(tp2 != null && !tp2.getTerrainElement().isTraversable 
 					&& tp3 != null && tp3.getTerrainElement().isTraversable) {
-					action = LemmingActionType.SeHisser;
+				action = LemmingActionType.SeHisser;
 			}
-			
+
 		}
 		lemmingBody.doAction(action);
 	}
