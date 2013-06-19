@@ -49,19 +49,19 @@ public class Lemming {
 			TerrainPerception tp1 = (TerrainPerception) perceptions.get(1);
 			TerrainPerception tp2 = (TerrainPerception) perceptions.get(2);
 			TerrainPerception tp3 = (TerrainPerception) perceptions.get(3);
-			if(tp0 != null && tp0.getTerrainElement().isDiggable) {
-				System.out.println("DRILL");
-				executeAction(new Action(LemmingActionType.Drill));
-			}
-			else if(tp2 != null &&tp2.getTerrainElement().isDiggable){			
-				System.out.println("DIG");
-				executeAction(new Action(LemmingActionType.Dig));
-			}
-			//			else if(tp1 != null && tp1.getTerrainElement().isTraversable
-			//					&& tp2 != null && tp2.getTerrainElement().isTraversable){
-			//				System.out.println("BLOCK");
-			//				executeAction(LemmingActionType.Block);
-			//			}
+//			if(tp0 != null && tp0.getTerrainElement().isDiggable) {
+//				System.out.println("DRILL");
+//				executeAction(new Action(LemmingActionType.Drill));
+//			}
+//			else if(tp2 != null &&tp2.getTerrainElement().isDiggable){			
+//				System.out.println("DIG");
+//				executeAction(new Action(LemmingActionType.Dig));
+//			}
+						 if(tp0 != null && !tp0.getTerrainElement().isTraversable
+							){
+							System.out.println("BLOCK");
+							executeAction(new Action(LemmingActionType.Block));
+						}
 
 			else if(tp2 != null && !tp2.getTerrainElement().isTraversable && tp2.getTerrainElement().isSolid
 					&& tp3 != null && tp3.getTerrainElement().isTraversable){
@@ -95,6 +95,7 @@ public class Lemming {
 //			}
 		}
 		else {
+			//System.out.println("SUICIDE GOING");
 			suicide();
 		}
 	}

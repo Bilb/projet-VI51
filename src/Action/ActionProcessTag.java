@@ -21,6 +21,8 @@ public enum ActionProcessTag {
 		CLIMBING(1) { // to set the flag
 		},
 		NOT_CLIMBING(1) {
+		},
+		UPDATEFLAG(1) {
 		}
 		,
 	//	DIE(1) {
