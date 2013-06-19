@@ -42,7 +42,7 @@ public class LemmingProblemState implements QState{
 		realDanger = false;
 		blocked = false;
 
-		actions = new ArrayList<>();
+		actions = new ArrayList<Action>();
 		/* sortie alignee */
 		if(number < NBSTATE_NO_DIRECTION) {
 			exitDirection = Direction.NONE;
