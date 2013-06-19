@@ -1,19 +1,14 @@
 package Lemming.Environment;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.vecmath.Point2d;
 
 import Action.Action;
-import Action.Action.LemmingActionType;
 import Action.ActionProcess;
 import Action.ActionTest;
-import Action.ActionTestTag;
 import Lemming.CellCoord;
-import Lemming.Sens;
 import Lemming.Agent.LemmingBody;
-import Lemming.Influence.FallInfluence;
 import Lemming.Perception.ExitPerception;
 import Lemming.Perception.Perception;
 import Lemming.Perception.TerrainPerception;
@@ -42,7 +37,7 @@ public class Environment{
 		TerrainType[] terrains = TerrainType.values();
 
 		//Generation of the map
-		this.map=new TerrainType[(int)size.x][(int)size.y];
+		this.map=new TerrainType[(int)size.y][(int)size.x];
 		for(int l=0;l<size.x;l++) {
 			for(int c=0;c<size.y;c++) {
 				this.map[l][c] = terrains[envmap[l][c]];
@@ -218,6 +213,19 @@ public class Environment{
 	public void setMap(TerrainType[][] map) {
 		this.map = map;
 	}
+	
+	public void setMap(int[][] map, int width, int height) {
+		TerrainType[] terrains = TerrainType.values();
+
+		//Generation of the map
+		this.map=new TerrainType[height][width];
+		for(int l=0;l<height;l++) {
+			for(int c=0;c<width;c++) {
+				this.map[l][c] = terrains[map[l][c]];
+			}
+		}
+		
+	}
 
 	public LinkedList<LemmingBody> getLemmingBodies() {
 		return lemmingBodies;
@@ -227,10 +235,6 @@ public class Environment{
 	public Point2d getEnvSize() {
 		return envSize;
 	}
-
-	/*public void setLemmingBody(List<LemmingBody> lemmingBody) {
-		this.lemmingBodies = lemmingBody;
-	}*/
 
 	public void addLemmingBody(LemmingBody lbody) {
 		lemmingBodies.add(lbody);
@@ -273,10 +277,8 @@ public class Environment{
 				}
 			}
 			applyGravity(movebuffer);
-			//System.out.println("AFTER GR: " +body.getCellCoord() );
 			body.setPreviousPosition(body.getCellCoord());
 			body.setCellCoord(movebuffer);
-			//	body.updatePixelPosition(movebuffer); // launch the action
 		}
 		return ok;
 	}
