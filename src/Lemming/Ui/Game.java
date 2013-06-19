@@ -186,18 +186,16 @@ public class Game extends JFrame implements Runnable{
 							else {
 								lemming.live();
 							}
-							if(lemming.getLemmingBody().isBlocked()) {
+							if(lb.isBlocked() || !lb.isAlive()) {
 								System.out.println(lemming.getQlearning().num);
 								QLearning<LemmingProblemState,Action> saveQLearning = lemming.getQlearning();
-								lemmings.remove(lemming);
-								lemming = null;
+								kill(lemming);
 								addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
 							}
 						}
 						else {
 							QLearning<LemmingProblemState,Action> saveQLearning = lemming.getQlearning();
-							lemmings.remove(lemming);
-							lemming = null;
+							kill(lemming);
 							addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
 						}
 					}
@@ -209,5 +207,13 @@ public class Game extends JFrame implements Runnable{
 			}
 
 		}
+	}
+	
+	public void kill(Lemming l) {
+		LemmingBody lb = l.getLemmingBody();
+		environment.kill(lb);
+		lb = null;
+		lemmings.remove(l);
+		l = null;
 	}
 }

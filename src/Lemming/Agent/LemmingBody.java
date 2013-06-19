@@ -22,6 +22,17 @@ import Lemming.Perception.Perception;
 public class LemmingBody extends PixelCosmetic {
 
 	private Sens sens;
+	private boolean alive;
+	public boolean isAlive() {
+		return alive;
+	}
+
+
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+
+
 	private boolean climbing;
 	private boolean parachute;
 	private boolean blocked;
@@ -34,6 +45,7 @@ public class LemmingBody extends PixelCosmetic {
 	
 	
 	public LemmingBody(CellCoord cellCoord, Environment environment) {
+		alive = true;
 		sens = Sens.RIGHT;
 		currentFall = 0;
 		setParachute(false);
@@ -197,6 +209,9 @@ public class LemmingBody extends PixelCosmetic {
 		case TURNBACK:
 			 sens = (sens == Sens.LEFT) ? Sens.RIGHT: Sens.LEFT;
 		break;
+		case DIE:
+			alive = false;
+			break;
 		}
 		return true;
 		

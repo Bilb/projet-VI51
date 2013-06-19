@@ -153,6 +153,12 @@ public class Action implements QAction{
 			actionProcessList.add(new ActionProcess(null,ActionProcessTag.BLOCK)); // lancer le blockage (suppression du lemming)
 		}
 		break;
+		case Die:
+		{
+			actionProcessList.add(new ActionProcess(null,ActionProcessTag.DIE)); // cr�er un bloc
+
+		}
+			break;
 		case Turnback:
 		{
 			CellCoord cellTestDown = new CellCoord(bodyX,bodyY+1); // case en dessous
