@@ -238,6 +238,7 @@ public class Environment{
 
 	public Boolean tryExecute(LemmingBody body,Action action) {
 		// TODO Auto-generated method stub
+		System.out.println("try");
 		movebuffer= new CellCoord(body.getCellCoord().getX(),body.getCellCoord().getY());
 		//movebuffer.setY();
 		Boolean ok = false;
@@ -279,6 +280,7 @@ public class Environment{
 			body.setCellCoord(movebuffer);
 		//	body.updatePixelPosition(movebuffer); // launch the action
 		}
+		System.out.println("tried done");
 		return ok;
 	}
 

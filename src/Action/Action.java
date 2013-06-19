@@ -12,27 +12,9 @@ public class Action implements QAction{
 
 
 	private static final long serialVersionUID = 8567701969352353019L;
-
-	public LinkedList<ActionProcess> getActionProcessList() {
-		return actionProcessList;
-	}
-
-	public void setActionProcessList(LinkedList<ActionProcess> actionProcessList) {
-		this.actionProcessList = actionProcessList;
-	}
-
-	public LinkedList<ActionTest> getActionTestList() {
-		return actionTestList;
-	}
-
-	public void setActionTestList(LinkedList<ActionTest> actionTestList) {
-		this.actionTestList = actionTestList;
-	}
-
-
 	private LinkedList<ActionProcess> actionProcessList; // action needed to perform the action
 	private LinkedList<ActionTest> actionTestList; // test needed to perform the action
-
+	private Boolean builded = false;
 	public enum LemmingActionType {
 		SeHisser,
 		Climb,
@@ -44,8 +26,9 @@ public class Action implements QAction{
 		Turnback,
 		Die
 	}
-
 	private LemmingActionType lemmingActionType;
+
+
 
 
 	public Action(LinkedList<ActionProcess> actionProcessList , LinkedList<ActionTest> actionTestList, LemmingActionType lemmingActionType) {
@@ -56,11 +39,21 @@ public class Action implements QAction{
 	
 	public Action(LemmingActionType actionType) {
 		lemmingActionType = actionType;
-		actionProcessList = new LinkedList<ActionProcess>();
-		actionTestList = new LinkedList<ActionTest>();
+		actionProcessList = null;
+		actionTestList = null;
+	}
+	
+	public Action(LemmingActionType actionType, LemmingBody body) {
+		lemmingActionType = actionType;
+		actionProcessList = null;
+		actionTestList = null;
+		buildAction(body);
+		
 	}
 	
 	public void buildAction(LemmingBody body) {
+		actionProcessList = new LinkedList<ActionProcess>();
+		actionTestList = new LinkedList<ActionTest>();
 		int bodyX = body.getCellCoord().getX();
 		int bodyY = body.getCellCoord().getY();
 		int dx = body.getSens().dx;
@@ -182,17 +175,39 @@ public class Action implements QAction{
 		if(lemmingActionType != LemmingActionType.Parachute) {
 			actionProcessList.add(new ActionProcess(null,ActionProcessTag.NOT_PARACHUTE));
 		}
+		builded = true;
 	}
 	
-	public Action(LemmingActionType actionType, LemmingBody body) {
-		lemmingActionType = actionType;
-		actionProcessList = new LinkedList<ActionProcess>();
-		actionTestList = new LinkedList<ActionTest>();
-		buildAction(body);
-		
+
+	public LinkedList<ActionProcess> getActionProcessList() {
+		return actionProcessList;
+	}
+
+	public void setActionProcessList(LinkedList<ActionProcess> actionProcessList) {
+		this.actionProcessList = actionProcessList;
+	}
+
+	public LinkedList<ActionTest> getActionTestList() {
+		return actionTestList;
+	}
+
+	public void setActionTestList(LinkedList<ActionTest> actionTestList) {
+		this.actionTestList = actionTestList;
 	}
 
 
+
+	public void setLemmingActionType(LemmingActionType lemmingActionType) {
+		this.lemmingActionType = lemmingActionType;
+		if( builded) {
+			actionProcessList = null;
+			actionTestList = null;
+			builded =false;
+		}
+	}
+
+
+	
 	public LemmingActionType getLemmingActionType() {
 		return lemmingActionType;
 	}
@@ -215,6 +230,14 @@ public class Action implements QAction{
 	@Override
 	public QAction clone() {
 		return new Action(getActionProcessList(), getActionTestList(), getLemmingActionType());
+	}
+
+	public Boolean getBuilded() {
+		return builded;
+	}
+
+	public void setBuilded(Boolean builded) {
+		this.builded = builded;
 	}
 
 }
