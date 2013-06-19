@@ -91,7 +91,7 @@ public class Lemming {
 
 			if(action != null) {
 
-				executeAction(action.getLemmingActionType());
+				executeAction(new Action(action.getLemmingActionType()));
 			}
 		}
 		else {
@@ -143,9 +143,6 @@ public class Lemming {
 		if(action.getLemmingActionType() == LemmingActionType.Climb) {
 			// check pour voir si c'est se hisser
 			List<Perception> perceptions = lemmingBody.getPerceptions();
-
-			TerrainPerception tp0 = (TerrainPerception) perceptions.get(0);
-			TerrainPerception tp1 = (TerrainPerception) perceptions.get(1);
 			TerrainPerception tp2 = (TerrainPerception) perceptions.get(2);
 			TerrainPerception tp3 = (TerrainPerception) perceptions.get(3);
 
