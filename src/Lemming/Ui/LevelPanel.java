@@ -98,7 +98,7 @@ public class LevelPanel extends JPanel implements Runnable {
 							break;
 						default:
 							image = null;
-							System.err.println("No image to display for terrain " + terrain + " in LevelPanel print");
+							//System.err.println("No image to display for terrain " + terrain + " in LevelPanel print");
 							break;
 						}
 						if(image != null)

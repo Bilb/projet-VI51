@@ -39,6 +39,13 @@ public class Lemming {
 		qLearning = new QLearning<LemmingProblemState,Action>(qProblem);
 
 	}
+	
+	public Lemming(LemmingBody lemmingBody_, QLearning<LemmingProblemState,Action> newQLearning) {
+		lemmingBody = lemmingBody_;
+		qProblem = new LemmingProblem();
+		qLearning = newQLearning;
+
+	}
 
 	public void live() {
 		if(!lemmingBody.isBlocked()) {
@@ -167,6 +174,9 @@ public class Lemming {
 		return null;
 	}
 
+	public QLearning<LemmingProblemState, Action> getQLearning() {
+		return qLearning;
+	}
 
 	public LemmingBody getLemmingBody() {
 		return lemmingBody;
