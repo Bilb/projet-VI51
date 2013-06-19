@@ -41,7 +41,8 @@ public class Action implements QAction{
 		Parachute,
 		Walk,
 		Block,
-		Turnback
+		Turnback,
+		Die
 	}
 
 	private LemmingActionType lemmingActionType;
@@ -53,10 +54,13 @@ public class Action implements QAction{
 		this.lemmingActionType = lemmingActionType;
 	}
 	
-	public Action(LemmingActionType actionType, LemmingBody body) {
+	public Action(LemmingActionType actionType) {
 		lemmingActionType = actionType;
 		actionProcessList = new LinkedList<ActionProcess>();
 		actionTestList = new LinkedList<ActionTest>();
+	}
+	
+	public void buildAction(LemmingBody body) {
 		int bodyX = body.getCellCoord().getX();
 		int bodyY = body.getCellCoord().getY();
 		int dx = body.getSens().dx;
@@ -178,6 +182,13 @@ public class Action implements QAction{
 		if(lemmingActionType != LemmingActionType.Parachute) {
 			actionProcessList.add(new ActionProcess(null,ActionProcessTag.NOT_PARACHUTE));
 		}
+	}
+	
+	public Action(LemmingActionType actionType, LemmingBody body) {
+		lemmingActionType = actionType;
+		actionProcessList = new LinkedList<ActionProcess>();
+		actionTestList = new LinkedList<ActionTest>();
+		buildAction(body);
 		
 	}
 

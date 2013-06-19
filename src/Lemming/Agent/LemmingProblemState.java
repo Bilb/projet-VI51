@@ -3,8 +3,9 @@ package Lemming.Agent;
 import java.util.ArrayList;
 import java.util.List;
 
+import Action.Action;
+import Action.Action.LemmingActionType;
 import Lemming.Direction;
-import Lemming.Agent.Action.LemmingActionType;
 import fr.utbm.gi.vi51.learning.qlearning.QComparable;
 import fr.utbm.gi.vi51.learning.qlearning.QComparator;
 import fr.utbm.gi.vi51.learning.qlearning.QState;

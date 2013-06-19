@@ -23,6 +23,8 @@ public enum ActionProcessTag {
 		NOT_CLIMBING(1) {
 		}
 		,
+	//	DIE(1) {
+	//	},
 		MOVE(0)
 		;
 		

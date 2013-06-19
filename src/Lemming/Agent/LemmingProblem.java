@@ -5,8 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import Action.Action;
+import Action.Action.LemmingActionType;
 import Lemming.CellCoord;
-import Lemming.Agent.Action.LemmingActionType;
 import Lemming.Perception.ExitPerception;
 import Lemming.Perception.Perception;
 import Lemming.Perception.TerrainPerception;
@@ -60,7 +61,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		actions.add(new Action(LemmingActionType.Drill));
 		actions.add(new Action(LemmingActionType.Parachute));
 		actions.add(new Action(LemmingActionType.Walk));
-		actions.add(new Action(LemmingActionType.Cross));
+		//actions.add(new Action(LemmingActionType.Cross));
 		actions.add(new Action(LemmingActionType.Turnback));
 
 		currentState = null;
