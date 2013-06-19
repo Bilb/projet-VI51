@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
+import Lemming.Sens;
 import Lemming.Agent.LemmingBody;
 import Lemming.Environment.TerrainType;
 
@@ -25,9 +26,13 @@ public class LevelPanel extends JPanel implements Runnable {
 	private Image ground;
 	private Image sky;
 	private Image water;
-	private Image lemming;
+	private Image lemming_right;
+	private Image lemming_left;
 	private Image lemming_blocked;
-	private Image lemming_parachute;
+	private Image lemming_parachute_right;
+	private Image lemming_parachute_left;
+	private Image lemming_climbing_right;
+	private Image lemming_climbing_left;
 
 
 
@@ -48,9 +53,13 @@ public class LevelPanel extends JPanel implements Runnable {
 		ground = (new ImageIcon("images/ground.png")).getImage();
 		sky = (new ImageIcon("images/sky.png")).getImage();
 		water = (new ImageIcon("images/water.png")).getImage();
-		lemming = (new ImageIcon("images/lemming.png").getImage());
+		lemming_left = (new ImageIcon("images/lemming_left.png").getImage());
+		lemming_right = (new ImageIcon("images/lemming_right.png").getImage());
 		lemming_blocked = (new ImageIcon("images/lemming_blocked.png").getImage());
-		lemming_parachute = (new ImageIcon("images/lemming_parachute.png").getImage());
+		lemming_parachute_left = (new ImageIcon("images/lemming_parachute_left.png").getImage());
+		lemming_parachute_right = (new ImageIcon("images/lemming_parachute_right.png").getImage());
+		lemming_climbing_right = (new ImageIcon("images/lemming_climbing_right.png").getImage());
+		lemming_climbing_left = (new ImageIcon("images/lemming_climbing_left.png").getImage());
 		setFocusable(true);
 	}
 
@@ -108,13 +117,9 @@ public class LevelPanel extends JPanel implements Runnable {
 					for (LemmingBody lemmingBody : lemmingsBodies) {
 						if(lemmingBody != null) {
 							Image img = null;
+							img = getLemmingImg(lemmingBody);
 							//System.out.println("draw lemming at: " + lemmingBody.getPixelCoord().getX() +"-" + lemmingBody.getPixelCoord().getX());
-							if(lemmingBody.isParachute()) {
-								img = lemming_parachute;
-							}
-							else {
-								img = lemming;
-							}
+						
 							g.drawImage(img, lemmingBody.getPixelCoord().getX(),lemmingBody.getPixelCoord().getY(), this);
 					
 						}
@@ -123,6 +128,34 @@ public class LevelPanel extends JPanel implements Runnable {
 			}	
 		}
 	}
+
+	private Image getLemmingImg(LemmingBody lemmingBody) {
+		Image img;
+		if(lemmingBody.getSens() == Sens.LEFT) {
+			img = lemming_left;
+			if(lemmingBody.isParachute()) {
+				img = lemming_parachute_left;
+			}
+			else if(lemmingBody.isClimbing()) {
+				img = lemming_climbing_left;
+			}
+
+		}
+		else {
+			img = lemming_right;
+			if(lemmingBody.isParachute()) {
+				img = lemming_parachute_right;
+			}
+			else if(lemmingBody.isClimbing()) {
+				img = lemming_climbing_right;
+			}
+		}
+		return img;
+	}
+
+
+
+
 
 	@Override
 	public void run() {

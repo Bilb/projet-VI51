@@ -91,10 +91,10 @@ public class Lemming {
 			if(action != null) {
 					executeAction(new Action(action.getLemmingActionType()));
 			}
-		
+			
 	}
 
-
+	
 	private Point2d getPosition() {
 		CellCoord cellCoord = lemmingBody.getCellCoord();
 		return new Point2d(cellCoord.getX(), cellCoord.getY());
