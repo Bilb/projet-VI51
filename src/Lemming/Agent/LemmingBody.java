@@ -71,11 +71,12 @@ public class LemmingBody extends PixelCosmetic {
 //		System.out.println("Action Pr2 tag :::" + currentAction.getActionProcessList().get(0).getTag() + " cell" + currentAction.getActionProcessList().get(0).getCell());
 		
 		if(!myEnvironment.get().tryExecute(this,currentAction)){
-			Action a = new Action(lastAction.getLemmingActionType());
-			action.buildAction(null);
-			myEnvironment.get().tryExecute(this,lastAction);
+			// action échoué, reset des flags
+			climbing = false;
+			parachute = false;
 		}
 		else {
+			// action réussie
 			lastAction = action;
 		}
 	}
@@ -220,8 +221,6 @@ public class LemmingBody extends PixelCosmetic {
 		break;
 		case DIE:
 			alive = false;
-			break;
-		case UPDATEFLAG: 
 			break;
 		}
 		return true;

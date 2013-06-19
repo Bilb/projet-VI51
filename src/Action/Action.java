@@ -163,7 +163,7 @@ public class Action implements QAction{
 			case Turnback:
 			{
 				CellCoord cellTestDown = new CellCoord(bodyX,bodyY+1); // case en dessous
-				actionTestList.add(new ActionTest(cellTestDown,ActionTestTag.NOT_TRAVERSABLE));
+				//actionTestList.add(new ActionTest(cellTestDown,ActionTestTag.NOT_TRAVERSABLE));
 				
 				actionProcessList.add(new ActionProcess(null,ActionProcessTag.TURNBACK)); // cr�er un bloc
 			}
@@ -182,9 +182,6 @@ public class Action implements QAction{
 			if(lemmingActionType != LemmingActionType.Parachute) {
 				actionProcessList.add(new ActionProcess(null,ActionProcessTag.NOT_PARACHUTE));
 			}
-		}
-		else {
-			actionProcessList.add(new ActionProcess(null,ActionProcessTag.UPDATEFLAG));
 		}
 			builded = true;
 	}
