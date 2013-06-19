@@ -975,7 +975,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				}
 			}
 		}
-		return null;
+		return noimpact(state);
 	}
 
 
