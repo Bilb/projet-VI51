@@ -25,8 +25,8 @@ public enum ActionProcessTag {
 		UPDATEFLAG(1) {
 		}
 		,
-	//	DIE(1) {
-	//	},
+		DIE(1) {
+		},
 		MOVE(0)
 		;
 		

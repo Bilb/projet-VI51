@@ -22,6 +22,17 @@ import Lemming.Perception.Perception;
 public class LemmingBody extends PixelCosmetic {
 
 	private Sens sens;
+	private boolean alive;
+	public boolean isAlive() {
+		return alive;
+	}
+
+
+	public void setAlive(boolean alive) {
+		this.alive = alive;
+	}
+
+
 	private boolean climbing;
 	private boolean parachute;
 	private boolean blocked;
@@ -29,11 +40,13 @@ public class LemmingBody extends PixelCosmetic {
 	private int currentFall;
 	private CellCoord cellCoord;
 	private Action currentAction;
+	private Action lastAction;
 	private WeakReference<Environment> myEnvironment;
 	private List<Influence> influences;
 	
 	
 	public LemmingBody(CellCoord cellCoord, Environment environment) {
+		alive = true;
 		sens = Sens.RIGHT;
 		currentFall = 0;
 		setParachute(false);
@@ -42,6 +55,7 @@ public class LemmingBody extends PixelCosmetic {
 		previousPosition = null;
 		pixelCoord = cellCoord.toPixelCoord();
 		currentAction = null;
+		lastAction = null;
 		influences = new ArrayList<Influence>();
 	}
 	
@@ -56,7 +70,14 @@ public class LemmingBody extends PixelCosmetic {
 //		System.out.println("Action:2 tag :::" + currentAction.getActionTestList().get(1).getTag() + " cell" + currentAction.getActionTestList().get(1).getCell());
 //		System.out.println("Action Pr2 tag :::" + currentAction.getActionProcessList().get(0).getTag() + " cell" + currentAction.getActionProcessList().get(0).getCell());
 		
-		myEnvironment.get().tryExecute(this,currentAction);
+		if(!myEnvironment.get().tryExecute(this,currentAction)){
+			Action a = new Action(lastAction.getLemmingActionType());
+			action.buildAction(null);
+			myEnvironment.get().tryExecute(this,lastAction);
+		}
+		else {
+			lastAction = action;
+		}
 	}
 	
 	public LinkedList<Perception> getPerceptions() {
@@ -197,6 +218,11 @@ public class LemmingBody extends PixelCosmetic {
 		case TURNBACK:
 			 sens = (sens == Sens.LEFT) ? Sens.RIGHT: Sens.LEFT;
 		break;
+		case DIE:
+			alive = false;
+			break;
+		case UPDATEFLAG: 
+			break;
 		}
 		return true;
 		

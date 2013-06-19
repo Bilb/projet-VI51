@@ -10,8 +10,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
+import fr.utbm.gi.vi51.learning.qlearning.QLearning;
+
+import Action.Action;
+import Lemming.CellCoord;
 import Lemming.Agent.Lemming;
 import Lemming.Agent.LemmingBody;
+import Lemming.Agent.LemmingProblemState;
 import Lemming.Environment.Environment;
 import Lemming.Environment.LemmingGenerator;
 import Lemming.Environment.Level;
@@ -72,13 +77,15 @@ public class Game extends JFrame implements Runnable{
 
 	public Game() {
 		super("Projet VI51 - Lemmings");
+		lemmings=new LinkedList<Lemming>();
+		
 		setUpUi();
 		
 		
 		launch();
 		
 		
-		lemmings=new LinkedList<Lemming>();
+		
 		//SwingUtilities.invokeLater(level);
 		new Thread(level).start();
 
@@ -179,10 +186,17 @@ public class Game extends JFrame implements Runnable{
 							else {
 								lemming.live();
 							}
+							if(lb.isBlocked() || !lb.isAlive()) {
+								System.out.println(lemming.getQlearning().num);
+								QLearning<LemmingProblemState,Action> saveQLearning = lemming.getQlearning();
+								kill(lemming);
+								addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
+							}
 						}
 						else {
-							lemmings.remove(lemming);
-							lemming = null;
+							QLearning<LemmingProblemState,Action> saveQLearning = lemming.getQlearning();
+							kill(lemming);
+							addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
 						}
 					}
 					
@@ -193,5 +207,13 @@ public class Game extends JFrame implements Runnable{
 			}
 
 		}
+	}
+	
+	public void kill(Lemming l) {
+		LemmingBody lb = l.getLemmingBody();
+		environment.kill(lb);
+		lb = null;
+		lemmings.remove(l);
+		l = null;
 	}
 }
