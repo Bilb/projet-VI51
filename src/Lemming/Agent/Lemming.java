@@ -11,7 +11,6 @@ import Lemming.Influence.Influence;
 import Lemming.Influence.MoveInfluence;
 import Lemming.Perception.Perception;
 import Lemming.Perception.TerrainPerception;
-import fr.utbm.gi.vi51.learning.qlearning.LemmingProblemState;
 import fr.utbm.gi.vi51.learning.qlearning.QLearning;
 
 public class Lemming {
