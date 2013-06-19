@@ -7,7 +7,8 @@ import java.util.Random;
 
 import javax.vecmath.Point2d;
 
-import Lemming.Agent.Action.LemmingActionType;
+import Action.Action;
+import Action.Action.LemmingActionType;
 import Lemming.Perception.Perception;
 
 import fr.utbm.gi.vi51.learning.qlearning.DefaultQState;
@@ -53,12 +54,12 @@ public class LemmingProblem implements QProblem<DefaultQState, Action> {
 		/* ... */
 
 
-		actions.add(new Action(LemmingActionType.Climb));
-		actions.add(new Action(LemmingActionType.Block));
-		actions.add(new Action(LemmingActionType.Dig));
-		actions.add(new Action(LemmingActionType.Drill));
-		actions.add(new Action(LemmingActionType.Parachute));
-		actions.add(new Action(LemmingActionType.Walk));
+//		actions.add(new Action(LemmingActionType.Climb));
+//		actions.add(new Action(LemmingActionType.Block));
+//		actions.add(new Action(LemmingActionType.Dig));
+//		actions.add(new Action(LemmingActionType.Drill));
+//		actions.add(new Action(LemmingActionType.Parachute));
+//		actions.add(new Action(LemmingActionType.Walk));
 
 		currentState = null;
 		generator = new Random();

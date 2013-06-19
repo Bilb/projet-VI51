@@ -6,10 +6,15 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import sun.nio.cs.ext.ISCII91;
+
+import Action.Action;
+import Action.Action.LemmingActionType;
+import Action.ActionProcessTag;
+import Action.ActionTestTag;
 import Lemming.CellCoord;
 import Lemming.PixelCosmetic;
 import Lemming.Sens;
-import Lemming.Agent.Action.LemmingActionType;
 import Lemming.Environment.Environment;
 import Lemming.Influence.Influence;
 import Lemming.Perception.Perception;
@@ -17,6 +22,7 @@ import Lemming.Perception.Perception;
 public class LemmingBody extends PixelCosmetic {
 
 	private Sens sens;
+	private boolean climbing;
 	private boolean parachute;
 	private boolean blocked;
 	private final int supportedFall = 3;
@@ -30,21 +36,22 @@ public class LemmingBody extends PixelCosmetic {
 	public LemmingBody(CellCoord cellCoord, Environment environment) {
 		sens = Sens.RIGHT;
 		currentFall = 0;
-		currentAction = new Action(LemmingActionType.Walk);
 		setParachute(false);
 		myEnvironment = new WeakReference<Environment>(environment);
 		this.cellCoord = cellCoord;
-		previousPosition = cellCoord;
+		previousPosition = null;
 		pixelCoord = cellCoord.toPixelCoord();
+		currentAction = null;
 		influences = new ArrayList<Influence>();
 	}
 	
 
-	public void doAction(Action action) {
-		int dx = sens.dx;
-		int dy = action.getDy();
-		currentAction = action;
-		myEnvironment.get().move(this, dx, dy);
+	public void doAction(LemmingActionType actionType) {
+		currentAction = new Action (actionType, this);
+//		System.out.println("Action: tag :::" + currentAction.getActionTestList().get(0).getTag() + " cell" + currentAction.getActionTestList().get(0).getCell());
+//		System.out.println("Action:2 tag :::" + currentAction.getActionTestList().get(1).getTag() + " cell" + currentAction.getActionTestList().get(1).getCell());
+//		System.out.println("Action Pr2 tag :::" + currentAction.getActionProcessList().get(0).getTag() + " cell" + currentAction.getActionProcessList().get(0).getCell());
+		myEnvironment.get().tryExecute(this,currentAction);
 	}
 	
 	public LinkedList<Perception> getPerceptions() {
@@ -108,13 +115,18 @@ public class LemmingBody extends PixelCosmetic {
 	
 	public void setCellCoord(CellCoord cellCoord) {
 		this.cellCoord = cellCoord;
+		updatePixel = true;
 	}
 	
 	public void setCellCoord(int x, int y) {
 		cellCoord.set(x, y);
 		//pixelCoord = cellCoord.toPixelCoord();
+		updatePixel = true;
 	}
 
+	public void updatePixel() {
+		updatePixel = true;
+	}
 
 	public void setCurrentAction(Action currentAction) {
 		this.currentAction = currentAction;
@@ -142,6 +154,62 @@ public class LemmingBody extends PixelCosmetic {
 
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
+		
+	}
+	
+	public Boolean executeTestTag(ActionTestTag tag) {
+		switch (tag) {
+		case PARACHUTE:
+			return isParachute();
+		case NOT_FALLING:
+			return currentFall == 0;
+		case CLIMBING:
+			return isClimbing();
+		case NOT_CLIMBING:
+			return !isClimbing();
+		}
+		return blocked;
+		
+	}
+	
+	public Boolean executeProcessTag(ActionProcessTag tag) {
+		switch (tag) {
+		case BLOCK:
+			setBlocked(true);
+		break;
+		case PARACHUTE:
+			setParachute(true);
+		break;
+		case NOT_PARACHUTE:
+			setParachute(false);
+		break;
+		case NOT_CLIMBING:
+			setClimbing(false);
+		break;
+		case CLIMBING:
+			setClimbing(true);
+		break;
+		case TURNBACK:
+			 sens = (sens == Sens.LEFT) ? Sens.RIGHT: Sens.LEFT;
+		break;
+		}
+		return true;
+		
+	}
+
+
+	public boolean isClimbing() {
+		return climbing;
+	}
+
+
+	public void setClimbing(boolean climbing) {
+		this.climbing = climbing;
+	}
+
+
+	public void setPreviousPosition(CellCoord cellCoord2) {
+		previousPosition = cellCoord2;
 		
 	}
 }
