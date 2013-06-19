@@ -149,7 +149,7 @@ public class Action implements QAction{
 		//	actionTestList.add(new ActionTest(cellTestDownFront,ActionTestTag.DANGER));
 			actionTestList.add(new ActionTest(cellTestFront,ActionTestTag.TRAVERSABLE));
 			
-			actionProcessList.add(new ActionProcess(cellTestCurrent,ActionProcessTag.CREATE)); // créer un bloc
+			actionProcessList.add(new ActionProcess(cellTestCurrent,ActionProcessTag.CREATE)); // crï¿½er un bloc
 			actionProcessList.add(new ActionProcess(null,ActionProcessTag.BLOCK)); // lancer le blockage (suppression du lemming)
 		}
 		break;
@@ -158,7 +158,7 @@ public class Action implements QAction{
 			CellCoord cellTestDown = new CellCoord(bodyX,bodyY+1); // case en dessous
 			actionTestList.add(new ActionTest(cellTestDown,ActionTestTag.NOT_TRAVERSABLE));
 			
-			actionProcessList.add(new ActionProcess(null,ActionProcessTag.TURNBACK)); // créer un bloc
+			actionProcessList.add(new ActionProcess(null,ActionProcessTag.TURNBACK)); // crï¿½er un bloc
 		}
 		break;
 		}
@@ -240,4 +240,12 @@ public class Action implements QAction{
 		this.builded = builded;
 	}
 
+	@Override
+	public String toString() {
+		return "Action [lemmingActionType=" + lemmingActionType + "]";
+	}
+
+	
+	
+	
 }

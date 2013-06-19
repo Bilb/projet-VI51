@@ -1528,6 +1528,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		}
 
 		currentState = new LemmingProblemState(stateId);
+		System.out.println("currentState determined : " + currentState);
 	}
 
 

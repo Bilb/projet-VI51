@@ -520,4 +520,22 @@ public class LemmingProblemState implements QState{
 	}
 
 
+
+
+
+
+
+
+
+
+
+	@Override
+	public String toString() {
+		return "LemmingProblemState [number=" + number + ", exitDirection="
+				+ exitDirection + "]";
+	}
+	
+	
+
+
 }
