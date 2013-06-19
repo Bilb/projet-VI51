@@ -28,7 +28,7 @@ package fr.utbm.gi.vi51.learning.qlearning;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class DefaultQState implements QState {
+public class LemmingProblemState implements QState {
 	
 	private static final long serialVersionUID = -6376982706299950686L;
 	
@@ -38,7 +38,7 @@ public class DefaultQState implements QState {
 	/**
 	 * @param number is the number associated to this state.
 	 */
-	public DefaultQState(int number) {
+	public LemmingProblemState(int number) {
 		this(number, null);
 	}
 
@@ -46,7 +46,7 @@ public class DefaultQState implements QState {
 	 * @param number is the number associated to this state.
 	 * @param description describes the state.
 	 */
-	public DefaultQState(int number, String description) {
+	public LemmingProblemState(int number, String description) {
 		this.number = number;
 		if (description==null || description.isEmpty()) {
 			this.description = "STATE_"+this.number; //$NON-NLS-1$
@@ -60,9 +60,9 @@ public class DefaultQState implements QState {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public DefaultQState clone() {
+	public LemmingProblemState clone() {
 		try {
-			return (DefaultQState)super.clone();
+			return (LemmingProblemState)super.clone();
 		}
 		catch(Throwable e) {
 			throw new Error(e);

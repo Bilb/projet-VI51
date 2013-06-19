@@ -10,13 +10,15 @@ public class Action implements QAction{
 
 
 	public enum LemmingActionType {
+		Die,
 		Climb,
 		Dig,
 		Drill,
 		Parachute,
 		Walk,
 		Block,
-		Turnback
+		Turnback,
+		Cross
 	}
 	
 	private int dy;

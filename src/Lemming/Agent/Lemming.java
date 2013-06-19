@@ -11,7 +11,7 @@ import Lemming.Influence.Influence;
 import Lemming.Influence.MoveInfluence;
 import Lemming.Perception.Perception;
 import Lemming.Perception.TerrainPerception;
-import fr.utbm.gi.vi51.learning.qlearning.DefaultQState;
+import fr.utbm.gi.vi51.learning.qlearning.LemmingProblemState;
 import fr.utbm.gi.vi51.learning.qlearning.QLearning;
 
 public class Lemming {
@@ -26,7 +26,7 @@ public class Lemming {
 
 	/** The learning algorithm.
 	 */
-	private final QLearning<DefaultQState,Action> qLearning;
+	private final QLearning<LemmingProblemState,Action> qLearning;
 
 
 
@@ -34,7 +34,7 @@ public class Lemming {
 	public Lemming(LemmingBody lemmingBody_) {
 		lemmingBody = lemmingBody_;
 		qProblem = new LemmingProblem();
-		qLearning = new QLearning<DefaultQState,Action>(qProblem);
+		qLearning = new QLearning<LemmingProblemState,Action>(qProblem);
 
 
 	}
