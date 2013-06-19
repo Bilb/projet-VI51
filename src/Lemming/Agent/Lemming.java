@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.vecmath.Point2d;
 
-import sun.nio.cs.ext.ISCII91;
-
 import Action.Action;
 import Action.Action.LemmingActionType;
 import Lemming.CellCoord;
@@ -39,7 +37,6 @@ public class Lemming {
 		lemmingBody = lemmingBody_;
 		qProblem = new LemmingProblem();
 		qLearning = new QLearning<LemmingProblemState,Action>(qProblem);
-
 
 	}
 
@@ -87,16 +84,15 @@ public class Lemming {
 			CellCoord position = new CellCoord((int) getPosition().x, (int)getPosition().y);
 			qProblem.translateCurrentState(lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall(),
 					lemmingBody.isClimbing(), position, perceptions);
-		qLearning.learn(NUMBER_OF_QLEARNING_ITERATIONS);
+			qLearning.learn(NUMBER_OF_QLEARNING_ITERATIONS);
 
-		Action action = qLearning.getBestAction(qProblem.getCurrentState());
+			Action action = qLearning.getBestAction(qProblem.getCurrentState());
 
 
-		if(action != null) {
-			if(action.getLemmingActionType() == LemmingActionType.Walk) {
+			if(action != null) {
 
+				executeAction(action.getLemmingActionType());
 			}
-		}
 		}
 		else {
 			suicide();
@@ -159,6 +155,7 @@ public class Lemming {
 			}
 
 		}
+		System.out.println("executing action : " + action);
 		lemmingBody.doAction(action);
 	}
 

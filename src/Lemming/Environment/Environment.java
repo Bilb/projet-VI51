@@ -263,7 +263,7 @@ public class Environment{
 				testIt ++;
 			}
 			
-			// test passé avec succes?
+			// test passï¿½ avec succes?
 			if(ok) {
 				LinkedList<ActionProcess> processList = action.getActionProcessList();
 				for (ActionProcess process : processList) {
@@ -275,7 +275,7 @@ public class Environment{
 				}
 			}
 			applyGravity(movebuffer);
-			System.out.println("AFTER GR: " +body.getCellCoord() );
+			//System.out.println("AFTER GR: " +body.getCellCoord() );
 			body.setPreviousPosition(body.getCellCoord());
 			body.setCellCoord(movebuffer);
 		//	body.updatePixelPosition(movebuffer); // launch the action
@@ -290,11 +290,11 @@ public class Environment{
 			map[process.getCell().getY()][process.getCell().getX()] = TerrainType.LEMMING_BLOCKED;
 			return;
 		case DESTROY:
-			System.out.println("DESTROY :" + process.getCell());
+			//System.out.println("DESTROY :" + process.getCell());
 			map[process.getCell().getY()][process.getCell().getX()] = TerrainType.EMPTY;
 			return;
 		case MOVE:
-			System.out.println("MOVE: " +body.getCellCoord() );
+			//System.out.println("MOVE: " +body.getCellCoord() );
 			//CellCoord pos = new CellCoord(body.getCellCoord().getX(),body.getCellCoord().getY());
 			applyForce(process.getCell(), movebuffer);
 
