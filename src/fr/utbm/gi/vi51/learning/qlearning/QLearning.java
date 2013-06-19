@@ -41,6 +41,8 @@ public class QLearning<S extends QState, A extends QAction> {
 
 	private final QProblem<S,A> problem;
 	private final Map<S,Map<A,Float>> qValues = new TreeMap<S,Map<A,Float>>(new QComparator()); 
+	Random random = new Random(0);
+	public int num = random.nextInt();
 	Random generator;
 
 	/**

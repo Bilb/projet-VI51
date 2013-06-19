@@ -28,16 +28,16 @@ public class Lemming {
 	 */
 	private final QLearning<LemmingProblemState,Action> qLearning;
 
-	private boolean test = true;
-
-
-
-
-	public Lemming(LemmingBody lemmingBody_) {
-		lemmingBody = lemmingBody_;
+	public Lemming(LemmingBody newLemmingBody) {
+		lemmingBody = newLemmingBody;
 		qProblem = new LemmingProblem();
 		qLearning = new QLearning<LemmingProblemState,Action>(qProblem);
-
+	}
+	
+	public Lemming(LemmingBody newLemmingBody, QLearning<LemmingProblemState,Action> newQlearning) {
+		lemmingBody = newLemmingBody;
+		qProblem = new LemmingProblem();
+		qLearning = newQlearning;
 	}
 
 	public void live() {
@@ -166,6 +166,9 @@ public class Lemming {
 		return null;
 	}
 
+	public QLearning<LemmingProblemState,Action> getQlearning() {
+		return this.qLearning;
+	}
 
 	public LemmingBody getLemmingBody() {
 		return lemmingBody;

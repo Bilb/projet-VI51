@@ -130,7 +130,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 1:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return noimpact(4);
+					return noimpact(state);
 				default:
 					return verybad(state);
 				}
@@ -147,7 +147,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 3:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return good(4);
+					return good(state);
 				case Parachute:
 					return verygood(1);
 				default :
@@ -157,7 +157,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 4:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Turnback:
 					return bad(1);
 				default:
@@ -217,7 +217,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Turnback:
 					return good(state);
 				default:
@@ -243,7 +243,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return verybad(18);
 				case Climb:
-					return good(4);
+					return good(state);
 				case Dig:
 					return verygood(state);
 				case Turnback:
@@ -271,7 +271,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Drill:
 					return good(19);
 				case Turnback:
@@ -287,7 +287,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Dig:
 					return verygood(7);
 				case Climb:
-					return good(4);
+					return good(state);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -349,7 +349,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return noimpact(4);
+					return noimpact(state);
 				case Drill:
 					return good(19);
 				case Turnback:
@@ -363,7 +363,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return noimpact(4);
+					return noimpact(state);
 				case Drill:
 					return good(19);
 				case Dig:
@@ -379,7 +379,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Turnback:
 					return noimpact(state);
 				default:
@@ -391,7 +391,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return noimpact(4);
+					return noimpact(state);
 				case Dig:
 					return verygood(19);
 				case Turnback:
@@ -417,7 +417,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 1:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return bad(4);
+					return bad(state);
 				default:
 					return verybad(state);
 				}
@@ -434,7 +434,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 3:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return bad(4);
+					return bad(state);
 				case Parachute:
 					return verygood(1);
 				default :
@@ -444,7 +444,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 4:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return noimpact(4);
+					return noimpact(state);
 				case Turnback:
 					return bad(1);
 				default:
@@ -504,7 +504,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return noimpact(4);
+					return noimpact(state);
 				case Turnback:
 					return good(state);
 				default:
@@ -530,7 +530,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return verybad(18);
 				case Climb:
-					return bad(4);
+					return bad(state);
 				case Dig:
 					return verygood(state);
 				case Turnback:
@@ -558,7 +558,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return bad(4);
+					return bad(state);
 				case Drill:
 					return verygood(19);
 				case Turnback:
@@ -574,7 +574,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Dig:
 					return good(7);
 				case Climb:
-					return bad(4);
+					return bad(state);
 				case Drill:
 					return verygood(19);
 				case Turnback:
@@ -636,7 +636,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return bad(4);
+					return bad(state);
 				case Drill:
 					return verygood(19);
 				case Turnback:
@@ -650,7 +650,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return bad(4);
+					return bad(state);
 				case Drill:
 					return verygood(19);
 				case Dig:
@@ -666,7 +666,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return good(4);
+					return good(state);
 				case Turnback:
 					return noimpact(state);
 				default:
@@ -678,7 +678,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return bad(4);
+					return bad(state);
 				case Dig:
 					return verygood(19);
 				case Turnback:
@@ -704,7 +704,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 1:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				default:
 					return verybad(state);
 				}
@@ -721,7 +721,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 3:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Parachute:
 					return good(1);
 				default :
@@ -731,7 +731,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 4:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Turnback:
 					return bad(1);
 				default:
@@ -791,7 +791,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Turnback:
 					return good(state);
 				default:
@@ -817,7 +817,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return verybad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Dig:
 					return good(state);
 				case Turnback:
@@ -845,7 +845,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -861,7 +861,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Dig:
 					return good(7);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -923,7 +923,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -937,7 +937,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Drill:
 					return bad(19);
 				case Dig:
@@ -953,7 +953,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Turnback:
 					return noimpact(state);
 				default:
@@ -965,7 +965,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Block:
 					return bad(18);
 				case Climb:
-					return verygood(4);
+					return verygood(state);
 				case Dig:
 					return good(19);
 				case Turnback:
