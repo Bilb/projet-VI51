@@ -111,51 +111,909 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	@Override
 	public QFeedback<LemmingProblemState> takeAction(LemmingProblemState state,
 			Action action) {
-		
-		// TODO
-		switch (state.toInt()) {
-		case 0:
-			switch (action.getLemmingActionType()) {
-			case Block:
-			case Climb:
-			case Dig:
-			case Drill:
-			case Parachute:
-				return verygood(state);
-			case Walk:
-			case Cross:
-			case Die:
-			case Turnback:
-				break;
-			}
-		default:
-			break;
-		}
 
+		switch (state.getExitDirection()) {
+		// La sortie est sur le meme axe que nous
+		case NONE:
+			switch (state.toInt()) {
+			// Mort -> Etat terminal
+			case 0:
+				switch (action.getLemmingActionType()) {
+				case Die:
+					return verygood(0);
+				default:
+					return verybad(state);
+				}
+
+				// Parachute
+			case 1:
+				switch (action.getLemmingActionType()) {
+				case Climb:
+					return noimpact(4);
+				default:
+					return verybad(state);
+				}
+
+				// Grimpe et bloque
+			case 2:
+				switch (action.getLemmingActionType()) {
+				case Turnback:
+					return verygood(1);
+				default:
+					return verybad(state);
+				}
+				// tombe pres d'une falaise
+			case 3:
+				switch (action.getLemmingActionType()) {
+				case Climb:
+					return good(4);
+				case Parachute:
+					return verygood(1);
+				default :
+					return verybad(state);
+				}
+				// grimpe
+			case 4:
+				switch (action.getLemmingActionType()) {
+				case Climb:
+					return verygood(4);
+				case Turnback:
+					return bad(1);
+				default:
+					return verybad(state);
+				}
+				// normal
+			case 5:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Walk:
+					return verygood(state);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// face a une falaise
+			case 6:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				case Walk:
+					return bad(1);
+				case Turnback:
+					return good(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel creusable
+			case 7:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Dig:
+					return good(state);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel forable
+			case 8:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return verygood(state);
+				default:
+					return verybad(state);
+				}
+				// face a une falaise
+			case 9:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return verygood(4);
+				case Turnback:
+					return good(state);
+				default:
+					return verybad(state);
+				}
+				// normal et forable
+			case 10:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Drill:
+					return bad(19);
+				case Walk:
+					return verygood(state);
+				case Turnback:
+					return noimpact(state);
+				default:
+					verybad(state);
+				}
+				// face a falaise creusable
+			case 11:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Climb:
+					return good(4);
+				case Dig:
+					return verygood(state);
+				case Turnback:
+					noimpact(state);
+				default:
+					verybad(state);
+				}
+				// tunnel creusable et forable
+			case 12:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(state);
+				case Dig:
+					return verygood(state);
+				case Drill:
+					return good(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// sol forable face falaise 
+			case 13:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return verygood(4);
+				case Drill:
+					return good(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// sol forable face falaise creusable
+			case 14:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Dig:
+					return verygood(7);
+				case Climb:
+					return good(4);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// forable danger falaise 
+			case 15:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return good(18);
+				case Walk:
+					return verygood(1);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// sol forable + danger eau
+			case 16:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return good(state);
+				case Walk:
+					return verybad(0);
+				default:
+					return verybad(state);
+				}
+				// danger eau
+			case 17:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				case Turnback:
+					return good(state);
+				case Walk:
+					return verybad(0);
+				default:
+					return verybad(state);
+				}
+				// bloque
+			case 18:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				default:
+					return verybad(state);
+				}
+				// tunnel vertical forable
+			case 19:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return noimpact(4);
+				case Drill:
+					return good(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel vertical creusable forable
+			case 20:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return noimpact(4);
+				case Drill:
+					return good(19);
+				case Dig:
+					return good(7);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunel vertical
+			case 21:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return verygood(4);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel vertical creusable
+			case 22:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return noimpact(4);
+				case Dig:
+					return verygood(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+			}
+
+			// La sortie est en dessous de nous
+		case BOTTOM:
+			switch (state.toInt()-23) {
+			// Mort -> Etat terminal
+			case 0:
+				switch (action.getLemmingActionType()) {
+				case Die:
+					return verygood(0);
+				default:
+					return verybad(state);
+				}
+
+				// Parachute
+			case 1:
+				switch (action.getLemmingActionType()) {
+				case Climb:
+					return bad(4);
+				default:
+					return verybad(state);
+				}
+
+				// Grimpe et bloque
+			case 2:
+				switch (action.getLemmingActionType()) {
+				case Turnback:
+					return verygood(1);
+				default:
+					return verybad(state);
+				}
+				// tombe pres d'une falaise
+			case 3:
+				switch (action.getLemmingActionType()) {
+				case Climb:
+					return bad(4);
+				case Parachute:
+					return verygood(1);
+				default :
+					return verybad(state);
+				}
+				// grimpe
+			case 4:
+				switch (action.getLemmingActionType()) {
+				case Climb:
+					return noimpact(4);
+				case Turnback:
+					return bad(1);
+				default:
+					return verybad(state);
+				}
+				// normal
+			case 5:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Walk:
+					return verygood(state);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// face a une falaise
+			case 6:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				case Walk:
+					return bad(1);
+				case Turnback:
+					return good(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel creusable
+			case 7:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Dig:
+					return good(state);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel forable
+			case 8:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Drill:
+					return verygood(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// face a une falaise
+			case 9:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return noimpact(4);
+				case Turnback:
+					return good(state);
+				default:
+					return verybad(state);
+				}
+				// normal et forable
+			case 10:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Drill:
+					return verygood(19);
+				case Walk:
+					return good(state);
+				case Turnback:
+					return noimpact(state);
+				default:
+					verybad(state);
+				}
+				// face a falaise creusable
+			case 11:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Climb:
+					return bad(4);
+				case Dig:
+					return verygood(state);
+				case Turnback:
+					noimpact(state);
+				default:
+					verybad(state);
+				}
+				// tunnel creusable et forable
+			case 12:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(state);
+				case Dig:
+					return good(state);
+				case Drill:
+					return verygood(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// sol forable face falaise 
+			case 13:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return bad(4);
+				case Drill:
+					return verygood(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// sol forable face falaise creusable
+			case 14:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Dig:
+					return good(7);
+				case Climb:
+					return bad(4);
+				case Drill:
+					return verygood(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// forable danger falaise 
+			case 15:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return good(18);
+				case Walk:
+					return noimpact(1);
+				case Drill:
+					return verygood(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// sol forable + danger eau
+			case 16:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				case Drill:
+					return noimpact(19);
+				case Turnback:
+					return good(state);
+				case Walk:
+					return verybad(0);
+				default:
+					return verybad(state);
+				}
+				// danger eau
+			case 17:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				case Turnback:
+					return good(state);
+				case Walk:
+					return verybad(0);
+				default:
+					return verybad(state);
+				}
+				// bloque
+			case 18:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				default:
+					return verybad(state);
+				}
+				// tunnel vertical forable
+			case 19:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return bad(4);
+				case Drill:
+					return verygood(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel vertical creusable forable
+			case 20:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return bad(4);
+				case Drill:
+					return verygood(19);
+				case Dig:
+					return good(7);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunel vertical
+			case 21:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return good(4);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel vertical creusable
+			case 22:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return bad(4);
+				case Dig:
+					return verygood(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+			}
+
+			// la sortie est au dessus de nous
+		case TOP:
+			switch (state.toInt()) {
+			// Mort -> Etat terminal
+			case 0:
+				switch (action.getLemmingActionType()) {
+				case Die:
+					return verygood(0);
+				default:
+					return verybad(state);
+				}
+
+				// Parachute
+			case 1:
+				switch (action.getLemmingActionType()) {
+				case Climb:
+					return verygood(4);
+				default:
+					return verybad(state);
+				}
+
+				// Grimpe et bloque
+			case 2:
+				switch (action.getLemmingActionType()) {
+				case Turnback:
+					return verygood(1);
+				default:
+					return verybad(state);
+				}
+				// tombe pres d'une falaise
+			case 3:
+				switch (action.getLemmingActionType()) {
+				case Climb:
+					return verygood(4);
+				case Parachute:
+					return good(1);
+				default :
+					return verybad(state);
+				}
+				// grimpe
+			case 4:
+				switch (action.getLemmingActionType()) {
+				case Climb:
+					return verygood(4);
+				case Turnback:
+					return bad(1);
+				default:
+					return verybad(state);
+				}
+				// normal
+			case 5:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Walk:
+					return verygood(state);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// face a une falaise
+			case 6:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				case Walk:
+					return bad(1);
+				case Turnback:
+					return good(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel creusable
+			case 7:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Dig:
+					return good(state);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel forable
+			case 8:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return verygood(state);
+				default:
+					return verybad(state);
+				}
+				// face a une falaise
+			case 9:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return verygood(4);
+				case Turnback:
+					return good(state);
+				default:
+					return verybad(state);
+				}
+				// normal et forable
+			case 10:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Drill:
+					return bad(19);
+				case Walk:
+					return verygood(state);
+				case Turnback:
+					return noimpact(state);
+				default:
+					verybad(state);
+				}
+				// face a falaise creusable
+			case 11:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Climb:
+					return verygood(4);
+				case Dig:
+					return good(state);
+				case Turnback:
+					noimpact(state);
+				default:
+					verybad(state);
+				}
+				// tunnel creusable et forable
+			case 12:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(state);
+				case Dig:
+					return verygood(state);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// sol forable face falaise 
+			case 13:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return verygood(4);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// sol forable face falaise creusable
+			case 14:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verybad(18);
+				case Dig:
+					return good(7);
+				case Climb:
+					return verygood(4);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// forable danger falaise 
+			case 15:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return good(18);
+				case Walk:
+					return verygood(1);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// sol forable + danger eau
+			case 16:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return good(state);
+				case Walk:
+					return verybad(0);
+				default:
+					return verybad(state);
+				}
+				// danger eau
+			case 17:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				case Turnback:
+					return good(state);
+				case Walk:
+					return verybad(0);
+				default:
+					return verybad(state);
+				}
+				// bloque
+			case 18:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return verygood(18);
+				default:
+					return verybad(state);
+				}
+				// tunnel vertical forable
+			case 19:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return verygood(4);
+				case Drill:
+					return bad(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel vertical creusable forable
+			case 20:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return verygood(4);
+				case Drill:
+					return bad(19);
+				case Dig:
+					return good(7);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunel vertical
+			case 21:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return verygood(4);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+				// tunnel vertical creusable
+			case 22:
+				switch (action.getLemmingActionType()) {
+				case Block:
+					return bad(18);
+				case Climb:
+					return verygood(4);
+				case Dig:
+					return good(19);
+				case Turnback:
+					return noimpact(state);
+				default:
+					return verybad(state);
+				}
+			}
+		}
 		return null;
 	}
 
 
-
+	private QFeedback<LemmingProblemState> verygood(int state) {
+		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), verygood);
+	}
+	
 	private QFeedback<LemmingProblemState> verygood(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, verygood);
 	}
 
-	@SuppressWarnings("unused")
+	private QFeedback<LemmingProblemState> good(int state) {
+		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), good);
+	}
+	
 	private QFeedback<LemmingProblemState> good(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, good);
 	}
 
-	@SuppressWarnings("unused")
+	private QFeedback<LemmingProblemState> noimpact(int state) {
+		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), noimpact);
+	}
+	
 	private QFeedback<LemmingProblemState> noimpact(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, noimpact);
 	}
 
-	@SuppressWarnings("unused")
+	private QFeedback<LemmingProblemState> bad(int state) {
+		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), bad);
+	}
+	
 	private QFeedback<LemmingProblemState> bad(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, bad);
 	}
 
+	private QFeedback<LemmingProblemState> verybad(int state) {
+		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), verybad);
+	}
+	
 	private QFeedback<LemmingProblemState> verybad(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, verybad);
 	}
@@ -191,7 +1049,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 			/* on créé une liste de terrainPerception. 
 			 * Nous permet de ne pas avoir à faire des instanceof à tour de bras */
-			List<TerrainPerception> terrainPerceptions = new ArrayList<>();
+			List<TerrainPerception> terrainPerceptions = new ArrayList<TerrainPerception>();
+
 			for (int i = 0; i< perceptions.size() -1 ; i++) {
 				terrainPerceptions.add((TerrainPerception) perceptions.get(i));
 			}
@@ -354,8 +1213,9 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				
 			}
 			else if(LemmingPos.getY() > ExitPos.getY()) {
-				stateId += LemmingProblemState.NBSTATE_NO_DIRECTION;
-				/* cas 0 : cas ou on est dans une case danger */
+				stateId += 9;
+
+				/* cas ou on est dans une case danger */
 				if(terrainPerceptions.get(5).getTerrainElement().isDanger) {
 					stateId += 0;
 				}
@@ -510,7 +1370,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			}
 			else {
 				stateId += LemmingProblemState.NBSTATE_NO_DIRECTION*2;
-				/* cas 0 : cas ou on est dans une case danger */
+
+				/* cas ou on est dans une case danger */
 				if(terrainPerceptions.get(5).getTerrainElement().isDanger) {
 					stateId += 0;
 				}
