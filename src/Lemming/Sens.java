@@ -1,5 +1,8 @@
 package Lemming;
 
+/**
+ * cet enum indique les different sens dans lesquels le Lemming peut se deplacer
+ */
 public enum Sens {
 	LEFT(-1) {
 		
