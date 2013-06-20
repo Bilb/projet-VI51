@@ -10,7 +10,6 @@ import Lemming.CellCoord;
 import Lemming.PixelCosmetic;
 import Lemming.Sens;
 import Lemming.Action.Action;
-import Lemming.Action.Action.LemmingActionType;
 import Lemming.Action.ActionProcessTag;
 import Lemming.Action.ActionTestTag;
 import Lemming.Environment.Environment;

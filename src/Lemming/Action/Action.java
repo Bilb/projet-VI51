@@ -8,14 +8,30 @@ import Lemming.Agent.LemmingBody;
 import fr.utbm.gi.vi51.learning.qlearning.QAction;
 import fr.utbm.gi.vi51.learning.qlearning.QComparable;
 
+
+
+/**
+ * 
+ * La classe Action permet de définir une action par une liste de test à réaliser
+ * et une liste de ActionProcess à faire si ces tests sont vrais
+ * ActionProcess:
+ *  associe une case de l'environnement (CellCoord) à une action réaliser dessus
+ * ActionTest:
+ *	associe une case de l'environnement (CellCoord) à un test à faire dessus
+ *
+ */
 public class Action implements QAction{
 
 
 	private static final long serialVersionUID = 8567701969352353019L;
-	private LinkedList<ActionProcess> actionProcessList; // action needed to perform the action
-	private LinkedList<ActionTest> actionTestList; // test needed to perform the action
+	
+	// test caractérisant la possiblité de l'action
+	private LinkedList<ActionTest> actionTestList;
+	// liste d'ActionProcess à réaliser si les tests sont valides
+	private LinkedList<ActionProcess> actionProcessList;
 	private Boolean builded = false;
 	private long time = 0;
+	
 	public enum LemmingActionType {
 		SeHisser,
 		Climb,
@@ -30,27 +46,48 @@ public class Action implements QAction{
 
 
 
-
+	/**
+	 * constructeur de base
+	 * @param actionProcessList liste de processus que l'action doit executer si les tests sont valides
+	 * @param actionTestList liste de tests à faire pour que l'action soit valide
+	 * @param lemmingActionType type de l'action
+	 */
 	public Action(LinkedList<ActionProcess> actionProcessList , LinkedList<ActionTest> actionTestList, LemmingActionType lemmingActionType) {
 		this.actionProcessList = actionProcessList;
 		this.actionTestList = actionTestList;
 		this.lemmingActionType = lemmingActionType;
 	}
 	
+	public Action(LemmingActionType actionType, LemmingBody body) {
+		lemmingActionType = actionType;
+		actionProcessList = null;
+		actionTestList = null;
+		// build the action according to body's information
+		buildAction(body);
+		
+	}
+	
+	/**
+	 * Constructeur utile lorsque l'on ne connait pas encore le body
+	 * L'action devra être construite par la suite à l'aide de buildAction
+	 * @param actionType type 
+	 */
 	public Action(LemmingActionType actionType) {
 		lemmingActionType = actionType;
 		actionProcessList = null;
 		actionTestList = null;
 	}
 	
-	public Action(LemmingActionType actionType, LemmingBody body) {
-		lemmingActionType = actionType;
-		actionProcessList = null;
-		actionTestList = null;
-		buildAction(body);
-		
-	}
-	
+	/**
+	 * C'est dans cette fonction que l'on definie une action en fonction de son type
+	 * une action se definie par une liste de test devant être valide et une liste de ActionProcess
+	 * à faire lorsque les tests sont valides
+	 * Les ActionTest définissent les conditions nécessaire à la réalisation de l'action
+	 * Les ActionProcess définissent ce que l'action fait
+	 * Cette fonction permet de définir les types d'action en créant les ActionTest et ActionProcess
+	 * qui la définissent
+	 * @param body corps du lemming réalisant l'action
+	 */
 	public void buildAction(LemmingBody body) {
 		actionProcessList = new LinkedList<ActionProcess>();
 		actionTestList = new LinkedList<ActionTest>();

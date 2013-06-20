@@ -2,6 +2,13 @@ package Lemming.Action;
 
 import Lemming.CellCoord;
 
+
+/**
+ * 
+ * associe une case de l'environnement (CellCoord) à un test à faire dessus
+ * le test à réaliser est symbolisé par un ActionTestTag
+ *
+ */
 public class ActionTest {
 	public ActionTestTag getTag() {
 		return tag;
