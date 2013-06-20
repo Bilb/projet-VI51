@@ -42,60 +42,81 @@ public class LemmingProblemState implements QState{
 			switch(number) {
 			case 0: 
 				// die
+				break;
 			case 1:
 				//chute libre (sans parachute)
+				break;
 			case 2:
 				// demi tour uniquement : cas ou l'on est en train de grimper et qu'on tape le plafond !
+				break;
 			case 3:
 				// grimper parachute
+				break;
 			case 4: 
 				// grimper demi tour
+				break;
 			case 5:
 				// deplacement demi tour bloquer non falaise
 				// non falaise deja faux
+				break;
 			case 6:
 				// deplacement demi tour bloquer falaise
 				cliffDanger = true;
+				break;
 			case 7: 
 				// creuser bloquer demi tour
+				break;
 			case 8:
 				// forer demi tour bloquer
+				break;
 			case 9:
 				// grimper bloquer demi tour 
+				break;
 			case 10:
 				// déplacement forer bloquer demi-tour
+				break;
 			case 11:
 				// Creuser + grimper + bloquer + demi-tour  
-
+				break;
 			case 12:
 				//Creuser + bloquer + forer + demi-tour   
+				break;
 			case 13:
 				//Forer + Grimper + bloquer + demi-tour
-
+				break;
 			case 14:
 				//Creuser + forer + grimper + bloquer + demi-tour
+				break;
 			case 15:
 				//Deplacement + demi-tour + bloquer + Forer + falaise
 				cliffDanger = true;
+				break;
 			case 16:
 				//Déplacement + demi-tour + bloquer + Forer + eau
 				realDanger = true;
+				break;
 			case 17:
 				//Déplacement + demi-tour + bloquer + eau
 				realDanger = true;
+				break;
 			case 18://bloqué 
 				blocked = true;
+				break;
 			case 19:
 				//Forer + grimper + bloquer + faire demi-tour : dans un trou, au fond : creusable
 			case 20:
 				//creuser forer grimper bloquer : dans un trou, au fond : creusable et sur le cote aussi
+				break;
 			case 21:
 				//chute avec parachute
 				parachuteDeploye = true;
+				break;
 			case 22:
 				//demi-tour tunnel horizontal : fond d'une gallerie horizontale 
+				break;
 			case 23:
 				//sur sortie
+				break;
 			default:
 				System.err.println("case default while creating state : " + number);
 
@@ -107,60 +128,81 @@ public class LemmingProblemState implements QState{
 			switch(number - NBSTATE_NO_DIRECTION) {
 			case 0: 
 				// die
+				break;
 			case 1:
 				//chute libre (sans parachute)
+				break;
 			case 2:
 				// demi tour uniquement : cas ou l'on est en train de grimper et qu'on tape le plafond !
+				break;
 			case 3:
 				// grimper parachute
+				break;
 			case 4: 
 				// grimper demi tour
+				break;
 			case 5:
 				// deplacement demi tour bloquer non falaise
 				// non falaise deja faux
+				break;
 			case 6:
 				// deplacement demi tour bloquer falaise
 				cliffDanger = true;
+				break;
 			case 7: 
 				// creuser bloquer demi tour
+				break;
 			case 8:
 				// forer demi tour bloquer
+				break;
 			case 9:
 				// grimper bloquer demi tour 
+				break;
 			case 10:
 				// déplacement forer bloquer demi-tour
+				break;
 			case 11:
 				// Creuser + grimper + bloquer + demi-tour  
-
+				break;
 			case 12:
 				//Creuser + bloquer + forer + demi-tour   
+				break;
 			case 13:
 				//Forer + Grimper + bloquer + demi-tour
-
+				break;
 			case 14:
 				//Creuser + forer + grimper + bloquer + demi-tour
+				break;
 			case 15:
 				//Deplacement + demi-tour + bloquer + Forer + falaise
 				cliffDanger = true;
+				break;
 			case 16:
 				//Déplacement + demi-tour + bloquer + Forer + eau
 				realDanger = true;
+				break;
 			case 17:
 				//Déplacement + demi-tour + bloquer + eau
 				realDanger = true;
+				break;
 			case 18://bloqué 
 				blocked = true;
+				break;
 			case 19:
 				//Forer + grimper + bloquer + faire demi-tour : dans un trou, au fond : creusable
 			case 20:
 				//creuser forer grimper bloquer : dans un trou, au fond : creusable et sur le cote aussi
+				break;
 			case 21:
 				//chute avec parachute
 				parachuteDeploye = true;
+				break;
 			case 22:
 				//demi-tour tunnel horizontal : fond d'une gallerie horizontale 
+				break;
 			case 23:
 				//sur sortie
+				break;
 			default:
 				System.err.println("case default while creating state : " + number);
 
@@ -172,60 +214,81 @@ public class LemmingProblemState implements QState{
 			switch(number - NBSTATE_NO_DIRECTION * 2) {
 			case 0: 
 				// die
+				break;
 			case 1:
 				//chute libre (sans parachute)
+				break;
 			case 2:
 				// demi tour uniquement : cas ou l'on est en train de grimper et qu'on tape le plafond !
+				break;
 			case 3:
 				// grimper parachute
+				break;
 			case 4: 
 				// grimper demi tour
+				break;
 			case 5:
 				// deplacement demi tour bloquer non falaise
 				// non falaise deja faux
+				break;
 			case 6:
 				// deplacement demi tour bloquer falaise
 				cliffDanger = true;
+				break;
 			case 7: 
 				// creuser bloquer demi tour
+				break;
 			case 8:
 				// forer demi tour bloquer
+				break;
 			case 9:
 				// grimper bloquer demi tour 
+				break;
 			case 10:
 				// déplacement forer bloquer demi-tour
+				break;
 			case 11:
 				// Creuser + grimper + bloquer + demi-tour  
-
+				break;
 			case 12:
 				//Creuser + bloquer + forer + demi-tour   
+				break;
 			case 13:
 				//Forer + Grimper + bloquer + demi-tour
-
+				break;
 			case 14:
 				//Creuser + forer + grimper + bloquer + demi-tour
+				break;
 			case 15:
 				//Deplacement + demi-tour + bloquer + Forer + falaise
 				cliffDanger = true;
+				break;
 			case 16:
 				//Déplacement + demi-tour + bloquer + Forer + eau
 				realDanger = true;
+				break;
 			case 17:
 				//Déplacement + demi-tour + bloquer + eau
 				realDanger = true;
+				break;
 			case 18://bloqué 
 				blocked = true;
+				break;
 			case 19:
 				//Forer + grimper + bloquer + faire demi-tour : dans un trou, au fond : creusable
 			case 20:
 				//creuser forer grimper bloquer : dans un trou, au fond : creusable et sur le cote aussi
+				break;
 			case 21:
 				//chute avec parachute
 				parachuteDeploye = true;
+				break;
 			case 22:
 				//demi-tour tunnel horizontal : fond d'une gallerie horizontale 
+				break;
 			case 23:
 				//sur sortie
+				break;
 			default:
 				System.err.println("case default while creating state : " + number);
 			}
