@@ -6,15 +6,13 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import sun.nio.cs.ext.ISCII91;
-
 import Lemming.CellCoord;
 import Lemming.PixelCosmetic;
 import Lemming.Sens;
 import Lemming.Action.Action;
+import Lemming.Action.Action.LemmingActionType;
 import Lemming.Action.ActionProcessTag;
 import Lemming.Action.ActionTestTag;
-import Lemming.Action.Action.LemmingActionType;
 import Lemming.Environment.Environment;
 import Lemming.Influence.Influence;
 import Lemming.Perception.Perception;
@@ -65,7 +63,6 @@ public class LemmingBody extends PixelCosmetic {
 	public void doAction(Action action) {
 		if(!action.getBuilded()) {
 			action.buildAction(this);
-			//System.out.println("builded false: " + action.getActionTestList().get(0).getTag());
 		}
 		currentAction = action;
 		if(enableTimeAction) {
@@ -96,7 +93,7 @@ public class LemmingBody extends PixelCosmetic {
 			digging = false;
 		}
 		else {
-			// action r�ussie
+			// action rï¿½ussie
 		}
 	}
 	
@@ -110,7 +107,7 @@ public class LemmingBody extends PixelCosmetic {
 	
 	
 	public void addInfluences(Influence e) {
-		
+		System.out.println("ajout d'un new influence : " +e);
 		influences.add(e);
 	}
 	
@@ -150,11 +147,6 @@ public class LemmingBody extends PixelCosmetic {
 	}
 	
 //---------- Setters ----------/
-	
-	/*public void setSens(Sens sens) {
-		this.sens = sens;
-	}*/
-	
 	public void setCurrentFall(int supportedFall) {
 		this.currentFall = supportedFall;
 	}
@@ -166,7 +158,6 @@ public class LemmingBody extends PixelCosmetic {
 	
 	public void setCellCoord(int x, int y) {
 		cellCoord.set(x, y);
-		//pixelCoord = cellCoord.toPixelCoord();
 		updatePixel = true;
 	}
 
@@ -180,6 +171,11 @@ public class LemmingBody extends PixelCosmetic {
 
 	public List<Influence> getInfluences() {
 		return Collections.unmodifiableList(influences);
+	}
+	
+	
+	public void resetInfluences() {
+		influences = new ArrayList<Influence>();
 	}
 
 
@@ -217,6 +213,8 @@ public class LemmingBody extends PixelCosmetic {
 			return isClimbing();
 		case NOT_CLIMBING:
 			return !isClimbing();
+		default:
+			break;
 		}
 		return blocked;
 		
@@ -256,6 +254,8 @@ public class LemmingBody extends PixelCosmetic {
 		break;
 		case DIE:
 			alive = false;
+			break;
+		default:
 			break;
 		}
 		return true;
@@ -307,7 +307,7 @@ public class LemmingBody extends PixelCosmetic {
 	private long timeElapsed = 0;
 	private boolean initTimer = false;
 	
-	// appele depuis game quand le flag doAction est lev�
+	// appele depuis game quand le flag doAction est levé
 	public boolean doActionTimer() {
 		currentTime = System.currentTimeMillis();
 		if(!initTimer) {

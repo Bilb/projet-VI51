@@ -11,8 +11,8 @@ public abstract class PixelCosmetic {
 	protected float speedY = 30;
 
 	
-	// m�thode pour le d�placement graphique des �l�ments pixel par pixel
-	// appel� uniquement si updatePixel est � vrai
+	// methode pour le deplacement graphique des elements pixel par pixel
+	// appele uniquement si updatePixel est  vrai
 	public void updatePixelPosition(CellCoord nextPosition) {
 			if(nextPosition != previousPosition) {
 				Boolean deplacementTermineY = false;
