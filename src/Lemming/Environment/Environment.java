@@ -334,4 +334,25 @@ public class Environment{
 		return null;
 	}
 
+	
+	
+	public void changeLevel(Level newLevel) {
+
+			envSize =new Point2d(newLevel.getWidth(), newLevel.getHeight());
+			//We retrieve all the terrain types to easily set them in the map array 
+			TerrainType[] terrains = TerrainType.values();
+
+			//Generation of the map
+			this.map=new TerrainType[(int)envSize.y][(int)envSize.x];
+			for(int l=0;l<envSize.x;l++) {
+				for(int c=0;c<envSize.y;c++) {
+					this.map[l][c] = terrains[newLevel.getMap()[l][c]];
+					if(newLevel.getMap()[l][c] == TerrainType.EXIT.ordinal())
+						exitPos= new CellCoord(c, l);
+				}
+			}
+
+			// We store the lemmings into the array of agent of the environmnent
+			this.lemmingBodies=new LinkedList<LemmingBody>();
+	}
 }

@@ -1,6 +1,8 @@
 package Lemming.Ui;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,8 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
-
-import fr.utbm.gi.vi51.learning.qlearning.QLearning;
 
 import Lemming.CellCoord;
 import Lemming.Action.Action;
@@ -21,6 +21,7 @@ import Lemming.Environment.Environment;
 import Lemming.Environment.LemmingGenerator;
 import Lemming.Environment.Level;
 import Lemming.Environment.TerrainType;
+import fr.utbm.gi.vi51.learning.qlearning.QLearning;
 
 public class Game extends JFrame implements Runnable{
 
@@ -28,16 +29,20 @@ public class Game extends JFrame implements Runnable{
 	 * 
 	 */
 	private static final long serialVersionUID = -4172777326765469302L;
+
+	private static final int nbLevels = 4;
 	public static final long frameTime = 33;
 
 	public static final int CellDim = 60;
+
+	private static final int NB_ITER_PER_LEVEL = 3;
 
 	private Level currentLevel = null;
 
 
 
-	//private List<Integer> levels = new ArrayList<>();
 	private int currentLevelId = 1;
+	private int nbIterCurrentLevel;
 
 	private Environment environment = null;
 	private LemmingGenerator generator = null;
@@ -46,6 +51,8 @@ public class Game extends JFrame implements Runnable{
 	private LevelPanel level;
 
 	private List<Lemming> lemmings;
+
+	private boolean demoMode = true;
 
 	private void launch() {
 		try {
@@ -59,9 +66,10 @@ public class Game extends JFrame implements Runnable{
 					, currentLevel.getTimeBetweenTwoLemmings()
 					, currentLevel.getSpawnPosition()
 					, environment
-			);
+					);
 			resizeFrameToLevelSize();
-			
+			nbIterCurrentLevel = 0;
+
 			new Thread(this).start();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -70,7 +78,7 @@ public class Game extends JFrame implements Runnable{
 					"Erreur de fichier", 
 					JOptionPane.ERROR_MESSAGE);
 		}
-		
+
 
 
 	}
@@ -78,28 +86,22 @@ public class Game extends JFrame implements Runnable{
 	public Game() {
 		super("Projet VI51 - Lemmings");
 		lemmings=new LinkedList<Lemming>();
-		
-		setUpUi();
-		
-		
-		launch();
-		
-		
-		
-		//SwingUtilities.invokeLater(level);
-		new Thread(level).start();
 
+		setUpUi();
+
+		launch();
+		new Thread(level).start();
 	}
 
 
-	
+
 	private void resizeFrameToLevelSize() {
 		if(currentLevel != null) {
 			setSize(currentLevel.getWidth() * Game.CellDim, currentLevel.getHeight() * Game.CellDim + 20);
 			setLocationRelativeTo(null);
 		}
-		
-		
+
+
 	}
 
 	private void setUpUi() {
@@ -112,31 +114,109 @@ public class Game extends JFrame implements Runnable{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(600,630);
 
-		
+
 
 		setLayout(new BorderLayout());
 		add(level, BorderLayout.CENTER);
 
-		
+
 		setLocationRelativeTo(null);
 		setVisible(true);
+		level.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
+
+			@Override
+			public void keyPressed(KeyEvent key) {
+				if(key.getKeyCode() == KeyEvent.VK_SPACE) {
+					changeLevel();
+				}
+			}
+		});
+
+
 	}
-	
-	
+
+	private void changeLevel() {
+		System.out.println("currentlevel : " + currentLevelId + " next:" + ((currentLevelId)%(nbLevels)+ 1) + " nbLevels:"  +nbLevels);
+		currentLevelId = ((currentLevelId)%(nbLevels)+ 1);
+		nbIterCurrentLevel = 0;
+		
+		QLearning<LemmingProblemState,Action> saveQLearning = null;
+		if(demoMode) {
+			if(lemmings != null && lemmings.size() > 0) {
+				Lemming lemming  = lemmings.get(0);
+				saveQLearning = lemming.getQLearning();
+				kill(lemming);
+				addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
+			}
+		}
+		try {
+			currentLevel = new Level(currentLevelId);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} 
+
+		if(generator != null) {
+			generator.updateParams(this
+					, currentLevel.getNbLemmings()
+					, currentLevel.getTimeBetweenTwoLemmings()
+					, currentLevel.getSpawnPosition()
+					, environment);
+		}
+		else {
+			generator = new LemmingGenerator(
+					this
+					, currentLevel.getNbLemmings()
+					, currentLevel.getTimeBetweenTwoLemmings()
+					, currentLevel.getSpawnPosition()
+					, environment
+					);
+		}
+
+		if(environment == null) {
+			environment = new Environment(new Point2d(currentLevel.getWidth(), currentLevel.getHeight()), 
+					currentLevel.getMap() , currentLevel.getSpawnPosition(), 0);
+		}
+		else {
+			environment.changeLevel(currentLevel);
+			if(demoMode && saveQLearning !=null) {
+				System.out.println("saveQLearning" +saveQLearning);
+				addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
+			}
+			else if (demoMode) {
+				addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment)));
+			}
+			
+				
+		}
+
+		for (Lemming lemmingOld : lemmings) {
+			kill(lemmingOld);
+		}
+		
+
+		resizeFrameToLevelSize();
+	}
+
 
 	public static void main(String[] args) {
 		new Game();
 	}
-	
-	
-	
+
+
+
 	public final TerrainType[][] getCurrentEnvironmentMap() {
 		if (environment != null)
 			return environment.getMap();
 		else
 			return null;
 	}
-	
+
 	public final Point2d getCurrentEnvironmentSize() {
 		if (environment != null)
 			return environment.getEnvSize();
@@ -148,7 +228,7 @@ public class Game extends JFrame implements Runnable{
 		lemmings.add(lemming);
 		environment.addLemmingBody(lemming.getLemmingBody());
 	}
-	
+
 	public List<Lemming> getLemmings() {
 		return lemmings;
 	}
@@ -156,18 +236,17 @@ public class Game extends JFrame implements Runnable{
 	public void setLemmings(List<Lemming> lemmings) {
 		this.lemmings = lemmings;
 	}
-	
+
 	public Level getCurrentLevel() {
 		return currentLevel;
 	}
-	
+
 	public Environment getEnvironment() {
 		return environment;
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		while (true) {
 			if(generator != null) {
 				generator.run();
@@ -180,7 +259,7 @@ public class Game extends JFrame implements Runnable{
 					for (Lemming lemming : lemmings) {
 						LemmingBody lb = lemming.getLemmingBody();
 						if(lb != null) {
-							
+
 							if(lb.getUpdatePixel()) {
 								lb.updatePixelPosition(lb.getCellCoord());
 							}
@@ -188,31 +267,37 @@ public class Game extends JFrame implements Runnable{
 								lemming.live();
 							}
 							if(lb.isBlocked() || !lb.isAlive()) {
-								System.out.println(lemming.getQLearning().num);
 								QLearning<LemmingProblemState,Action> saveQLearning = lemming.getQLearning();
 								kill(lemming);
-								System.out.println("adding new lemming 1");
 								addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
+								nbIterCurrentLevel++;
 								environment.setMap(currentLevel.getMap(),currentLevel.getWidth(), currentLevel.getHeight() );
+							}
+							
+							if(nbIterCurrentLevel > NB_ITER_PER_LEVEL) {
+								changeLevel();
 							}
 						}
 						else {
 							QLearning<LemmingProblemState,Action> saveQLearning = lemming.getQLearning();
 							kill(lemming);
-							System.out.println("adding new lemming 2");
 							addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
+							
+							nbIterCurrentLevel++;
+							if(nbIterCurrentLevel > NB_ITER_PER_LEVEL) {
+								changeLevel();
+							}
 						}
 					}
-					
+
 				}
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
 	}
-	
+
 	public void kill(Lemming l) {
 		LemmingBody lb = l.getLemmingBody();
 		environment.kill(lb);
@@ -220,4 +305,6 @@ public class Game extends JFrame implements Runnable{
 		lemmings.remove(l);
 		l = null;
 	}
+
+
 }

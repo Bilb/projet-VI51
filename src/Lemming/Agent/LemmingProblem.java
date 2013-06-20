@@ -27,7 +27,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	private static final float good = 50f;
 	private static final float noimpact = 0.f;
 	private static final float bad = -50f;
-	private static final float verybad = -20f;
+	private static final float verybad = -100f;
 
 	private static final int NBSTATES = LemmingProblemState.NBSTATE_NO_DIRECTION * 3;
 
@@ -173,19 +173,9 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			availableForThisState.add(new Action(LemmingActionType.Turnback));
 			break;
 		case 13:
-			/*availableForThisState.add(new Action(LemmingActionType.Walk));
-			availableForThisState.add(new Action(LemmingActionType.Drill));
-			availableForThisState.add(new Action(LemmingActionType.Turnback));*/
-			//TODO
 			return actions;
-			//break;
 		case 14:
-			/*availableForThisState.add(new Action(LemmingActionType.Walk));
-			availableForThisState.add(new Action(LemmingActionType.Drill));
-			availableForThisState.add(new Action(LemmingActionType.Turnback));*/
 			return actions;
-			//TODO
-			//break;
 		case 15:
 			availableForThisState.add(new Action(LemmingActionType.Walk));
 			availableForThisState.add(new Action(LemmingActionType.Drill));
@@ -201,7 +191,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			availableForThisState.add(new Action(LemmingActionType.Turnback));
 			break;
 		case 18:
-			//TODO : bloqué
 			availableForThisState.add(new Action(LemmingActionType.Die));
 			break;
 		case 19:
@@ -238,7 +227,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		switch (state.getExitDirection()) {
 		// La sortie est sur le meme axe que nous
 		case NONE:
-			switch (state.toInt() % LemmingProblemState.NBSTATE_NO_DIRECTION) {
+			switch (state.toInt() ) {
 			// Mort -> Etat terminal
 			case 0:
 				switch (action.getLemmingActionType()) {
@@ -269,13 +258,10 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 3:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					System.out.println("not parachute : bad");
 					return verybad(4);
 				case Parachute:
-					System.out.println(" parachute : good");
 					return verygood(21);
 				default :
-					System.out.println("not parachute : bad");
 					return verybad(state);
 				}
 				// grimpe
@@ -518,10 +504,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 1:
 				switch (action.getLemmingActionType()) {
 				case Parachute:
-					System.out.println("parachute : good");
 					return verygood(21);
 				default:
-					System.out.println("not parachute : bad");
 					return verybad(state);
 				}
 
@@ -607,9 +591,9 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 10:
 				switch (action.getLemmingActionType()) {
 				case Drill:
-					return good(19);
+					return verygood(19);
 				case Walk:
-					return verygood(state);
+					return noimpact(state);
 				case Turnback:
 					return verybad(state);
 				default:
@@ -643,37 +627,37 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				default:
 					return verybad(state);
 				}
-				// sol forable face falaise 
-				//			case 13:
-				//				switch (action.getLemmingActionType()) {
-				////				case Block:
-				////					return verybad(18);
-				//				case Climb:
-				//					return verygood(state);
-				//				case Drill:
-				//					return good(19);
-				//				case Turnback:
-				//					return noimpact(state);
-				//				default:
-				//					return verybad(state);
-				//				}
-				// sol forable face falaise creusable
-				//			case 14:
-				//				switch (action.getLemmingActionType()) {
-				////				case Block:
-				////					return verybad(18);
-				//				case Dig:
-				//					return verygood(7);
-				//				case Climb:
-				//					return good(state);
-				//				case Drill:
-				//					return bad(19);
-				//				case Turnback:
-				//					return noimpact(state);
-				//				default:
-				//					return verybad(state);
-				//				}
-				// forable danger falaise 
+				/* sol forable face falaise 
+							case 13:
+								switch (action.getLemmingActionType()) {
+				//				case Block:
+				//					return verybad(18);
+								case Climb:
+									return verygood(state);
+								case Drill:
+									return good(19);
+								case Turnback:
+									return noimpact(state);
+								default:
+									return verybad(state);
+								}
+				 sol forable face falaise creusable
+							case 14:
+								switch (action.getLemmingActionType()) {
+				//				case Block:
+				//					return verybad(18);
+								case Dig:
+									return verygood(7);
+								case Climb:
+									return good(state);
+								case Drill:
+									return bad(19);
+								case Turnback:
+									return noimpact(state);
+								default:
+									return verybad(state);
+								}*/
+				//forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
 				case Walk:
@@ -688,10 +672,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// sol forable + danger eau
 			case 16:
 				switch (action.getLemmingActionType()) {
-				//				case Block:
-				//					return verygood(18);
 				case Drill:
-					return bad(19);
+					return verygood(19);
 				case Turnback:
 					return veryverygood(state);
 				case Walk:
@@ -1121,7 +1103,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				}
 				/* cas 23 : sur la sortie */
 				else if(terrainPerceptions.get(5).getTerrainElement() == TerrainType.EXIT) {
-					System.out.println("ON EXIT ? YES: "+terrainPerceptions.get(5).getTerrainElement() );
 					stateId += 23;
 				}
 				/* cas 2 : cas ou l'on est en train de grimper et qu'on tape le plafond !*/
@@ -1611,7 +1592,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		}
 
 		currentState = new LemmingProblemState(stateId);
-		System.out.println("currentState determined : " + currentState.toInt() + " soit:" +( currentState.toInt()%LemmingProblemState.NBSTATE_NO_DIRECTION));
+	//	System.out.println("currentState determined : " + currentState.toInt() + " soit:" +( currentState.toInt()%LemmingProblemState.NBSTATE_NO_DIRECTION));
 	}
 
 

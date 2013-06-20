@@ -68,7 +68,6 @@ public class Level {
 				if(line.contains(WIDTH_CONFIG)) {
 					rest = line.substring(WIDTH_CONFIG.length() + 1);
 					width = Integer.parseInt(rest);
-					System.out.println("read width" + width);
 
 					if(width != -1 && height != -1) {
 						map = new int[height][width];
@@ -77,7 +76,6 @@ public class Level {
 				else if(line.contains(HEIGHT_CONFIG)) {
 					rest = line.substring(HEIGHT_CONFIG.length() + 1);
 					height = Integer.parseInt(rest);
-					System.out.println("read height" + height);
 
 					if(width != -1 && height != -1) {
 						map = new int[height][width];
@@ -86,13 +84,11 @@ public class Level {
 				else if(line.contains(LEMMING_NB_CONFIG)) {
 					rest = line.substring(LEMMING_NB_CONFIG.length() + 1);
 					nbLemmings = Integer.parseInt(rest);
-					System.out.println("read nbLemmings" + nbLemmings);
 
 				}
 				else if(line.contains(LEMMING_TIME_CONFIG)) {
 					rest = line.substring(LEMMING_TIME_CONFIG.length() + 1);
 					timeBetweenTwoLemmings = Integer.parseInt(rest);
-					System.out.println("read timeBetweenTwoLemmings" + timeBetweenTwoLemmings);
 				}
 				else if(line.contains(MAP_CONFIG)) {
 					line = line.substring(MAP_CONFIG.length() + 1);
@@ -116,7 +112,6 @@ public class Level {
 					int x = Integer.parseInt(currentValue);
 					currentValue = rest.substring(2,3);
 					int y = Integer.parseInt(currentValue);
-					System.out.println("read spawn_position:" + x + "-" + y);
 					spawnPosition = new CellCoord(x, y);
 				}
 

@@ -338,31 +338,18 @@ public class LemmingProblemState implements QState{
 	}
 
 
-	//public Action getAction() {
-	//	return action;
-	//}
-
 	public Direction getExitDirection() {
 		return exitDirection;
 	}
-
 
 
 	public boolean isCliffDanger() {
 		return cliffDanger;
 	}
 
-
-
-
-
 	public boolean isRealDanger() {
 		return realDanger;
 	}
-
-
-
-
 
 
 	@Override

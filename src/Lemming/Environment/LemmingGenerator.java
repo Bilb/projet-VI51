@@ -14,30 +14,39 @@ public class LemmingGenerator {
 	private CellCoord pos;
 	private Game game;
 	private Environment env;
-	
+
 	public void run() {
+		
 		if(game != null) {
 			if(System.currentTimeMillis() - lastTime > generationTimer)
 			{
-				lastTime = System.currentTimeMillis(); //System.nanoTime();
+				lastTime = System.currentTimeMillis(); 
 				if(nbLemmings - nbGeneratedLemmings > 0) {
-				// TODO Auto-generated method stub	
 					game.addLemming(new Lemming(new LemmingBody(new CellCoord(pos.getX(),pos.getY()), env)));
 					nbGeneratedLemmings++;
-					System.out.println("generator: pos = " + pos.getX() + " " + pos.getY());
 				}
-							
+
 			}
 		}
 	}
-		
-	// TODO
+
 	public LemmingGenerator(Game game_, int nbLemmings_, long generationTimer_, CellCoord pos_, Environment env_){
 		game = game_;
 		nbLemmings = nbLemmings_;
 		generationTimer = generationTimer_;
 		pos = pos_;
-		System.out.println("generator CONSTR: pos = " + pos.getX() + " " + pos.getY());
 		env = env_;
+	}
+
+	public void updateParams(Game game_, int nbLemmings_,
+			int timeBetweenTwoLemmings, CellCoord spawnPosition,
+			Environment environment) {
+		game = game_;
+		nbLemmings = nbLemmings_;
+		generationTimer = timeBetweenTwoLemmings;
+		pos = spawnPosition;
+		env = environment;
+		//nbGeneratedLemmings = 0;
+		//lastTime = generationTimer;
 	}
 }
