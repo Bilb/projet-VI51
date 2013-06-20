@@ -102,7 +102,7 @@ public class Lemming {
 			}
 
 		}
-		//System.out.println("executing action : " + action);
+		System.out.println("executing action : " + action);
 		lemmingBody.doAction(action);
 	}
 

@@ -60,12 +60,8 @@ public class LemmingBody extends PixelCosmetic {
 	public void doAction(Action action) {
 		if(!action.getBuilded()) {
 			action.buildAction(this);
-			//System.out.println("builded false: " + action.getActionTestList().get(0).getTag());
 		}
 		currentAction = action;
-//		System.out.println("Action: tag :::" + currentAction.getActionTestList().get(0).getTag() + " cell" + currentAction.getActionTestList().get(0).getCell());
-//		System.out.println("Action:2 tag :::" + currentAction.getActionTestList().get(1).getTag() + " cell" + currentAction.getActionTestList().get(1).getCell());
-//		System.out.println("Action Pr2 tag :::" + currentAction.getActionProcessList().get(0).getTag() + " cell" + currentAction.getActionProcessList().get(0).getCell());
 		
 		if(!myEnvironment.get().tryExecute(this,currentAction)){
 			// action echoue, reset des flags
@@ -89,6 +85,7 @@ public class LemmingBody extends PixelCosmetic {
 	
 	
 	public void addInfluences(Influence e) {
+		System.out.println("ajout d'un new influence : " +e);
 		influences.add(e);
 	}
 	

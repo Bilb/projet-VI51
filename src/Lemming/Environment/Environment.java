@@ -281,8 +281,9 @@ public class Environment{
 				}
 			}
 			if(applyGravity(movebuffer)) {
-				body.addInfluences(new FallInfluence(1));
+				//body.addInfluences(new FallInfluence(1));
 			}
+			
 			body.setPreviousPosition(body.getCellCoord());
 			body.setCellCoord(movebuffer);
 		}

@@ -1074,10 +1074,12 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		for (int i = 0; i< perceptions.size() -1 ; i++) {
 			terrainPerceptions.add((TerrainPerception) perceptions.get(i));
 		}
+		System.out.println("parachute:" + parachuteOpen);
 
 		/* cas ou on a chuter sans  ouvrir le parachute est qu'on est au sol, avec une chute trop haute : mort */
 		if(currentFallMaxreached && !terrainPerceptions.get(0).getTerrainElement().isTraversable && !parachuteOpen) {
 			/* rien a faire! on est deja a 0 */
+			System.out.println("cas ou on s'ecrase");
 		}
 		else {
 			/* extraction de la position de la sortie */
@@ -1585,7 +1587,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		}
 
 		currentState = new LemmingProblemState(stateId);
-		//System.out.println("currentState determined : " + currentState.toInt() + " soit:" +( currentState.toInt()%LemmingProblemState.NBSTATE_NO_DIRECTION));
+		System.out.println("currentState determined : " + currentState.toInt() + " soit:" +( currentState.toInt()%LemmingProblemState.NBSTATE_NO_DIRECTION));
 	}
 
 
