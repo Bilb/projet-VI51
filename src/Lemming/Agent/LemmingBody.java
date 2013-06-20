@@ -191,6 +191,8 @@ public class LemmingBody extends PixelCosmetic {
 			return isClimbing();
 		case NOT_CLIMBING:
 			return !isClimbing();
+		default:
+			break;
 		}
 		return blocked;
 		
@@ -218,6 +220,8 @@ public class LemmingBody extends PixelCosmetic {
 		break;
 		case DIE:
 			alive = false;
+			break;
+		default:
 			break;
 		}
 		return true;

@@ -6,6 +6,7 @@ import javax.vecmath.Point2d;
 
 import Lemming.CellCoord;
 import Lemming.Action.Action;
+import Lemming.Action.Action.LemmingActionType;
 import Lemming.Action.ActionProcess;
 import Lemming.Action.ActionTest;
 import Lemming.Agent.LemmingBody;
@@ -15,11 +16,8 @@ import Lemming.Perception.Perception;
 import Lemming.Perception.TerrainPerception;
 
 
-/* TODO : Faire attention a l'ordre DX DY dans les arrays*/
 public class Environment{
 
-
-	//private CellCoord spawnPos;
 
 	private CellCoord exitPos;
 
@@ -49,8 +47,6 @@ public class Environment{
 
 		// We store the lemmings into the array of agent of the environmnent
 		this.lemmingBodies=new LinkedList<LemmingBody>();
-
-
 	}
 
 	public LinkedList<Perception> getPerceptions(LemmingBody body) {
@@ -107,85 +103,6 @@ public class Environment{
 		lemmingBodies.remove(lemmingBody);
 
 	}
-
-	//	public void move(LemmingBody body, int dx, int dy) {
-	//
-	//		CellCoord bodyPosition = body.getCellCoord();
-	//
-	//
-	//		int newX = bodyPosition.getX()+dx;
-	//		int newY = bodyPosition.getY()+dy;	
-	//		int groundOfPos = bodyPosition.getY()+1;
-	//		boolean turnOffParachute = true;
-	//		// si on tombe
-	//		if(groundOfPos < this.envSize.y  && map[groundOfPos][bodyPosition.getX()].isTraversable && dy != -1) {
-	//			System.out.println("applying gravity");
-	//			turnOffParachute = false;
-	//			applyGravity(body);
-	//		}
-	//		else if(body.getCurrentAction().getLemmingActionType() == LemmingActionType.Block) {
-	//			body.setBlocked(true);
-	//			map[bodyPosition.getY()][bodyPosition.getX()] = TerrainType.LEMMING_BLOCKED;
-	//		}
-	//		else if(body.getCurrentAction().getLemmingActionType() == LemmingActionType.Dig) {
-	//			int front = bodyPosition.getX()+1;
-	//			int ground = bodyPosition.getY()+1;
-	//			if(front < envSize.x && ground < envSize.y
-	//					&& map[bodyPosition.getY()][front].isDiggable) {
-	//				map[bodyPosition.getY()][front] = TerrainType.EMPTY;
-	//			}
-	//		}
-	//		// si on avance
-	//		else if (Math.abs(dx) == 1 && Math.abs(dy) == 0) {	// mouvement de marche
-	//			if(newX<this.envSize.x 
-	//					&& newX	>=	0 
-	//					&& groundOfPos < this.envSize.y ) {
-	//				// la case de destination peut acceuilir le lemming
-	//				// la case de départ est soutenu et permet la marche
-	//				if(	map[newY][newX].isTraversable && map[groundOfPos][bodyPosition.getX()].isSolid) {
-	//					System.out.println("move: newX: " + newX +  "newY:" + newY);
-	//					body.setUpdatePixel(bodyPosition);
-	//					body.setCellCoord(newX, newY);
-	//				}
-	//			}
-	//		}
-	//
-	//		
-	//		// on grimpe? 
-	//		else if(dy == -1) {
-	//			int senseX = bodyPosition.getX() + dx;
-	//			int cX = bodyPosition.getX();
-	//			int up = bodyPosition.getY()-1;
-	//
-	//			// on regarde si on a trouv� une plateforme pour grimper
-	//			if(senseX<this.envSize.x && senseX >= 0 && up >= 0 && up < this.envSize.y
-	//					&&	map[up][senseX].isSolid && map[bodyPosition.getY()][senseX].isSolid) {
-	//				body.setParachute(false);
-	//				body.setUpdatePixel(bodyPosition);
-	//				body.setCellCoord(cX, up);
-	//				System.out.println("climb: " + up + " " + cX + " dx :" + dx);
-	//			}
-	//		}
-	//		// on creuse ?
-	//		else if(dy == 1) {
-	//			int down = bodyPosition.getY()+1;
-	//			int cX = bodyPosition.getX();
-	//			System.out.println("drillAct: " + down + " " + cX);
-	//			if(down < envSize.y && map[down][cX].isDiggable) {
-	//				map[down][cX] = TerrainType.EMPTY;
-	//				body.setUpdatePixel(bodyPosition);
-	//				body.setCellCoord(cX, down);
-	//				System.out.println("drill: " + down + " " + cX);
-	//			}
-	//		}
-	//		if(turnOffParachute) {
-	//			body.setParachute(false);
-	//		}
-	//
-	//
-	//		//Glearning.getActionPerformed(  VOIr comment rï¿½cuperer l'action et le isPrformed
-	//	}
-
 
 	private boolean applyGravity(CellCoord pos) {
 		int Yg = pos.getY()+1;
@@ -280,8 +197,9 @@ public class Environment{
 					}
 				}
 			}
-			if(applyGravity(movebuffer)) {
-				//body.addInfluences(new FallInfluence(1));
+			// TODO comment le gerer correctement ?
+			if(applyGravity(movebuffer) && action.getLemmingActionType() == LemmingActionType.Parachute) {
+				body.addInfluences(new FallInfluence(1));
 			}
 			
 			body.setPreviousPosition(body.getCellCoord());
@@ -299,7 +217,6 @@ public class Environment{
 			map[process.getCell().getY()][process.getCell().getX()] = TerrainType.EMPTY;
 			return;
 		case MOVE:
-			//CellCoord pos = new CellCoord(body.getCellCoord().getX(),body.getCellCoord().getY());
 			applyForce(process.getCell(), movebuffer);
 
 			return;

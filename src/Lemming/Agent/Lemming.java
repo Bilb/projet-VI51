@@ -15,7 +15,7 @@ import fr.utbm.gi.vi51.learning.qlearning.QLearning;
 
 public class Lemming {
 
-	private final static int NUMBER_OF_QLEARNING_ITERATIONS =6;
+	private final static int NUMBER_OF_QLEARNING_ITERATIONS = 6;
 
 	private LemmingBody lemmingBody;
 	private Action action;
