@@ -30,7 +30,7 @@ public class Game extends JFrame implements Runnable{
 	 */
 	private static final long serialVersionUID = -4172777326765469302L;
 
-	private static final int nbLevels = 4;
+	private static final int nbLevels = 2;
 	public static final long frameTime = 33;
 
 	public static final int CellDim = 60;

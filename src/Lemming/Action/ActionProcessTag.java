@@ -22,6 +22,18 @@ public enum ActionProcessTag {
 		},
 		NOT_CLIMBING(1) {
 		},
+		DIGGING(1) {
+			
+		},
+		NOT_DIGGING(1) {
+			
+		},
+		DRILLING(1) {
+			
+		},
+		NOT_DRILLING(1) {
+			
+		},
 		DIE(1) {
 		},
 		MOVE(0)

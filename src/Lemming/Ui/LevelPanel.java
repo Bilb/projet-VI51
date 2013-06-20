@@ -33,12 +33,19 @@ public class LevelPanel extends JPanel implements Runnable {
 	private Image lemming_parachute_left;
 	private Image lemming_climbing_right;
 	private Image lemming_climbing_left;
+	private Image lemming_digging_left;
+	private Image lemming_digging_right;
+	private Image lemming_drilling;
 
 
 
 
 
 	private Game game = null;
+
+
+
+
 
 
 	
@@ -60,6 +67,9 @@ public class LevelPanel extends JPanel implements Runnable {
 		lemming_parachute_right = (new ImageIcon("images/lemming_parachute_right.png").getImage());
 		lemming_climbing_right = (new ImageIcon("images/lemming_climbing_right.png").getImage());
 		lemming_climbing_left = (new ImageIcon("images/lemming_climbing_left.png").getImage());
+		lemming_digging_left = (new ImageIcon("images/lemming_digging_left.png").getImage());
+		lemming_digging_right = (new ImageIcon("images/lemming_digging_right.png").getImage());
+		lemming_drilling = (new ImageIcon("images/lemming_drilling.png").getImage());
 		setFocusable(true);
 	}
 
@@ -131,6 +141,9 @@ public class LevelPanel extends JPanel implements Runnable {
 
 	private Image getLemmingImg(LemmingBody lemmingBody) {
 		Image img;
+		if(lemmingBody.isDrilling()) {
+			img = lemming_drilling;
+		} else
 		if(lemmingBody.getSens() == Sens.LEFT) {
 			img = lemming_left;
 			if(lemmingBody.isParachute()) {
@@ -139,7 +152,9 @@ public class LevelPanel extends JPanel implements Runnable {
 			else if(lemmingBody.isClimbing()) {
 				img = lemming_climbing_left;
 			}
-
+			else if(lemmingBody.isDigging()) {
+				img = lemming_digging_left;
+			}
 		}
 		else {
 			img = lemming_right;
@@ -149,7 +164,11 @@ public class LevelPanel extends JPanel implements Runnable {
 			else if(lemmingBody.isClimbing()) {
 				img = lemming_climbing_right;
 			}
+			else if(lemmingBody.isDigging()) {
+				img = lemming_digging_right;
+			}
 		}
+
 		return img;
 	}
 

@@ -15,6 +15,7 @@ public class Action implements QAction{
 	private LinkedList<ActionProcess> actionProcessList; // action needed to perform the action
 	private LinkedList<ActionTest> actionTestList; // test needed to perform the action
 	private Boolean builded = false;
+	private long time = 0;
 	public enum LemmingActionType {
 		SeHisser,
 		Climb,
@@ -75,6 +76,7 @@ public class Action implements QAction{
 				//building action to be performed if test are succesfull ordered by first = first action to be done
 				
 				actionProcessList.add(new ActionProcess(cellForceUp,ActionProcessTag.MOVE));
+				setTime(0);
 			}
 			break;
 			case SeHisser:
@@ -92,6 +94,7 @@ public class Action implements QAction{
 	
 				//building action to be performed if test are succesfull ordered by first = first action to be done
 				actionProcessList.add(new ActionProcess(cellForce,ActionProcessTag.MOVE));
+				setTime(0);
 			}
 			break;
 			case Drill:
@@ -104,6 +107,7 @@ public class Action implements QAction{
 				//building action to be performed if test are succesfull
 				actionProcessList.add(new ActionProcess(cellTestDown,ActionProcessTag.DESTROY));
 				//actionProcessList.add(new ActionProcess(cellTestDown,ActionProcessTag.MOVE));
+				setTime(800);
 			}
 			break;
 			case Walk:
@@ -118,6 +122,7 @@ public class Action implements QAction{
 				//building action to be performed if test are succesfull
 				CellCoord cellForce = new CellCoord(dx,-1); // case en haut
 				actionProcessList.add(new ActionProcess(cellForce,ActionProcessTag.MOVE));
+				setTime(0);
 			}
 			break;
 			case Dig:
@@ -131,18 +136,19 @@ public class Action implements QAction{
 				//building action to be performed if test are succesfull
 				actionProcessList.add(new ActionProcess(cellTestFront,ActionProcessTag.DESTROY));
 				//actionProcessList.add(new ActionProcess(cellTestFront,ActionProcessTag.MOVE));
-	
+				setTime(800);
 			}
 			break;
 			case Parachute:
 			{
 				actionProcessList.add(new ActionProcess(null,ActionProcessTag.PARACHUTE));
+				setTime(0);
 			}
 			break;
 			case Die:
 			{
 				actionProcessList.add(new ActionProcess(null,ActionProcessTag.DIE)); // cr�er un bloc
-	
+				setTime(0);
 			}
 				break;
 			case Turnback:
@@ -151,6 +157,7 @@ public class Action implements QAction{
 				//actionTestList.add(new ActionTest(cellTestDown,ActionTestTag.NOT_TRAVERSABLE));
 				
 				actionProcessList.add(new ActionProcess(null,ActionProcessTag.TURNBACK)); // cr�er un bloc
+				setTime(0);
 			}
 			break;
 			}
@@ -167,6 +174,23 @@ public class Action implements QAction{
 			if(lemmingActionType != LemmingActionType.Parachute) {
 				actionProcessList.add(new ActionProcess(null,ActionProcessTag.NOT_PARACHUTE));
 			}
+			
+			// handle the drilling flag
+			if(lemmingActionType != LemmingActionType.Drill) {
+				actionProcessList.add(new ActionProcess(null,ActionProcessTag.NOT_DRILLING));
+			}
+			else {
+				actionProcessList.add(new ActionProcess(null,ActionProcessTag.DRILLING));
+			}
+			
+			//handle the digging flag
+			if(lemmingActionType != LemmingActionType.Dig) {
+				actionProcessList.add(new ActionProcess(null,ActionProcessTag.NOT_DIGGING));
+			}
+			else {
+				actionProcessList.add(new ActionProcess(null,ActionProcessTag.DIGGING));
+			}
+			
 		}
 			builded = true;
 	}
@@ -236,6 +260,14 @@ public class Action implements QAction{
 	@Override
 	public String toString() {
 		return "Action [lemmingActionType=" + lemmingActionType + "]";
+	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
 	}
 
 	

@@ -20,7 +20,7 @@ import Lemming.Influence.Influence;
 import Lemming.Perception.Perception;
 
 public class LemmingBody extends PixelCosmetic {
-
+	
 	private Sens sens;
 	private boolean alive;
 	public boolean isAlive() {
@@ -32,7 +32,10 @@ public class LemmingBody extends PixelCosmetic {
 		this.alive = alive;
 	}
 
-
+	private boolean doingAction;
+	private boolean enableTimeAction = false;
+	private boolean digging;
+	private boolean drilling;
 	private boolean climbing;
 	private boolean parachute;
 	private boolean blocked;
@@ -40,12 +43,12 @@ public class LemmingBody extends PixelCosmetic {
 	private int currentFall;
 	private CellCoord cellCoord;
 	private Action currentAction;
-	private Action lastAction;
 	private WeakReference<Environment> myEnvironment;
 	private List<Influence> influences;
 	
 	
 	public LemmingBody(CellCoord cellCoord, Environment environment) {
+		doingAction = false;
 		alive = true;
 		sens = Sens.RIGHT;
 		currentFall = 0;
@@ -55,7 +58,6 @@ public class LemmingBody extends PixelCosmetic {
 		previousPosition = null;
 		pixelCoord = cellCoord.toPixelCoord();
 		currentAction = null;
-		lastAction = null;
 		influences = new ArrayList<Influence>();
 	}
 	
@@ -66,19 +68,35 @@ public class LemmingBody extends PixelCosmetic {
 			//System.out.println("builded false: " + action.getActionTestList().get(0).getTag());
 		}
 		currentAction = action;
+		if(enableTimeAction) {
+			if(action.getLemmingActionType() == LemmingActionType.Dig) {
+				digging = true;
+			} else if(action.getLemmingActionType() == LemmingActionType.Drill) {
+				drilling = true;
+			}
+			doingAction = true;
+		}
+		else
+		{
+			tryAction(action);
+		}
+		
 //		System.out.println("Action: tag :::" + currentAction.getActionTestList().get(0).getTag() + " cell" + currentAction.getActionTestList().get(0).getCell());
 //		System.out.println("Action:2 tag :::" + currentAction.getActionTestList().get(1).getTag() + " cell" + currentAction.getActionTestList().get(1).getCell());
 //		System.out.println("Action Pr2 tag :::" + currentAction.getActionProcessList().get(0).getTag() + " cell" + currentAction.getActionProcessList().get(0).getCell());
-		
+	}
+	
+	public void tryAction(Action action ){
 		if(!myEnvironment.get().tryExecute(this,currentAction)){
 			// action echoue, reset des flags
 			climbing = false;
 			parachute = false;
 			blocked = false;
+			drilling = false;
+			digging = false;
 		}
 		else {
 			// action rï¿½ussie
-			lastAction = action;
 		}
 	}
 	
@@ -224,6 +242,18 @@ public class LemmingBody extends PixelCosmetic {
 		case TURNBACK:
 			 sens = (sens == Sens.LEFT) ? Sens.RIGHT: Sens.LEFT;
 		break;
+		case DRILLING:
+			setDrilling(true);
+		break;
+		case NOT_DRILLING:
+			setDrilling(false);
+		break;
+		case DIGGING:
+			setDigging(true);
+		break;
+		case NOT_DIGGING:
+			setDigging(false);
+		break;
 		case DIE:
 			alive = false;
 			break;
@@ -246,5 +276,73 @@ public class LemmingBody extends PixelCosmetic {
 	public void setPreviousPosition(CellCoord cellCoord2) {
 		previousPosition = cellCoord2;
 		
+	}
+	
+	public void changeLemmingState() {
+		
+	}
+
+
+	public boolean isDrilling() {
+		return drilling;
+	}
+
+
+	public void setDrilling(boolean drilling) {
+		this.drilling = drilling;
+	}
+
+
+	public boolean isDigging() {
+		return digging;
+	}
+
+
+	public void setDigging(boolean digging) {
+		this.digging = digging;
+	}
+	
+	private long startTimer = 0;
+	private long currentTime = 0;
+	private long timeElapsed = 0;
+	private boolean initTimer = false;
+	
+	// appele depuis game quand le flag doAction est levé
+	public boolean doActionTimer() {
+		currentTime = System.currentTimeMillis();
+		if(!initTimer) {
+			startTimer = currentTime;
+			initTimer = true;
+		}
+		timeElapsed = (currentTime - startTimer);
+		if(timeElapsed > currentAction.getTime()) {
+			doingAction = false;
+			initTimer = false;
+			tryAction(currentAction);
+		}
+		else {
+			doingAction = true;
+		}
+		return doingAction;
+	}
+
+
+	public boolean isDoingAction() {
+		return doingAction;
+	}
+
+
+	public void setDoingAction(boolean doingAction) {
+		this.doingAction = doingAction;
+	}
+
+
+	public boolean isEnableTimeAction() {
+		return enableTimeAction;
+	}
+
+
+	public void setEnableTimeAction(boolean enableTimeAction) {
+		this.enableTimeAction = enableTimeAction;
 	}
 }

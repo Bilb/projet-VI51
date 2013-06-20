@@ -3,6 +3,7 @@ package Lemming;
 import Lemming.Ui.Game;
 
 public abstract class PixelCosmetic {
+	
 	protected Boolean updatePixel = false;
 	protected PixelCoord pixelCoord;
 	protected CellCoord previousPosition;
@@ -58,5 +59,6 @@ public abstract class PixelCosmetic {
 	public void setPixelCoord(PixelCoord pc) {
 		pixelCoord = pc;
 	}
+	
 
 }

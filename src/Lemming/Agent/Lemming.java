@@ -48,6 +48,7 @@ public class Lemming {
 	}
 
 	public void live() {
+		if(getLemmingBody() != null && !getLemmingBody().isDoingAction()) {
 			consumeInfluences();
 			List<Perception> perceptions = lemmingBody.getPerceptions();
 			CellCoord position = new CellCoord((int) getPosition().x, (int)getPosition().y);
@@ -65,6 +66,10 @@ public class Lemming {
 
 				executeAction(new Action(action.getLemmingActionType()));
 			}
+		}
+		else {
+			getLemmingBody().doActionTimer();
+		}
 
 	}
 
