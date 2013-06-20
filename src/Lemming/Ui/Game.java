@@ -191,6 +191,7 @@ public class Game extends JFrame implements Runnable{
 								System.out.println(lemming.getQLearning().num);
 								QLearning<LemmingProblemState,Action> saveQLearning = lemming.getQLearning();
 								kill(lemming);
+								System.out.println("adding new lemming 1");
 								addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
 								environment.setMap(currentLevel.getMap(),currentLevel.getWidth(), currentLevel.getHeight() );
 							}
@@ -198,6 +199,7 @@ public class Game extends JFrame implements Runnable{
 						else {
 							QLearning<LemmingProblemState,Action> saveQLearning = lemming.getQLearning();
 							kill(lemming);
+							System.out.println("adding new lemming 2");
 							addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));
 						}
 					}

@@ -72,22 +72,22 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 	@Override
 	public float getAlpha() {
-		return 0.3f;
+		return 0.5f;
 	}
 
 	@Override
 	public float getGamma() {
-		return 0.75f;
+		return 0.5f;
 	}
 
 	@Override
 	public float getRho() {
-		return 0.1f;
+		return 0.5f;
 	}
 
 	@Override
 	public float getNu() {
-		return 0.3f;
+		return 0.5f;
 	}
 
 	@Override
@@ -114,10 +114,11 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	public QFeedback<LemmingProblemState> takeAction(LemmingProblemState state,
 			Action action) {
 
-		switch (state.getExitDirection()) {
+		//switch (state.getExitDirection()) {
 		// La sortie est sur le meme axe que nous
-		case NONE:
-			switch (state.toInt()) {
+		//case NONE:
+		// TODO modulo a virer
+			switch (state.toInt()% LemmingProblemState.NBSTATE_NO_DIRECTION) {
 			// Mort -> Etat terminal
 			case 0:
 				switch (action.getLemmingActionType()) {
@@ -131,8 +132,10 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 1:
 				switch (action.getLemmingActionType()) {
 				case Parachute:
+					System.out.println("parachute : good");
 					return verygood(21);
 				default:
+					System.out.println("not parachute : bad");
 					return verybad(state);
 				}
 
@@ -148,10 +151,13 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 3:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return noimpact(state);
+					System.out.println("not parachute : bad");
+					return verybad(4);
 				case Parachute:
+					System.out.println(" parachute : good");
 					return verygood(21);
 				default :
+					System.out.println("not parachute : bad");
 					return verybad(state);
 				}
 				// grimpe
@@ -170,17 +176,17 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Walk:
 					return verygood(state);
 				case Turnback:
-					return noimpact(state);
-//				case Block:
-//					return verybad(18);
+					return verybad(state);
+					//				case Block:
+					//					return verybad(18);
 				default:
 					return verybad(state);
 				}
 				// face a une falaise
 			case 6:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Walk:
 					return verygood(1);
 				case Turnback:
@@ -191,8 +197,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable
 			case 7:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Dig:
 					return good(state);
 				case Turnback:
@@ -203,10 +209,10 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel forable
 			case 8:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Drill:
-					return bad(19);
+					return verygood(19);
 				case Turnback:
 					return verygood(state);
 				default:
@@ -215,8 +221,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a une falaise
 			case 9:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Turnback:
@@ -227,22 +233,22 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal et forable
 			case 10:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Drill:
 					return bad(19);
 				case Walk:
 					return verygood(state);
 				case Turnback:
-					return noimpact(state);
+					return verybad(state);
 				default:
 					verybad(state);
 				}
 				// face a falaise creusable
 			case 11:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return good(state);
 				case Dig:
@@ -255,56 +261,56 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable et forable
 			case 12:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return bad(state);
+				//				case Block:
+				//					return bad(state);
 				case Dig:
 					return verygood(state);
 				case Drill:
 					return good(19);
 				case Turnback:
-					return noimpact(state);
+					return bad(state);
 				default:
 					return verybad(state);
 				}
 				// sol forable face falaise 
-//			case 13:
-//				switch (action.getLemmingActionType()) {
-////				case Block:
-////					return verybad(18);
-//				case Climb:
-//					return verygood(state);
-//				case Drill:
-//					return good(19);
-//				case Turnback:
-//					return noimpact(state);
-//				default:
-//					return verybad(state);
-//				}
+				//			case 13:
+				//				switch (action.getLemmingActionType()) {
+				////				case Block:
+				////					return verybad(18);
+				//				case Climb:
+				//					return verygood(state);
+				//				case Drill:
+				//					return good(19);
+				//				case Turnback:
+				//					return noimpact(state);
+				//				default:
+				//					return verybad(state);
+				//				}
 				// sol forable face falaise creusable
-//			case 14:
-//				switch (action.getLemmingActionType()) {
-////				case Block:
-////					return verybad(18);
-//				case Dig:
-//					return verygood(7);
-//				case Climb:
-//					return good(state);
-//				case Drill:
-//					return bad(19);
-//				case Turnback:
-//					return noimpact(state);
-//				default:
-//					return verybad(state);
-//				}
+				//			case 14:
+				//				switch (action.getLemmingActionType()) {
+				////				case Block:
+				////					return verybad(18);
+				//				case Dig:
+				//					return verygood(7);
+				//				case Climb:
+				//					return good(state);
+				//				case Drill:
+				//					return bad(19);
+				//				case Turnback:
+				//					return noimpact(state);
+				//				default:
+				//					return verybad(state);
+				//				}
 				// forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Walk:
 					return verygood(1);
 				case Drill:
-					return bad(19);
+					return good(19);
 				case Turnback:
 					return noimpact(state);
 				default:
@@ -313,12 +319,12 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// sol forable + danger eau
 			case 16:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
+				//				case Block:
+				//					return verygood(18);
 				case Drill:
 					return bad(19);
 				case Turnback:
-					return good(state);
+					return verygood(state);
 				case Walk:
 					return verybad(0);
 				default:
@@ -327,42 +333,42 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// danger eau
 			case 17:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
+				//				case Block:
+				//					return verygood(18);
 				case Turnback:
-					return good(state);
+					return verygood(state);
 				case Walk:
 					return verybad(0);
 				default:
 					return verybad(state);
 				}
 				// bloque
-//			case 18:
-//				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
-//				default:
-//					return verybad(state);
-//				}
+				//			case 18:
+				//				switch (action.getLemmingActionType()) {
+				//				case Block:
+				//					return verygood(18);
+				//				default:
+				//					return verybad(state);
+				//				}
 				// tunnel vertical forable
 			case 19:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return noimpact(state);
 				case Drill:
 					return good(19);
 				case Turnback:
-					return noimpact(state);
+					return bad(state);
 				default:
 					return verybad(state);
 				}
 				// tunnel vertical creusable forable
 			case 20:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return noimpact(state);
 				case Drill:
@@ -378,7 +384,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 21:
 				switch (action.getLemmingActionType()) {
 				case Parachute:
-					return verygood(21);
+					return veryverygood(21);
 				default:
 					return verybad(state);
 				}
@@ -387,8 +393,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				switch (action.getLemmingActionType()) {
 				case Turnback:
 					return verygood(state);
-//				case Block:
-//					return verybad(18);
+					//				case Block:
+					//					return verybad(18);
 				default:
 					return verybad(state);
 				}
@@ -396,16 +402,18 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 23:
 				switch (action.getLemmingActionType()) {
 				case Die:
+					System.out.println("CASE 23 DIE : OK");
 					return veryverygood(state);
 				default:
+					System.out.println("CASE 23 not die : BAD");
 					return verybad(state);
 				}
 			}
-			
-			
+
+
 
 			// La sortie est en dessous de nous
-		case BOTTOM:
+	/*	case BOTTOM:
 			switch (state.toInt()-LemmingProblemState.NBSTATE_NO_DIRECTION) {
 			// Mort -> Etat terminal
 			case 0:
@@ -419,8 +427,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// Parachute
 			case 1:
 				switch (action.getLemmingActionType()) {
-				case Climb:
-					return bad(state);
+				case Parachute:
+					return verygood(21);
 				default:
 					return verybad(state);
 				}
@@ -456,8 +464,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal
 			case 5:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Walk:
 					return verygood(state);
 				case Turnback:
@@ -468,8 +476,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a une falaise
 			case 6:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
+				//				case Block:
+				//					return verygood(18);
 				case Walk:
 					return bad(1);
 				case Turnback:
@@ -480,8 +488,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable
 			case 7:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Dig:
 					return good(state);
 				case Turnback:
@@ -492,8 +500,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel forable
 			case 8:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Drill:
 					return verygood(19);
 				case Turnback:
@@ -504,8 +512,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a une falaise
 			case 9:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return noimpact(state);
 				case Turnback:
@@ -516,8 +524,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal et forable
 			case 10:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Drill:
 					return verygood(19);
 				case Walk:
@@ -530,8 +538,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a falaise creusable
 			case 11:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return bad(state);
 				case Dig:
@@ -544,8 +552,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable et forable
 			case 12:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return bad(state);
+				//				case Block:
+				//					return bad(state);
 				case Dig:
 					return good(state);
 				case Drill:
@@ -556,40 +564,40 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 					return verybad(state);
 				}
 				// sol forable face falaise 
-//			case 13:
-//				switch (action.getLemmingActionType()) {
-////				case Block:
-////					return verybad(18);
-//				case Climb:
-//					return bad(state);
-//				case Drill:
-//					return verygood(19);
-//				case Turnback:
-//					return noimpact(state);
-//				default:
-//					return verybad(state);
-//				}
+				//			case 13:
+				//				switch (action.getLemmingActionType()) {
+				////				case Block:
+				////					return verybad(18);
+				//				case Climb:
+				//					return bad(state);
+				//				case Drill:
+				//					return verygood(19);
+				//				case Turnback:
+				//					return noimpact(state);
+				//				default:
+				//					return verybad(state);
+				//				}
 				// sol forable face falaise creusable
-//			case 14:
-//				switch (action.getLemmingActionType()) {
-////				case Block:
-////					return verybad(18);
-//				case Dig:
-//					return good(7);
-//				case Climb:
-//					return bad(state);
-//				case Drill:
-//					return verygood(19);
-//				case Turnback:
-//					return noimpact(state);
-//				default:
-//					return verybad(state);
-//				}
+				//			case 14:
+				//				switch (action.getLemmingActionType()) {
+				////				case Block:
+				////					return verybad(18);
+				//				case Dig:
+				//					return good(7);
+				//				case Climb:
+				//					return bad(state);
+				//				case Drill:
+				//					return verygood(19);
+				//				case Turnback:
+				//					return noimpact(state);
+				//				default:
+				//					return verybad(state);
+				//				}
 				// forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Walk:
 					return noimpact(1);
 				case Drill:
@@ -602,8 +610,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// sol forable + danger eau
 			case 16:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
+				//				case Block:
+				//					return verygood(18);
 				case Drill:
 					return noimpact(19);
 				case Turnback:
@@ -616,8 +624,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// danger eau
 			case 17:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
+				//				case Block:
+				//					return verygood(18);
 				case Turnback:
 					return good(state);
 				case Walk:
@@ -626,18 +634,18 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 					return verybad(state);
 				}
 				// bloque
-//			case 18:
-//				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
-//				default:
-//					return verybad(state);
-//				}
+				//			case 18:
+				//				switch (action.getLemmingActionType()) {
+				//				case Block:
+				//					return verygood(18);
+				//				default:
+				//					return verybad(state);
+				//				}
 				// tunnel vertical forable
 			case 19:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return bad(state);
 				case Drill:
@@ -650,8 +658,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel vertical creusable forable
 			case 20:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return bad(state);
 				case Drill:
@@ -676,16 +684,18 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				switch (action.getLemmingActionType()) {
 				case Turnback:
 					return verygood(state);
-//				case Block:
-//					return verybad(18);
+					//				case Block:
+					//					return verybad(18);
 				default:
 					return verybad(state);
 				}
 			case 23:
 				switch (action.getLemmingActionType()) {
 				case Die:
+					System.out.println("CASE 23 DIE : OK");
 					return veryverygood(state);
 				default:
+					System.out.println("CASE 23 not die : BAD");
 					return verybad(state);
 				}
 			}
@@ -705,8 +715,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// Parachute
 			case 1:
 				switch (action.getLemmingActionType()) {
-				case Climb:
-					return verygood(state);
+				case Parachute:
+					return verygood(21);
 				default:
 					return verybad(state);
 				}
@@ -746,16 +756,16 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 					return verygood(state);
 				case Turnback:
 					return noimpact(state);
-//				case Block:
-//					return verybad(18);
+					//				case Block:
+					//					return verybad(18);
 				default:
 					return verybad(state);
 				}
 				// face a une falaise
 			case 6:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
+				//				case Block:
+				//					return verygood(18);
 				case Walk:
 					return bad(1);
 				case Turnback:
@@ -766,8 +776,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable
 			case 7:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Dig:
 					return good(state);
 				case Turnback:
@@ -778,8 +788,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel forable
 			case 8:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -790,8 +800,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a une falaise
 			case 9:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Turnback:
@@ -802,8 +812,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal et forable
 			case 10:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Drill:
 					return bad(19);
 				case Walk:
@@ -816,8 +826,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a falaise creusable
 			case 11:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Dig:
@@ -830,8 +840,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable et forable
 			case 12:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return bad(state);
+				//				case Block:
+				//					return bad(state);
 				case Dig:
 					return verygood(state);
 				case Drill:
@@ -842,40 +852,40 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 					return verybad(state);
 				}
 				// sol forable face falaise 
-//			case 13:
-//				switch (action.getLemmingActionType()) {
-////				case Block:
-////					return verybad(18);
-//				case Climb:
-//					return verygood(state);
-//				case Drill:
-//					return bad(19);
-//				case Turnback:
-//					return noimpact(state);
-//				default:
-//					return verybad(state);
-//				}
+				//			case 13:
+				//				switch (action.getLemmingActionType()) {
+				////				case Block:
+				////					return verybad(18);
+				//				case Climb:
+				//					return verygood(state);
+				//				case Drill:
+				//					return bad(19);
+				//				case Turnback:
+				//					return noimpact(state);
+				//				default:
+				//					return verybad(state);
+				//				}
 				// sol forable face falaise creusable
-//			case 14:
-//				switch (action.getLemmingActionType()) {
-////				case Block:
-////					return verybad(18);
-//				case Dig:
-//					return good(7);
-//				case Climb:
-//					return verygood(state);
-//				case Drill:
-//					return bad(19);
-//				case Turnback:
-//					return noimpact(state);
-//				default:
-//					return verybad(state);
-//				}
+				//			case 14:
+				//				switch (action.getLemmingActionType()) {
+				////				case Block:
+				////					return verybad(18);
+				//				case Dig:
+				//					return good(7);
+				//				case Climb:
+				//					return verygood(state);
+				//				case Drill:
+				//					return bad(19);
+				//				case Turnback:
+				//					return noimpact(state);
+				//				default:
+				//					return verybad(state);
+				//				}
 				// forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Walk:
 					return verygood(1);
 				case Drill:
@@ -888,8 +898,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// sol forable + danger eau
 			case 16:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
+				//				case Block:
+				//					return verygood(18);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -902,8 +912,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// danger eau
 			case 17:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
+				//				case Block:
+				//					return verygood(18);
 				case Turnback:
 					return good(state);
 				case Walk:
@@ -914,16 +924,16 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// bloque
 			case 18:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verygood(18);
+				//				case Block:
+				//					return verygood(18);
 				default:
 					return verybad(state);
 				}
 				// tunnel vertical forable
 			case 19:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Drill:
@@ -936,8 +946,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel vertical creusable forable
 			case 20:
 				switch (action.getLemmingActionType()) {
-//				case Block:
-//					return verybad(18);
+				//				case Block:
+				//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Drill:
@@ -962,32 +972,34 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				switch (action.getLemmingActionType()) {
 				case Turnback:
 					return verygood(state);
-//				case Block:
-//					return verybad(18);
+					//				case Block:
+					//					return verybad(18);
 				default:
 					return verybad(state);
 				}
 			case 23:
 				switch (action.getLemmingActionType()) {
 				case Die:
+					System.out.println("CASE 23 DIE : OK");
 					return veryverygood(state);
 				default:
+					System.out.println("CASE 23 not die : BAD");
 					return verybad(state);
 				}
 			}
-		}
-		return noimpact(state);
+		}*/
+		return bad(state);
 	}
 
-	
+
 	private QFeedback<LemmingProblemState> veryverygood(int state) {
 		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), veryverygood);
 	}
-	
+
 	private QFeedback<LemmingProblemState> veryverygood(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, veryverygood);
 	}
-	
+
 
 	private QFeedback<LemmingProblemState> verygood(int state) {
 		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), verygood);
@@ -1067,7 +1079,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			}
 
 
-			if(LemmingPos.getY() == ExitPos.getY()) {
+			//if(LemmingPos.getY() == ExitPos.getY()) {
 
 				/* cas 0 : cas ou on est dans une case danger */
 				if(terrainPerceptions.get(5).getTerrainElement().isDanger) {
@@ -1075,6 +1087,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				}
 				/* cas 23 : sur la sortie */
 				else if(terrainPerceptions.get(5).getTerrainElement() == TerrainType.EXIT) {
+					System.out.println("ON EXIT ? YES: "+terrainPerceptions.get(5).getTerrainElement() );
 					stateId += 23;
 				}
 				/* cas 2 : cas ou l'on est en train de grimper et qu'on tape le plafond !*/
@@ -1136,7 +1149,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 						&& terrainPerceptions.get(2).getTerrainElement().isDiggable
 						&& terrainPerceptions.get(4).getTerrainElement().isTraversable) {
 					stateId += 20;
-					
+
 				}
 				/* cas 19 : fond d'un trou, fond diggable */
 				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
@@ -1231,21 +1244,340 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 
 
-			}
-			else if(LemmingPos.getY() < ExitPos.getY()) {
-				stateId += LemmingProblemState.NBSTATE_NO_DIRECTION;
+//			}
+//			else if(LemmingPos.getY() < ExitPos.getY()) {
+//				stateId += LemmingProblemState.NBSTATE_NO_DIRECTION;
+//
+//
+//				/* cas 0 : cas ou on est dans une case danger */
+//				if(terrainPerceptions.get(5).getTerrainElement().isDanger) {
+//					stateId += 0;
+//				}
+//				/* cas 23 : sur la sortie */
+//				else if(terrainPerceptions.get(5).getTerrainElement() == TerrainType.EXIT) {
+//					stateId += 23;
+//				}
+//				/* cas 2 : cas ou l'on est en train de grimper et qu'on tape le plafond !*/
+//				else if(!terrainPerceptions.get(4).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable) {
+//					stateId += 2;
+//				}
+//				/* cas 4 */
+//				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable && isClimbing) {
+//					stateId += 4;
+//				}
+//				/* cas 3 */
+//				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable && !isClimbing) {
+//					stateId += 3;
+//				}
+//				/* cas 1 : tomber chute libre, parachute non ouvert*/
+//				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& parachuteOpen == false
+//						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
+//					stateId += 1;
+//				}
+//				/* cas 21 : tomber chute libre, parachute ouvert*/
+//				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& parachuteOpen == true) {
+//					stateId += 21;
+//				}
+//				/* cas 16 bord de danger : eau,  creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(1).getTerrainElement().isDanger
+//						&& terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
+//					stateId += 16;
+//				}
+//				/* cas 17 : bord de danger : eau */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(1).getTerrainElement().isDanger
+//						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
+//					stateId += 17;
+//				}
+//				/* cas 15 : bord de falaise creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(1).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
+//					stateId += 15;
+//				}
+//				/* cas 6 : bord de falaise */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(1).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
+//					stateId += 6;
+//				}
+//				/* cas 20 : fond d'un trou, fond et cote diggable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable) {
+//					stateId += 20;
+//
+//				}
+//				/* cas 19 : fond d'un trou, fond diggable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable) {
+//					stateId += 19;
+//				}
+//				/* cas 22 : fond gallerie tunnel horizontal */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable ) {
+//					stateId += 22;
+//				}
+//				/* cas 12 : fond d'une gallerie, cote et fond creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 12;
+//				}
+//				/* cas 7 : fond d'une gallerie, cote creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 7;
+//				}
+//				/* cas 8 : fond d'une gallerie, fond creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 8;
+//				}
+//				/* cas 14 : bord de montagne, cote et fond creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 14;
+//					System.err.println("State " + stateId + "not used. Should never be print...");
+//				}
+//				/* cas 13 : bord de montagne, fond creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 13;
+//					System.err.println("State " + stateId + "not used. Should never be print...");
+//				}
+//				/* cas 11 : bord de montagne, cote creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 11;
+//				}
+//				/* cas 9 : bord de montagne */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 9;
+//				}
+//				/* cas 5 : marche, sol pas creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable) {
+//					stateId += 5;
+//				}
+//				/* cas 10 : marche, sol creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
+//					stateId += 10;
+//				}
+//				else
+//					System.err.println("Impossible de determiner le current state avec ces percetpions !");
+//
+//
+//
+//
+//			}
+//			else {
+//				stateId += LemmingProblemState.NBSTATE_NO_DIRECTION*2;
+//
+//
+//				/* cas 0 : cas ou on est dans une case danger */
+//				if(terrainPerceptions.get(5).getTerrainElement().isDanger) {
+//					stateId += 0;
+//				}
+//				/* cas 23 : sur la sortie */
+//				else if(terrainPerceptions.get(5).getTerrainElement() == TerrainType.EXIT) {
+//					stateId += 23;
+//				}
+//				/* cas 2 : cas ou l'on est en train de grimper et qu'on tape le plafond !*/
+//				else if(!terrainPerceptions.get(4).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable) {
+//					stateId += 2;
+//				}
+//				/* cas 4 */
+//				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable && isClimbing) {
+//					stateId += 4;
+//				}
+//				/* cas 3 */
+//				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable && !isClimbing) {
+//					stateId += 3;
+//				}
+//				/* cas 1 : tomber chute libre, parachute non ouvert*/
+//				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& parachuteOpen == false) {
+//					stateId += 1;
+//				}
+//				/* cas 21 : tomber chute libre, parachute ouvert*/
+//				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& parachuteOpen == true) {
+//					stateId += 21;
+//				}
+//				/* cas 16 bord de danger : eau,  creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(1).getTerrainElement().isDanger
+//						&& terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
+//					stateId += 16;
+//				}
+//				/* cas 17 : bord de danger : eau */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(1).getTerrainElement().isDanger
+//						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
+//					stateId += 17;
+//				}
+//				/* cas 15 : bord de falaise creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(1).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
+//					stateId += 15;
+//				}
+//				/* cas 6 : bord de falaise */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
+//						&& terrainPerceptions.get(1).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
+//					stateId += 6;
+//				}
+//				/* cas 20 : fond d'un trou, fond et cote diggable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable) {
+//					stateId += 20;
+//
+//				}
+//				/* cas 19 : fond d'un trou, fond diggable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable) {
+//					stateId += 19;
+//				}
+//				/* cas 22 : fond gallerie tunnel horizontal */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable ) {
+//					stateId += 22;
+//				}
+//				/* cas 12 : fond d'une gallerie, cote et fond creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 12;
+//				}
+//				/* cas 7 : fond d'une gallerie, cote creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 7;
+//				}
+//				/* cas 8 : fond d'une gallerie, fond creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 8;
+//				}
+//				/* cas 14 : bord de montagne, cote et fond creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 14;
+//					System.err.println("State " + stateId + "not used. Should never be print...");
+//				}
+//				/* cas 13 : bord de montagne, fond creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 13;
+//					System.err.println("State " + stateId + "not used. Should never be print...");
+//				}
+//				/* cas 11 : bord de montagne, cote creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 11;
+//				}
+//				/* cas 9 : bord de montagne */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
+//						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+//					stateId += 9;
+//				}
+//				/* cas 5 : marche, sol pas creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable) {
+//					stateId += 5;
+//				}
+//				/* cas 10 : marche, sol creusable */
+//				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
+//						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
+//					stateId += 10;
+//				}
+//				else
+//					System.err.println("Impossible de determiner le current state avec ces percetpions !");
 
 
-			}
-			else {
-				stateId += LemmingProblemState.NBSTATE_NO_DIRECTION*2;
 
-			}
+		//	}
 
 		}
 
 		currentState = new LemmingProblemState(stateId);
-		System.out.println("currentState determined : " + currentState);
+		System.out.println("currentState determined : " + currentState.toInt() + " soit:" +( currentState.toInt()%LemmingProblemState.NBSTATE_NO_DIRECTION));
 	}
 
 
