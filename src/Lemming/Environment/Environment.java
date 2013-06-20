@@ -259,7 +259,6 @@ public class Environment{
 					//test de l'agent
 					else if (test.getTag().target == 1) {
 						ok = body.executeTestTag(test.getTag());
-
 					}
 				}
 				testIt ++;

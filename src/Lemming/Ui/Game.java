@@ -180,6 +180,7 @@ public class Game extends JFrame implements Runnable{
 					for (Lemming lemming : lemmings) {
 						LemmingBody lb = lemming.getLemmingBody();
 						if(lb != null) {
+							
 							if(lb.getUpdatePixel()) {
 								lb.updatePixelPosition(lb.getCellCoord());
 							}

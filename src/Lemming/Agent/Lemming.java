@@ -102,7 +102,7 @@ public class Lemming {
 			}
 		}
 		else {
-			//System.out.println("SUICIDE GOING");
+			System.out.println("SUICIDE GOING");
 			suicide();
 		}
 	}

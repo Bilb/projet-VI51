@@ -21,11 +21,12 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	private List<Action> actions;
 
 
-	private static final float verygood = 1f;
-	private static final float good = 0.5f;
+	private static final float veryverygood = 150f; 
+	private static final float verygood = 70f;
+	private static final float good = 20f;
 	private static final float noimpact = 0.f;
-	private static final float bad = -0.5f;
-	private static final float verybad = -1f;
+	private static final float bad = -50f;
+	private static final float verybad = -100f;
 
 	private static final int NBSTATES = LemmingProblemState.NBSTATE_NO_DIRECTION * 3;
 
@@ -129,8 +130,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// Parachute
 			case 1:
 				switch (action.getLemmingActionType()) {
-				case Climb:
-					return noimpact(state);
+				case Parachute:
+					return verygood(21);
 				default:
 					return verybad(state);
 				}
@@ -147,9 +148,9 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			case 3:
 				switch (action.getLemmingActionType()) {
 				case Climb:
-					return good(state);
+					return noimpact(state);
 				case Parachute:
-					return verygood(1);
+					return verygood(21);
 				default :
 					return verybad(state);
 				}
@@ -166,22 +167,22 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal
 			case 5:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
 				case Walk:
 					return verygood(state);
 				case Turnback:
 					return noimpact(state);
+//				case Block:
+//					return verybad(18);
 				default:
 					return verybad(state);
 				}
 				// face a une falaise
 			case 6:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verybad(18);
 				case Walk:
-					return bad(1);
+					return verygood(1);
 				case Turnback:
 					return good(state);
 				default:
@@ -190,8 +191,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable
 			case 7:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Dig:
 					return good(state);
 				case Turnback:
@@ -202,8 +203,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel forable
 			case 8:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
+//				case Block:
+//					return verybad(18);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -214,8 +215,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a une falaise
 			case 9:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Turnback:
@@ -226,8 +227,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal et forable
 			case 10:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
+//				case Block:
+//					return verybad(18);
 				case Drill:
 					return bad(19);
 				case Walk:
@@ -240,8 +241,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a falaise creusable
 			case 11:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return good(state);
 				case Dig:
@@ -254,8 +255,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable et forable
 			case 12:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(state);
+//				case Block:
+//					return bad(state);
 				case Dig:
 					return verygood(state);
 				case Drill:
@@ -266,40 +267,40 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 					return verybad(state);
 				}
 				// sol forable face falaise 
-			case 13:
-				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
-				case Climb:
-					return verygood(state);
-				case Drill:
-					return good(19);
-				case Turnback:
-					return noimpact(state);
-				default:
-					return verybad(state);
-				}
+//			case 13:
+//				switch (action.getLemmingActionType()) {
+////				case Block:
+////					return verybad(18);
+//				case Climb:
+//					return verygood(state);
+//				case Drill:
+//					return good(19);
+//				case Turnback:
+//					return noimpact(state);
+//				default:
+//					return verybad(state);
+//				}
 				// sol forable face falaise creusable
-			case 14:
-				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
-				case Dig:
-					return verygood(7);
-				case Climb:
-					return good(state);
-				case Drill:
-					return bad(19);
-				case Turnback:
-					return noimpact(state);
-				default:
-					return verybad(state);
-				}
+//			case 14:
+//				switch (action.getLemmingActionType()) {
+////				case Block:
+////					return verybad(18);
+//				case Dig:
+//					return verygood(7);
+//				case Climb:
+//					return good(state);
+//				case Drill:
+//					return bad(19);
+//				case Turnback:
+//					return noimpact(state);
+//				default:
+//					return verybad(state);
+//				}
 				// forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return good(18);
+//				case Block:
+//					return verybad(18);
 				case Walk:
 					return verygood(1);
 				case Drill:
@@ -312,8 +313,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// sol forable + danger eau
 			case 16:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verygood(18);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -326,8 +327,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// danger eau
 			case 17:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verygood(18);
 				case Turnback:
 					return good(state);
 				case Walk:
@@ -336,18 +337,18 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 					return verybad(state);
 				}
 				// bloque
-			case 18:
-				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
-				default:
-					return verybad(state);
-				}
+//			case 18:
+//				switch (action.getLemmingActionType()) {
+//				case Block:
+//					return verygood(18);
+//				default:
+//					return verybad(state);
+//				}
 				// tunnel vertical forable
 			case 19:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return noimpact(state);
 				case Drill:
@@ -360,8 +361,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel vertical creusable forable
 			case 20:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return noimpact(state);
 				case Drill:
@@ -373,37 +374,39 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				default:
 					return verybad(state);
 				}
-				// tunel vertical
+				// chute avec parachute
 			case 21:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
-				case Climb:
-					return verygood(state);
-				case Turnback:
-					return noimpact(state);
+				case Parachute:
+					return verygood(21);
 				default:
 					return verybad(state);
 				}
-				// tunnel vertical creusable
+				// tunnel horizontal
 			case 22:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
-				case Climb:
-					return noimpact(state);
-				case Dig:
-					return verygood(19);
 				case Turnback:
-					return noimpact(state);
+					return verygood(state);
+//				case Block:
+//					return verybad(18);
+				default:
+					return verybad(state);
+				}
+				// Sortie
+			case 23:
+				switch (action.getLemmingActionType()) {
+				case Die:
+					return veryverygood(state);
 				default:
 					return verybad(state);
 				}
 			}
+			
+			
 
 			// La sortie est en dessous de nous
 		case BOTTOM:
-			switch (state.toInt()-23) {
+			switch (state.toInt()-LemmingProblemState.NBSTATE_NO_DIRECTION) {
 			// Mort -> Etat terminal
 			case 0:
 				switch (action.getLemmingActionType()) {
@@ -436,7 +439,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Climb:
 					return bad(state);
 				case Parachute:
-					return verygood(1);
+					return verygood(21);
 				default :
 					return verybad(state);
 				}
@@ -453,8 +456,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal
 			case 5:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Walk:
 					return verygood(state);
 				case Turnback:
@@ -465,8 +468,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a une falaise
 			case 6:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verygood(18);
 				case Walk:
 					return bad(1);
 				case Turnback:
@@ -477,8 +480,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable
 			case 7:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Dig:
 					return good(state);
 				case Turnback:
@@ -489,8 +492,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel forable
 			case 8:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
+//				case Block:
+//					return verybad(18);
 				case Drill:
 					return verygood(19);
 				case Turnback:
@@ -501,8 +504,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a une falaise
 			case 9:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return noimpact(state);
 				case Turnback:
@@ -513,8 +516,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal et forable
 			case 10:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
+//				case Block:
+//					return verybad(18);
 				case Drill:
 					return verygood(19);
 				case Walk:
@@ -527,8 +530,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a falaise creusable
 			case 11:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return bad(state);
 				case Dig:
@@ -541,8 +544,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable et forable
 			case 12:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(state);
+//				case Block:
+//					return bad(state);
 				case Dig:
 					return good(state);
 				case Drill:
@@ -553,40 +556,40 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 					return verybad(state);
 				}
 				// sol forable face falaise 
-			case 13:
-				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
-				case Climb:
-					return bad(state);
-				case Drill:
-					return verygood(19);
-				case Turnback:
-					return noimpact(state);
-				default:
-					return verybad(state);
-				}
+//			case 13:
+//				switch (action.getLemmingActionType()) {
+////				case Block:
+////					return verybad(18);
+//				case Climb:
+//					return bad(state);
+//				case Drill:
+//					return verygood(19);
+//				case Turnback:
+//					return noimpact(state);
+//				default:
+//					return verybad(state);
+//				}
 				// sol forable face falaise creusable
-			case 14:
-				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
-				case Dig:
-					return good(7);
-				case Climb:
-					return bad(state);
-				case Drill:
-					return verygood(19);
-				case Turnback:
-					return noimpact(state);
-				default:
-					return verybad(state);
-				}
+//			case 14:
+//				switch (action.getLemmingActionType()) {
+////				case Block:
+////					return verybad(18);
+//				case Dig:
+//					return good(7);
+//				case Climb:
+//					return bad(state);
+//				case Drill:
+//					return verygood(19);
+//				case Turnback:
+//					return noimpact(state);
+//				default:
+//					return verybad(state);
+//				}
 				// forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return good(18);
+//				case Block:
+//					return verybad(18);
 				case Walk:
 					return noimpact(1);
 				case Drill:
@@ -599,8 +602,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// sol forable + danger eau
 			case 16:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verygood(18);
 				case Drill:
 					return noimpact(19);
 				case Turnback:
@@ -613,8 +616,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// danger eau
 			case 17:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verygood(18);
 				case Turnback:
 					return good(state);
 				case Walk:
@@ -623,18 +626,18 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 					return verybad(state);
 				}
 				// bloque
-			case 18:
-				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
-				default:
-					return verybad(state);
-				}
+//			case 18:
+//				switch (action.getLemmingActionType()) {
+//				case Block:
+//					return verygood(18);
+//				default:
+//					return verybad(state);
+//				}
 				// tunnel vertical forable
 			case 19:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return bad(state);
 				case Drill:
@@ -647,8 +650,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel vertical creusable forable
 			case 20:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return bad(state);
 				case Drill:
@@ -660,29 +663,28 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				default:
 					return verybad(state);
 				}
-				// tunel vertical
+				// chute avec parachute
 			case 21:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
-				case Climb:
-					return good(state);
-				case Turnback:
-					return noimpact(state);
+				case Parachute:
+					return verygood(21);
 				default:
 					return verybad(state);
 				}
-				// tunnel vertical creusable
+				// tunnel horizontal
 			case 22:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
-				case Climb:
-					return bad(state);
-				case Dig:
-					return verygood(19);
 				case Turnback:
-					return noimpact(state);
+					return verygood(state);
+//				case Block:
+//					return verybad(18);
+				default:
+					return verybad(state);
+				}
+			case 23:
+				switch (action.getLemmingActionType()) {
+				case Die:
+					return veryverygood(state);
 				default:
 					return verybad(state);
 				}
@@ -690,7 +692,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 			// la sortie est au dessus de nous
 		case TOP:
-			switch (state.toInt()) {
+			switch (state.toInt()-2*LemmingProblemState.NBSTATE_NO_DIRECTION) {
 			// Mort -> Etat terminal
 			case 0:
 				switch (action.getLemmingActionType()) {
@@ -723,7 +725,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				case Climb:
 					return verygood(state);
 				case Parachute:
-					return good(1);
+					return good(21);
 				default :
 					return verybad(state);
 				}
@@ -740,20 +742,20 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal
 			case 5:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
 				case Walk:
 					return verygood(state);
 				case Turnback:
 					return noimpact(state);
+//				case Block:
+//					return verybad(18);
 				default:
 					return verybad(state);
 				}
 				// face a une falaise
 			case 6:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verygood(18);
 				case Walk:
 					return bad(1);
 				case Turnback:
@@ -764,8 +766,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable
 			case 7:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Dig:
 					return good(state);
 				case Turnback:
@@ -776,8 +778,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel forable
 			case 8:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
+//				case Block:
+//					return verybad(18);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -788,8 +790,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a une falaise
 			case 9:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Turnback:
@@ -800,8 +802,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// normal et forable
 			case 10:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
+//				case Block:
+//					return verybad(18);
 				case Drill:
 					return bad(19);
 				case Walk:
@@ -814,8 +816,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// face a falaise creusable
 			case 11:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Dig:
@@ -828,8 +830,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel creusable et forable
 			case 12:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(state);
+//				case Block:
+//					return bad(state);
 				case Dig:
 					return verygood(state);
 				case Drill:
@@ -840,40 +842,40 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 					return verybad(state);
 				}
 				// sol forable face falaise 
-			case 13:
-				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
-				case Climb:
-					return verygood(state);
-				case Drill:
-					return bad(19);
-				case Turnback:
-					return noimpact(state);
-				default:
-					return verybad(state);
-				}
+//			case 13:
+//				switch (action.getLemmingActionType()) {
+////				case Block:
+////					return verybad(18);
+//				case Climb:
+//					return verygood(state);
+//				case Drill:
+//					return bad(19);
+//				case Turnback:
+//					return noimpact(state);
+//				default:
+//					return verybad(state);
+//				}
 				// sol forable face falaise creusable
-			case 14:
-				switch (action.getLemmingActionType()) {
-				case Block:
-					return verybad(18);
-				case Dig:
-					return good(7);
-				case Climb:
-					return verygood(state);
-				case Drill:
-					return bad(19);
-				case Turnback:
-					return noimpact(state);
-				default:
-					return verybad(state);
-				}
+//			case 14:
+//				switch (action.getLemmingActionType()) {
+////				case Block:
+////					return verybad(18);
+//				case Dig:
+//					return good(7);
+//				case Climb:
+//					return verygood(state);
+//				case Drill:
+//					return bad(19);
+//				case Turnback:
+//					return noimpact(state);
+//				default:
+//					return verybad(state);
+//				}
 				// forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return good(18);
+//				case Block:
+//					return verybad(18);
 				case Walk:
 					return verygood(1);
 				case Drill:
@@ -886,8 +888,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// sol forable + danger eau
 			case 16:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verygood(18);
 				case Drill:
 					return bad(19);
 				case Turnback:
@@ -900,8 +902,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// danger eau
 			case 17:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verygood(18);
 				case Turnback:
 					return good(state);
 				case Walk:
@@ -912,16 +914,16 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// bloque
 			case 18:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return verygood(18);
+//				case Block:
+//					return verygood(18);
 				default:
 					return verybad(state);
 				}
 				// tunnel vertical forable
 			case 19:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Drill:
@@ -934,8 +936,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel vertical creusable forable
 			case 20:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
+//				case Block:
+//					return verybad(18);
 				case Climb:
 					return verygood(state);
 				case Drill:
@@ -947,29 +949,28 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				default:
 					return verybad(state);
 				}
-				// tunel vertical
+				// chute parachute
 			case 21:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
-				case Climb:
-					return verygood(state);
-				case Turnback:
-					return noimpact(state);
+				case Parachute:
+					return verygood(21);
 				default:
 					return verybad(state);
 				}
-				// tunnel vertical creusable
+				// tunnel horizontal
 			case 22:
 				switch (action.getLemmingActionType()) {
-				case Block:
-					return bad(18);
-				case Climb:
-					return verygood(state);
-				case Dig:
-					return good(19);
 				case Turnback:
-					return noimpact(state);
+					return verygood(state);
+//				case Block:
+//					return verybad(18);
+				default:
+					return verybad(state);
+				}
+			case 23:
+				switch (action.getLemmingActionType()) {
+				case Die:
+					return veryverygood(state);
 				default:
 					return verybad(state);
 				}
@@ -978,6 +979,15 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		return noimpact(state);
 	}
 
+	
+	private QFeedback<LemmingProblemState> veryverygood(int state) {
+		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), veryverygood);
+	}
+	
+	private QFeedback<LemmingProblemState> veryverygood(LemmingProblemState newState) {
+		return new QFeedback<LemmingProblemState>(newState, veryverygood);
+	}
+	
 
 	private QFeedback<LemmingProblemState> verygood(int state) {
 		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), verygood);

@@ -74,6 +74,7 @@ public class LemmingBody extends PixelCosmetic {
 			// action échoué, reset des flags
 			climbing = false;
 			parachute = false;
+			blocked = false;
 		}
 		else {
 			// action réussie
@@ -132,9 +133,9 @@ public class LemmingBody extends PixelCosmetic {
 	
 //---------- Setters ----------/
 	
-	public void setSens(Sens sens) {
+	/*public void setSens(Sens sens) {
 		this.sens = sens;
-	}
+	}*/
 	
 	public void setCurrentFall(int supportedFall) {
 		this.currentFall = supportedFall;
