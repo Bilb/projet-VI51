@@ -12,8 +12,8 @@ import javax.vecmath.Point2d;
 
 import fr.utbm.gi.vi51.learning.qlearning.QLearning;
 
-import Action.Action;
 import Lemming.CellCoord;
+import Lemming.Action.Action;
 import Lemming.Agent.Lemming;
 import Lemming.Agent.LemmingBody;
 import Lemming.Agent.LemmingProblemState;
