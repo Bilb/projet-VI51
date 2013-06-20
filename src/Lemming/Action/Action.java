@@ -1,4 +1,4 @@
-package Action;
+package Lemming.Action;
 
 import java.util.LinkedList;
 
@@ -22,7 +22,6 @@ public class Action implements QAction{
 		Drill,
 		Parachute,
 		Walk,
-		Block,
 		Turnback,
 		Die
 	}
@@ -138,20 +137,6 @@ public class Action implements QAction{
 			case Parachute:
 			{
 				actionProcessList.add(new ActionProcess(null,ActionProcessTag.PARACHUTE));
-			}
-			break;
-			case Block:
-			{
-				//building test
-				CellCoord cellTestFront = new CellCoord(bodyX+dx,bodyY); // case en face
-				CellCoord cellTestDownFront = new CellCoord(bodyX+dx,bodyY+1); // case en dessous en face
-				CellCoord cellTestCurrent = new CellCoord(bodyX,bodyY); // case courante
-				
-			//	actionTestList.add(new ActionTest(cellTestDownFront,ActionTestTag.DANGER));
-				actionTestList.add(new ActionTest(cellTestFront,ActionTestTag.TRAVERSABLE));
-				
-				actionProcessList.add(new ActionProcess(cellTestCurrent,ActionProcessTag.CREATE)); // cr�er un bloc
-				actionProcessList.add(new ActionProcess(null,ActionProcessTag.BLOCK)); // lancer le blockage (suppression du lemming)
 			}
 			break;
 			case Die:

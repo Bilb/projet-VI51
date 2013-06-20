@@ -5,9 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import Action.Action;
-import Action.Action.LemmingActionType;
 import Lemming.CellCoord;
+import Lemming.Action.Action;
+import Lemming.Action.Action.LemmingActionType;
+import Lemming.Environment.TerrainType;
 import Lemming.Perception.ExitPerception;
 import Lemming.Perception.Perception;
 import Lemming.Perception.TerrainPerception;
@@ -57,7 +58,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 		actions.add(new Action(LemmingActionType.Die));
 		actions.add(new Action(LemmingActionType.Climb));
-		actions.add(new Action(LemmingActionType.Block));
 		actions.add(new Action(LemmingActionType.Dig));
 		actions.add(new Action(LemmingActionType.Drill));
 		actions.add(new Action(LemmingActionType.Parachute));
@@ -72,22 +72,22 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 	@Override
 	public float getAlpha() {
-		return 0.5f;
+		return 0.3f;
 	}
 
 	@Override
 	public float getGamma() {
-		return 0.5f;
+		return 0.75f;
 	}
 
 	@Override
 	public float getRho() {
-		return 0.5f;
+		return 0.1f;
 	}
 
 	@Override
 	public float getNu() {
-		return 0.5f;
+		return 0.3f;
 	}
 
 	@Override
@@ -992,7 +992,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	private QFeedback<LemmingProblemState> verygood(int state) {
 		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), verygood);
 	}
-	
+
 	private QFeedback<LemmingProblemState> verygood(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, verygood);
 	}
@@ -1000,7 +1000,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	private QFeedback<LemmingProblemState> good(int state) {
 		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), good);
 	}
-	
+
 	private QFeedback<LemmingProblemState> good(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, good);
 	}
@@ -1008,7 +1008,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	private QFeedback<LemmingProblemState> noimpact(int state) {
 		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), noimpact);
 	}
-	
+
 	private QFeedback<LemmingProblemState> noimpact(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, noimpact);
 	}
@@ -1016,7 +1016,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	private QFeedback<LemmingProblemState> bad(int state) {
 		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), bad);
 	}
-	
+
 	private QFeedback<LemmingProblemState> bad(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, bad);
 	}
@@ -1024,7 +1024,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	private QFeedback<LemmingProblemState> verybad(int state) {
 		return new QFeedback<LemmingProblemState>(new LemmingProblemState(state), verybad);
 	}
-	
+
 	private QFeedback<LemmingProblemState> verybad(LemmingProblemState newState) {
 		return new QFeedback<LemmingProblemState>(newState, verybad);
 	}
@@ -1034,7 +1034,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	 * @param position de l'agent
 	 * @param percepts liste des perceptions de cet agent
 	 */
-	public void translateCurrentState(boolean currentFallMaxreached, boolean isClimbing, CellCoord LemmingPos, List<Perception> perceptions) {
+	public void translateCurrentState(boolean parachuteOpen, boolean currentFallMaxreached, boolean isClimbing, CellCoord LemmingPos, List<Perception> perceptions) {
 
 		int stateId = 0;
 
@@ -1073,7 +1073,11 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				if(terrainPerceptions.get(5).getTerrainElement().isDanger) {
 					stateId += 0;
 				}
-				/* cas 2 */
+				/* cas 23 : sur la sortie */
+				else if(terrainPerceptions.get(5).getTerrainElement() == TerrainType.EXIT) {
+					stateId += 23;
+				}
+				/* cas 2 : cas ou l'on est en train de grimper et qu'on tape le plafond !*/
 				else if(!terrainPerceptions.get(4).getTerrainElement().isTraversable 
 						&& terrainPerceptions.get(0).getTerrainElement().isTraversable
 						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable) {
@@ -1089,9 +1093,15 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable && !isClimbing) {
 					stateId += 3;
 				}
-				/* cas 1 : tomber chute libre sans possibilite de se rattraper*/
-				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable) {
+				/* cas 1 : tomber chute libre, parachute non ouvert*/
+				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable 
+						&& parachuteOpen == false) {
 					stateId += 1;
+				}
+				/* cas 21 : tomber chute libre, parachute ouvert*/
+				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable 
+						&& parachuteOpen == true) {
+					stateId += 21;
 				}
 				/* cas 16 bord de danger : eau,  creusable */
 				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
@@ -1119,32 +1129,29 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
 					stateId += 6;
 				}
-				/* cas 21 : fond d'un trou, rien de diggable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 21;
-				}
 				/* cas 20 : fond d'un trou, fond et cote diggable */
 				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
 						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
 						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+						&& terrainPerceptions.get(2).getTerrainElement().isDiggable
+						&& terrainPerceptions.get(4).getTerrainElement().isTraversable) {
 					stateId += 20;
+					
 				}
 				/* cas 19 : fond d'un trou, fond diggable */
 				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
 						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
 						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable
+						&& terrainPerceptions.get(4).getTerrainElement().isTraversable) {
 					stateId += 19;
 				}
-				/* cas 22 : fond d'un trou, cote diggable */
+				/* cas 22 : fond gallerie tunnel horizontal */
 				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
 						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
+						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
+						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable
+						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable ) {
 					stateId += 22;
 				}
 				/* cas 12 : fond d'une gallerie, cote et fond creusable */
@@ -1178,6 +1185,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
 						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
 					stateId += 14;
+					System.err.println("State " + stateId + "not used. Should never be print...");
 				}
 				/* cas 13 : bord de montagne, fond creusable */
 				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
@@ -1186,6 +1194,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
 						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
 					stateId += 13;
+					System.err.println("State " + stateId + "not used. Should never be print...");
 				}
 				/* cas 11 : bord de montagne, cote creusable */
 				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
@@ -1215,323 +1224,21 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				}
 				else
 					System.err.println("Impossible de determiner le current state avec ces percetpions !");
-				
-				
-				
-				
-				
-				
-				
-			}
-			else if(LemmingPos.getY() > ExitPos.getY()) {
-				stateId += 9;
 
-				/* cas ou on est dans une case danger */
-				if(terrainPerceptions.get(5).getTerrainElement().isDanger) {
-					stateId += 0;
-				}
-				/* cas 2 */
-				else if(!terrainPerceptions.get(4).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable) {
-					stateId += 2;
-				}
-				/* cas 4 */
-				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable && isClimbing) {
-					stateId += 4;
-				}
-				/* cas 3 */
-				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable && !isClimbing) {
-					stateId += 3;
-				}
-				/* cas 1 : tomber chute libre sans possibilite de se rattraper*/
-				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable) {
-					stateId += 1;
-				}
-				/* cas 16 bord de danger : eau,  creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(1).getTerrainElement().isDanger
-						&& terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
-					stateId += 16;
-				}
-				/* cas 17 : bord de danger : eau */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(1).getTerrainElement().isDanger
-						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
-					stateId += 17;
-				}
-				/* cas 15 : bord de falaise creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(1).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
-					stateId += 15;
-				}
-				/* cas 6 : bord de falaise */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(1).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
-					stateId += 6;
-				}
-				/* cas 21 : fond d'un trou, rien de diggable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 21;
-				}
-				/* cas 20 : fond d'un trou, fond et cote diggable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 20;
-				}
-				/* cas 19 : fond d'un trou, fond diggable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 19;
-				}
-				/* cas 22 : fond d'un trou, cote diggable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 22;
-				}
-				/* cas 12 : fond d'une gallerie, cote et fond creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 12;
-				}
-				/* cas 7 : fond d'une gallerie, cote creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 7;
-				}
-				/* cas 8 : fond d'une gallerie, fond creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 8;
-				}
-				/* cas 14 : bord de montagne, cote et fond creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 14;
-				}
-				/* cas 13 : bord de montagne, fond creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 13;
-				}
-				/* cas 11 : bord de montagne, cote creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 11;
-				}
-				/* cas 9 : bord de montagne */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 9;
-				}
-				/* cas 5 : marche, sol pas creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable) {
-					stateId += 5;
-				}
-				/* cas 10 : marche, sol creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
-					stateId += 10;
-				}
-				else
-					System.err.println("Impossible de determiner le current state avec ces percetpions !");
-				
-				
-				
-				
-				
+
+
+
+
+
+
+			}
+			else if(LemmingPos.getY() < ExitPos.getY()) {
+				stateId += LemmingProblemState.NBSTATE_NO_DIRECTION;
+
 
 			}
 			else {
 				stateId += LemmingProblemState.NBSTATE_NO_DIRECTION*2;
-
-				/* cas ou on est dans une case danger */
-				if(terrainPerceptions.get(5).getTerrainElement().isDanger) {
-					stateId += 0;
-				}
-				/* cas 2 */
-				else if(!terrainPerceptions.get(4).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable) {
-					stateId += 2;
-				}
-				/* cas 4 */
-				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable && isClimbing) {
-					stateId += 4;
-				}
-				/* cas 3 */
-				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&&  !terrainPerceptions.get(2).getTerrainElement().isTraversable && !isClimbing) {
-					stateId += 3;
-				}
-				/* cas 1 : tomber chute libre sans possibilite de se rattraper*/
-				else if( terrainPerceptions.get(0).getTerrainElement().isTraversable) {
-					stateId += 1;
-				}
-				/* cas 16 bord de danger : eau,  creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(1).getTerrainElement().isDanger
-						&& terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
-					stateId += 16;
-				}
-				/* cas 17 : bord de danger : eau */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(1).getTerrainElement().isDanger
-						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
-					stateId += 17;
-				}
-				/* cas 15 : bord de falaise creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(1).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
-					stateId += 15;
-				}
-				/* cas 6 : bord de falaise */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable 
-						&& terrainPerceptions.get(1).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(2).getTerrainElement().isTraversable) {
-					stateId += 6;
-				}
-				/* cas 21 : fond d'un trou, rien de diggable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 21;
-				}
-				/* cas 20 : fond d'un trou, fond et cote diggable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 20;
-				}
-				/* cas 19 : fond d'un trou, fond diggable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 19;
-				}
-				/* cas 22 : fond d'un trou, cote diggable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 22;
-				}
-				/* cas 12 : fond d'une gallerie, cote et fond creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 12;
-				}
-				/* cas 7 : fond d'une gallerie, cote creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 7;
-				}
-				/* cas 8 : fond d'une gallerie, fond creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 8;
-				}
-				/* cas 14 : bord de montagne, cote et fond creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 14;
-				}
-				/* cas 13 : bord de montagne, fond creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 13;
-				}
-				/* cas 11 : bord de montagne, cote creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 11;
-				}
-				/* cas 9 : bord de montagne */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(2).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(4).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable 
-						&& !terrainPerceptions.get(2).getTerrainElement().isDiggable) {
-					stateId += 9;
-				}
-				/* cas 5 : marche, sol pas creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& !terrainPerceptions.get(0).getTerrainElement().isDiggable) {
-					stateId += 5;
-				}
-				/* cas 10 : marche, sol creusable */
-				else if(!terrainPerceptions.get(0).getTerrainElement().isTraversable
-						&& terrainPerceptions.get(0).getTerrainElement().isDiggable) {
-					stateId += 10;
-				}
-				else
-					System.err.println("Impossible de determiner le current state avec ces percetpions !");
-				
-				
-				
-
 
 			}
 

@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.vecmath.Point2d;
 
-import Action.Action;
-import Action.Action.LemmingActionType;
 import Lemming.CellCoord;
+import Lemming.Action.Action;
+import Lemming.Action.Action.LemmingActionType;
 import Lemming.Influence.FallInfluence;
 import Lemming.Influence.Influence;
 import Lemming.Influence.MoveInfluence;
@@ -16,7 +16,7 @@ import fr.utbm.gi.vi51.learning.qlearning.QLearning;
 
 public class Lemming {
 
-	private final static int NUMBER_OF_QLEARNING_ITERATIONS = 5;
+	private final static int NUMBER_OF_QLEARNING_ITERATIONS = 1;
 
 	private LemmingBody lemmingBody;
 	private Action action;
@@ -48,7 +48,6 @@ public class Lemming {
 	}
 
 	public void live() {
-		if(!lemmingBody.isBlocked()) {
 			consumeInfluences();
 			List<Perception> perceptions = lemmingBody.getPerceptions();
 //
@@ -89,8 +88,11 @@ public class Lemming {
 //			}
 			// TODO
 			CellCoord position = new CellCoord((int) getPosition().x, (int)getPosition().y);
-			qProblem.translateCurrentState(lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall(),
+			
+			qProblem.translateCurrentState(lemmingBody.getParachute(),
+					lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall(),
 					lemmingBody.isClimbing(), position, perceptions);
+			
 			qLearning.learn(NUMBER_OF_QLEARNING_ITERATIONS);
 
 			Action action = qLearning.getBestAction(qProblem.getCurrentState());
@@ -100,11 +102,7 @@ public class Lemming {
 
 				executeAction(new Action(action.getLemmingActionType()));
 			}
-		}
-		else {
-			System.out.println("SUICIDE GOING");
-			suicide();
-		}
+
 	}
 
 

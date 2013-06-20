@@ -8,13 +8,13 @@ import java.util.List;
 
 import sun.nio.cs.ext.ISCII91;
 
-import Action.Action;
-import Action.Action.LemmingActionType;
-import Action.ActionProcessTag;
-import Action.ActionTestTag;
 import Lemming.CellCoord;
 import Lemming.PixelCosmetic;
 import Lemming.Sens;
+import Lemming.Action.Action;
+import Lemming.Action.ActionProcessTag;
+import Lemming.Action.ActionTestTag;
+import Lemming.Action.Action.LemmingActionType;
 import Lemming.Environment.Environment;
 import Lemming.Influence.Influence;
 import Lemming.Perception.Perception;
@@ -71,13 +71,13 @@ public class LemmingBody extends PixelCosmetic {
 //		System.out.println("Action Pr2 tag :::" + currentAction.getActionProcessList().get(0).getTag() + " cell" + currentAction.getActionProcessList().get(0).getCell());
 		
 		if(!myEnvironment.get().tryExecute(this,currentAction)){
-			// action échoué, reset des flags
+			// action echoue, reset des flags
 			climbing = false;
 			parachute = false;
 			blocked = false;
 		}
 		else {
-			// action réussie
+			// action rï¿½ussie
 			lastAction = action;
 		}
 	}
@@ -172,6 +172,10 @@ public class LemmingBody extends PixelCosmetic {
 
 	public void setParachute(boolean parachute) {
 		this.parachute = parachute;
+	}
+	
+	public boolean getParachute() {
+		return parachute;
 	}
 
 

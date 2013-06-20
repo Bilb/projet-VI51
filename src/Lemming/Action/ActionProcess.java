@@ -1,4 +1,4 @@
-package Action;
+package Lemming.Action;
 
 import Lemming.CellCoord;
 

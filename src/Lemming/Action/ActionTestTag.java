@@ -1,4 +1,4 @@
-package Action;
+package Lemming.Action;
 
 public enum ActionTestTag {
 		TRAVERSABLE(0){

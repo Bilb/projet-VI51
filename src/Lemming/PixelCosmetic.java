@@ -8,6 +8,7 @@ public abstract class PixelCosmetic {
 	protected CellCoord previousPosition;
 	protected float speedX = 10;
 	protected float speedY = 10;
+
 	
 	// m�thode pour le d�placement graphique des �l�ments pixel par pixel
 	// appel� uniquement si updatePixel est � vrai

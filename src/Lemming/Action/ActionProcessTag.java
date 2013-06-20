@@ -1,11 +1,11 @@
-package Action;
+package Lemming.Action;
 
 public enum ActionProcessTag {
-	// action qui doivent être executer par l'environnement ou l'agent en fonction de l'argument
+	// action qui doivent ï¿½tre executer par l'environnement ou l'agent en fonction de l'argument
 	// 1 agent, 0 environnement
-	// ces tag sont traités par l'environnement qui en focntion de l'argument appel matchProcessTagEnvironnement
+	// ces tag sont traitï¿½s par l'environnement qui en focntion de l'argument appel matchProcessTagEnvironnement
 	// de l'environnement
-	// ou matchProccessTagAgent(AgentBody ), fonctions qui permettent de convertir le tag en action à réaliser
+	// ou matchProccessTagAgent(AgentBody ), fonctions qui permettent de convertir le tag en action ï¿½ rï¿½aliser
 		DESTROY(0){
 		},
 		PARACHUTE(1){

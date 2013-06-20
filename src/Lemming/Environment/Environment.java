@@ -4,10 +4,10 @@ import java.util.LinkedList;
 
 import javax.vecmath.Point2d;
 
-import Action.Action;
-import Action.ActionProcess;
-import Action.ActionTest;
 import Lemming.CellCoord;
+import Lemming.Action.Action;
+import Lemming.Action.ActionProcess;
+import Lemming.Action.ActionTest;
 import Lemming.Agent.LemmingBody;
 import Lemming.Perception.ExitPerception;
 import Lemming.Perception.Perception;
@@ -41,6 +41,8 @@ public class Environment{
 		for(int l=0;l<size.x;l++) {
 			for(int c=0;c<size.y;c++) {
 				this.map[l][c] = terrains[envmap[l][c]];
+				if(envmap[l][c] == TerrainType.EXIT.ordinal())
+					exitPos= new CellCoord(c, l);
 			}
 		}
 
@@ -94,7 +96,8 @@ public class Environment{
 		//bodyPos
 		percLst.add(new TerrainPerception(this.map[bodyPosition.getY()][bodyPosition.getX()]));
 		//Exit position
-		percLst.add(new ExitPerception(body.getCellCoord()));
+		percLst.add(new ExitPerception(exitPos));
+		
 
 		return percLst;
 	}
@@ -264,7 +267,7 @@ public class Environment{
 				testIt ++;
 			}
 
-			// test pass� avec succes?
+			// test passe avec succes?
 			if(ok) {
 				LinkedList<ActionProcess> processList = action.getActionProcessList();
 				for (ActionProcess process : processList) {
