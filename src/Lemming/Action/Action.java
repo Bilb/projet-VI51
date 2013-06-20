@@ -147,7 +147,7 @@ public class Action implements QAction{
 				break;
 			case Turnback:
 			{
-				CellCoord cellTestDown = new CellCoord(bodyX,bodyY+1); // case en dessous
+				//CellCoord cellTestDown = new CellCoord(bodyX,bodyY+1); // case en dessous
 				//actionTestList.add(new ActionTest(cellTestDown,ActionTestTag.NOT_TRAVERSABLE));
 				
 				actionProcessList.add(new ActionProcess(null,ActionProcessTag.TURNBACK)); // cr�er un bloc

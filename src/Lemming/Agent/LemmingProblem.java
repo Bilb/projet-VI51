@@ -84,7 +84,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	public float getGamma() {
 		return 0.5f;
 	}
- 
+
 	/**
 	 * Proba que l'on tire une action au hasard
 	 */
@@ -1066,14 +1066,18 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 		int stateId = 0;
 
+
+		/* on créé une liste de terrainPerception. 
+		 * Nous permet de ne pas avoir à faire des instanceof à tour de bras */
+		List<TerrainPerception> terrainPerceptions = new ArrayList<TerrainPerception>();
+
+		for (int i = 0; i< perceptions.size() -1 ; i++) {
+			terrainPerceptions.add((TerrainPerception) perceptions.get(i));
+		}
+
 		/* cas ou on a chuter sans  ouvrir le parachute est qu'on est au sol, avec une chute trop haute : mort */
-		if(currentFallMaxreached) {
-			if(perceptions.get(0) instanceof TerrainPerception) {
-				TerrainPerception terrain = (TerrainPerception) perceptions.get(0);
-				if(!terrain.getTerrainElement().isTraversable) {
-					/* rien a faire! on est deja a 0 */
-				}
-			}
+		if(currentFallMaxreached && !terrainPerceptions.get(0).getTerrainElement().isTraversable && !parachuteOpen) {
+			/* rien a faire! on est deja a 0 */
 		}
 		else {
 			/* extraction de la position de la sortie */
@@ -1086,13 +1090,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 			}
 			CellCoord ExitPos = exitPerception.getExitPosition();
 
-			/* on créé une liste de terrainPerception. 
-			 * Nous permet de ne pas avoir à faire des instanceof à tour de bras */
-			List<TerrainPerception> terrainPerceptions = new ArrayList<TerrainPerception>();
 
-			for (int i = 0; i< perceptions.size() -1 ; i++) {
-				terrainPerceptions.add((TerrainPerception) perceptions.get(i));
-			}
 
 
 			if(LemmingPos.getY() == ExitPos.getY()) {
@@ -1252,11 +1250,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				}
 				else
 					System.err.println("Impossible de determiner le current state avec ces percetpions !");
-
-
-
-
-
 
 
 			}
@@ -1592,7 +1585,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		}
 
 		currentState = new LemmingProblemState(stateId);
-	//	System.out.println("currentState determined : " + currentState.toInt() + " soit:" +( currentState.toInt()%LemmingProblemState.NBSTATE_NO_DIRECTION));
+		//System.out.println("currentState determined : " + currentState.toInt() + " soit:" +( currentState.toInt()%LemmingProblemState.NBSTATE_NO_DIRECTION));
 	}
 
 

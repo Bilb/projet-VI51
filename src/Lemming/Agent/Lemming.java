@@ -9,7 +9,6 @@ import Lemming.Action.Action;
 import Lemming.Action.Action.LemmingActionType;
 import Lemming.Influence.FallInfluence;
 import Lemming.Influence.Influence;
-import Lemming.Influence.MoveInfluence;
 import Lemming.Perception.Perception;
 import Lemming.Perception.TerrainPerception;
 import fr.utbm.gi.vi51.learning.qlearning.QLearning;
@@ -27,8 +26,6 @@ public class Lemming {
 	/** The learning algorithm.
 	 */
 	private final QLearning<LemmingProblemState,Action> qLearning;
-
-	private boolean test = true;
 
 
 
@@ -52,17 +49,16 @@ public class Lemming {
 			List<Perception> perceptions = lemmingBody.getPerceptions();
 			CellCoord position = new CellCoord((int) getPosition().x, (int)getPosition().y);
 			
+			
 			qProblem.translateCurrentState(lemmingBody.getParachute(),
-					/*lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall()*/ false,
+					lemmingBody.getCurrentFall() > lemmingBody.getSupportedFall(),
 					lemmingBody.isClimbing(), position, perceptions);
 			
 			qLearning.learn(NUMBER_OF_QLEARNING_ITERATIONS);
 
 			Action action = qLearning.getBestAction(qProblem.getCurrentState());
 
-
 			if(action != null) {
-
 				executeAction(new Action(action.getLemmingActionType()));
 			}
 
@@ -76,36 +72,21 @@ public class Lemming {
 
 	private void consumeInfluences() {
 		boolean fallInfluencePresent = false;
+		
 		for (Influence influence : lemmingBody.getInfluences()) {
 			if(influence instanceof FallInfluence) {
 				FallInfluence fallInfluence= (FallInfluence) influence;
 				lemmingBody.setCurrentFall(lemmingBody.getCurrentFall() + fallInfluence.getNbCell());
 				fallInfluencePresent = true;
 			}
-			else if(influence instanceof MoveInfluence) {
-				MoveInfluence moveInfluence= (MoveInfluence) influence;
-				if(moveInfluence.getMovementSucess()) {
-					//TODO : faire quelque chose avec ca : bad ou bon qlearning par exemple!
-				}
-				else {
-
-				}
-			}
 		}
 
 		/* si il n'y a pas de FallInfluence, c'est que l'on ne tombe pas, ou plus. 
 		 * On reset le currentFall du body */
-		//TODO : a voir comment ca se gere avec le Q learning : peut être que si on le reset
-		// ici, il ne se rendra jamais compte qu'il s'ecrase comme une merde ! ben des fois il s'écrase pas..
-//		if(!fallInfluencePresent) {
-//			lemmingBody.setCurrentFall(0);
-//		}
-	}
-
-	public Action chooseAction(List<Perception> perceptions) {
-
-		// QLEARNING?????
-		return action;
+		if(!fallInfluencePresent) {
+			lemmingBody.setCurrentFall(0);
+		}
+		lemmingBody.resetInfluences();
 	}
 
 	public void executeAction(Action action) {
@@ -121,7 +102,7 @@ public class Lemming {
 			}
 
 		}
-		System.out.println("executing action : " + action);
+		//System.out.println("executing action : " + action);
 		lemmingBody.doAction(action);
 	}
 
@@ -154,7 +135,5 @@ public class Lemming {
 	public void setAction(Action action) {
 		this.action = action;
 	}
-
-
 
 }

@@ -9,6 +9,7 @@ import Lemming.Action.Action;
 import Lemming.Action.ActionProcess;
 import Lemming.Action.ActionTest;
 import Lemming.Agent.LemmingBody;
+import Lemming.Influence.FallInfluence;
 import Lemming.Perception.ExitPerception;
 import Lemming.Perception.Perception;
 import Lemming.Perception.TerrainPerception;
@@ -186,12 +187,13 @@ public class Environment{
 	//	}
 
 
-	private CellCoord applyGravity(CellCoord pos) {
+	private boolean applyGravity(CellCoord pos) {
 		int Yg = pos.getY()+1;
 		if(Yg < envSize.y && map[Yg][pos.getX()].isTraversable) {
 			pos.setY(Yg);
+			return true;
 		}
-		return pos;
+		return false;
 	}
 
 	private void applyForce(CellCoord force, CellCoord pos) {
@@ -278,7 +280,9 @@ public class Environment{
 					}
 				}
 			}
-			applyGravity(movebuffer);
+			if(applyGravity(movebuffer)) {
+				body.addInfluences(new FallInfluence(1));
+			}
 			body.setPreviousPosition(body.getCellCoord());
 			body.setCellCoord(movebuffer);
 		}
@@ -298,6 +302,8 @@ public class Environment{
 			applyForce(process.getCell(), movebuffer);
 
 			return;
+		default:
+			break;
 		}
 	}
 
@@ -330,6 +336,8 @@ public class Environment{
 			return !t.isTraversable;
 		case SOLID:
 			return t.isSolid;
+		default:
+			break;
 		}
 		return null;
 	}

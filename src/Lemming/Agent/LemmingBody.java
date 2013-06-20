@@ -6,15 +6,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import sun.nio.cs.ext.ISCII91;
-
 import Lemming.CellCoord;
 import Lemming.PixelCosmetic;
 import Lemming.Sens;
 import Lemming.Action.Action;
 import Lemming.Action.ActionProcessTag;
 import Lemming.Action.ActionTestTag;
-import Lemming.Action.Action.LemmingActionType;
 import Lemming.Environment.Environment;
 import Lemming.Influence.Influence;
 import Lemming.Perception.Perception;
@@ -77,7 +74,7 @@ public class LemmingBody extends PixelCosmetic {
 			blocked = false;
 		}
 		else {
-			// action r�ussie
+			// action reussie
 			lastAction = action;
 		}
 	}
@@ -92,7 +89,6 @@ public class LemmingBody extends PixelCosmetic {
 	
 	
 	public void addInfluences(Influence e) {
-		
 		influences.add(e);
 	}
 	
@@ -132,11 +128,6 @@ public class LemmingBody extends PixelCosmetic {
 	}
 	
 //---------- Setters ----------/
-	
-	/*public void setSens(Sens sens) {
-		this.sens = sens;
-	}*/
-	
 	public void setCurrentFall(int supportedFall) {
 		this.currentFall = supportedFall;
 	}
@@ -148,7 +139,6 @@ public class LemmingBody extends PixelCosmetic {
 	
 	public void setCellCoord(int x, int y) {
 		cellCoord.set(x, y);
-		//pixelCoord = cellCoord.toPixelCoord();
 		updatePixel = true;
 	}
 
@@ -162,6 +152,11 @@ public class LemmingBody extends PixelCosmetic {
 
 	public List<Influence> getInfluences() {
 		return Collections.unmodifiableList(influences);
+	}
+	
+	
+	public void resetInfluences() {
+		influences = new ArrayList<Influence>();
 	}
 
 
