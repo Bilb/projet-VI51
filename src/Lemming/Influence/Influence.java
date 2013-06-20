@@ -1,4 +1,9 @@
 package Lemming.Influence;
 
-public  abstract class Influence {	
+/**
+ * Classe utilisee pour creer des influences 
+ *
+ */
+public abstract class Influence {
+
 }

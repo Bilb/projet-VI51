@@ -15,6 +15,11 @@ import Lemming.Perception.TerrainPerception;
 import fr.utbm.gi.vi51.learning.qlearning.QFeedback;
 import fr.utbm.gi.vi51.learning.qlearning.QProblem;
 
+
+/**
+ * Classe encapsulant un probleme de qlearining pour les Lemmings
+ *
+ */
 public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 
@@ -22,6 +27,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	private List<Action> actions;
 
 
+	/* recompense associe a des actions valant plus ou moins de points */
 	private static final float veryverygood = 150f; 
 	private static final float verygood = 70f;
 	private static final float good = 50f;
@@ -29,10 +35,14 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	private static final float bad = -50f;
 	private static final float verybad = -100f;
 
+	
 	private static final int NBSTATES = LemmingProblemState.NBSTATE_NO_DIRECTION * 3;
 
-
+	/**
+	 * Etat courant du lemming dans ce probleme
+	 */
 	private LemmingProblemState currentState;
+	
 	private Random generator;
 
 
@@ -46,16 +56,16 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 
 	public LemmingProblem() {
-
-		/* ajouter les etats possible de notre système */
+		/* ajout des etats possible de notre système */
 		states = new LemmingProblemState[NBSTATES];
-		actions = new ArrayList<Action>();
-
+		
 		for(int i = 0; i < NBSTATES ; i++) {
 			states[i] = new LemmingProblemState(i);
 		}
+		
+		actions = new ArrayList<Action>();
 
-
+		/* ajout des actions possible de notre système */
 		actions.add(new Action(LemmingActionType.Die));
 		actions.add(new Action(LemmingActionType.Climb));
 		actions.add(new Action(LemmingActionType.Dig));
@@ -119,6 +129,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	@Override
 	public List<Action> getAvailableActionsFor(LemmingProblemState state) {
 		List<Action> availableForThisState = new ArrayList<Action>();
+		
+		/* c'est les même actions possibles pour un etat, peu importe de la position de la sortie */
 		switch (state.toInt() % LemmingProblemState.NBSTATE_NO_DIRECTION) {
 		case 0:
 			availableForThisState.add(new Action(LemmingActionType.Die));
@@ -220,6 +232,8 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		return availableForThisState;
 	}
 
+	
+	
 	@Override
 	public QFeedback<LemmingProblemState> takeAction(LemmingProblemState state,
 			Action action) {
@@ -358,37 +372,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				default:
 					return verybad(state);
 				}
-				// sol forable face falaise 
-				//			case 13:
-				//				switch (action.getLemmingActionType()) {
-				////				case Block:
-				////					return verybad(18);
-				//				case Climb:
-				//					return verygood(state);
-				//				case Drill:
-				//					return good(19);
-				//				case Turnback:
-				//					return noimpact(state);
-				//				default:
-				//					return verybad(state);
-				//				}
-				// sol forable face falaise creusable
-				//			case 14:
-				//				switch (action.getLemmingActionType()) {
-				////				case Block:
-				////					return verybad(18);
-				//				case Dig:
-				//					return verygood(7);
-				//				case Climb:
-				//					return good(state);
-				//				case Drill:
-				//					return bad(19);
-				//				case Turnback:
-				//					return noimpact(state);
-				//				default:
-				//					return verybad(state);
-				//				}
-				// forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
 				case Walk:
@@ -403,8 +386,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// sol forable + danger eau
 			case 16:
 				switch (action.getLemmingActionType()) {
-				//				case Block:
-				//					return verygood(18);
 				case Drill:
 					return good(19);
 				case Turnback:
@@ -424,15 +405,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				default:
 					return verybad(state);
 				}
-				// bloque
-				//			case 18:
-				//				switch (action.getLemmingActionType()) {
-				//				case Block:
-				//					return verygood(18);
-				//				default:
-				//					return verybad(state);
-				//				}
-				// tunnel vertical forable
 			case 19:
 				switch (action.getLemmingActionType()) {
 				case Climb:
@@ -447,8 +419,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// tunnel vertical creusable forable
 			case 20:
 				switch (action.getLemmingActionType()) {
-				//				case Block:
-				//					return verybad(18);
 				case Climb:
 					return good(state);
 				case Drill:
@@ -627,36 +597,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				default:
 					return verybad(state);
 				}
-				/* sol forable face falaise 
-							case 13:
-								switch (action.getLemmingActionType()) {
-				//				case Block:
-				//					return verybad(18);
-								case Climb:
-									return verygood(state);
-								case Drill:
-									return good(19);
-								case Turnback:
-									return noimpact(state);
-								default:
-									return verybad(state);
-								}
-				 sol forable face falaise creusable
-							case 14:
-								switch (action.getLemmingActionType()) {
-				//				case Block:
-				//					return verybad(18);
-								case Dig:
-									return verygood(7);
-								case Climb:
-									return good(state);
-								case Drill:
-									return bad(19);
-								case Turnback:
-									return noimpact(state);
-								default:
-									return verybad(state);
-								}*/
 				//forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
@@ -885,36 +825,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				default:
 					return verybad(state);
 				}
-				// sol forable face falaise 
-				//			case 13:
-				//				switch (action.getLemmingActionType()) {
-				////				case Block:
-				////					return verybad(18);
-				//				case Climb:
-				//					return verygood(state);
-				//				case Drill:
-				//					return good(19);
-				//				case Turnback:
-				//					return noimpact(state);
-				//				default:
-				//					return verybad(state);
-				//				}
-				// sol forable face falaise creusable
-				//			case 14:
-				//				switch (action.getLemmingActionType()) {
-				////				case Block:
-				////					return verybad(18);
-				//				case Dig:
-				//					return verygood(7);
-				//				case Climb:
-				//					return good(state);
-				//				case Drill:
-				//					return bad(19);
-				//				case Turnback:
-				//					return noimpact(state);
-				//				default:
-				//					return verybad(state);
-				//				}
 				// forable danger falaise 
 			case 15:
 				switch (action.getLemmingActionType()) {
@@ -942,8 +852,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				// danger eau
 			case 17:
 				switch (action.getLemmingActionType()) {
-				//				case Block:
-				//					return verygood(18);
 				case Turnback:
 					return veryverygood(state);
 				case Walk:
@@ -1059,8 +967,11 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 
 	/**
 	 * Appeler par un agent pour setter le current state par rapport au perception
-	 * @param position de l'agent
-	 * @param percepts liste des perceptions de cet agent
+	 * @param parachuteOpen booleen indiquant si le parachute du lemming est ouvert
+	 * @param currentFallMaxreached   booleen indiquant si la hauteur max du lemming est atteinte
+	 * @param isClimbing  booleen indiquant si le lemming est entrain de grimper
+	 * @param LemmingPos position du lemming
+	 * @param perceptions liste des perceptions de ce lemming
 	 */
 	public void translateCurrentState(boolean parachuteOpen, boolean currentFallMaxreached, boolean isClimbing, CellCoord LemmingPos, List<Perception> perceptions) {
 
@@ -1074,12 +985,10 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		for (int i = 0; i< perceptions.size() -1 ; i++) {
 			terrainPerceptions.add((TerrainPerception) perceptions.get(i));
 		}
-		System.out.println("parachute:" + parachuteOpen);
 
 		/* cas ou on a chuter sans  ouvrir le parachute est qu'on est au sol, avec une chute trop haute : mort */
 		if(currentFallMaxreached && !terrainPerceptions.get(0).getTerrainElement().isTraversable && !parachuteOpen) {
 			/* rien a faire! on est deja a 0 */
-			System.out.println("cas ou on s'ecrase");
 		}
 		else {
 			/* extraction de la position de la sortie */
@@ -1252,7 +1161,6 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 				}
 				else
 					System.err.println("Impossible de determiner le current state avec ces percetpions !");
-
 
 			}
 			else if(LemmingPos.getY() < ExitPos.getY()) {
@@ -1587,7 +1495,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 		}
 
 		currentState = new LemmingProblemState(stateId);
-		System.out.println("currentState determined : " + currentState.toInt() + " soit:" +( currentState.toInt()%LemmingProblemState.NBSTATE_NO_DIRECTION));
+		//System.out.println("currentState determined : " + currentState.toInt() + " soit:" +( currentState.toInt()%LemmingProblemState.NBSTATE_NO_DIRECTION));
 	}
 
 

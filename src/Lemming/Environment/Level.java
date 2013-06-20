@@ -10,14 +10,15 @@ import java.io.InputStreamReader;
 import Lemming.CellCoord;
 
 
-
+/**
+ * Classe encapsulant tout un niveau, c'est a dire la map ainsi que les parametres de generations des lemmings
+ *
+ */
 public class Level {
 	public static final String FILE_PREFIX = "levels"+ File.separator + "lemming1-" ;
 	public static final String FILE_SUFFIX = ".txt" ;
 
-
 	public static final String WIDTH_CONFIG = "WIDTH";
-
 	public static final String HEIGHT_CONFIG = "HEIGHT";
 
 	public static final String LEMMING_NB_CONFIG = "NB_LEMMING";
@@ -27,27 +28,54 @@ public class Level {
 
 	public static final String SPAWN_POSITION = "SPAWN_POSITION";
 
+	/**
+	 * largeur de la map
+	 */
 	private int width = -1;
-
+	
+	/**
+	 * hauteur de la map
+	 */
 	private int height = -1;
 	
+	/**
+	 * Position du spawn
+	 */
 	private CellCoord spawnPosition;
 
-
-
-
-
-
+	
+	/**
+	 * Map composee d'entier : resultat du parsing du fichier
+	 */
 	private int[][] map;
 
+	/**
+	 * Nombre de Lemmings pour ce niveau
+	 */
 	private int nbLemmings;
 
+	/**
+	 * Temps entre l'apparition de deux lemmings
+	 */
 	private int timeBetweenTwoLemmings;
 	
+
+	
+	/**
+	 * Cree un nouvel objet niveau avec le numero associe. Nous cherchons un 
+	 * fichier comme FILE_PREFIX + numLevel + FILE_SUFFIX
+	 * @param numLevel numero du niveau a charger
+	 * @throws FileNotFoundException si le fichier n'est pas trouve
+	 */
 	public Level(int numLevel) throws FileNotFoundException {
 		load(numLevel);
 	}
 
+	/**
+	 * Parse et charge dans cet objet le fichier associe a ce numero
+	 * @param numLevel
+	 * @throws FileNotFoundException
+	 */
 	private void load(int numLevel) throws FileNotFoundException {
 
 		File levelFile = new File(FILE_PREFIX + numLevel + FILE_SUFFIX);
@@ -62,9 +90,11 @@ public class Level {
 		String rest;
 		int mapHeightRead = 0, mapWidthRead = 0;
 
+		/**
+		 * On extrait tout les champs les uns apres les autres
+		 */
 		try {
 			while( (line = reader.readLine()) != null) {
-
 				if(line.contains(WIDTH_CONFIG)) {
 					rest = line.substring(WIDTH_CONFIG.length() + 1);
 					width = Integer.parseInt(rest);
@@ -128,14 +158,8 @@ public class Level {
 
 		}
 		
-		System.out.println(" levels " + toString());
-
-
-
+		System.out.println("level " + toString());
 	}
-
-
-
 
 
 

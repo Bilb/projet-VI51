@@ -2,6 +2,10 @@ package Lemming.Perception;
 
 import Lemming.CellCoord;
 
+/**
+ * Cette classe permet d'identifier la perception symbolisant la sortie et sa position 
+ *
+ */
 public class ExitPerception extends Perception {
 
 	private CellCoord exitPosition;

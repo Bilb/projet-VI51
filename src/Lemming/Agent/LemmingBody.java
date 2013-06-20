@@ -10,10 +10,10 @@ import Lemming.CellCoord;
 import Lemming.PixelCosmetic;
 import Lemming.Sens;
 import Lemming.Action.Action;
-import Lemming.Action.Action.LemmingActionType;
 import Lemming.Action.ActionProcessTag;
 import Lemming.Action.ActionTestTag;
 import Lemming.Environment.Environment;
+import Lemming.Influence.FallInfluence;
 import Lemming.Influence.Influence;
 import Lemming.Perception.Perception;
 
@@ -101,7 +101,7 @@ public class LemmingBody extends PixelCosmetic {
 	 * 
 	 * @param e influence a ajouter
 	 */
-	public void addInfluences(Influence e) {
+	public void addFallInfluences(FallInfluence e) {
 		influences.add(e);
 	}
 	

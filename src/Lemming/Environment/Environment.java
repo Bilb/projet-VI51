@@ -197,9 +197,8 @@ public class Environment{
 					}
 				}
 			}
-			// TODO comment le gerer correctement ?
 			if(applyGravity(movebuffer) && action.getLemmingActionType() == LemmingActionType.Parachute) {
-				body.addInfluences(new FallInfluence(1));
+				body.addFallInfluences(new FallInfluence(1));
 			}
 			
 			body.setPreviousPosition(body.getCellCoord());

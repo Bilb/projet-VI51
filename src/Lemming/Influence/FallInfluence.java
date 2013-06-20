@@ -1,5 +1,10 @@
 package Lemming.Influence;
 
+
+/**
+ * Influence permettant au lemming de savoir si il a subbit une chute 
+ *
+ */
 public class FallInfluence extends Influence {
 	
 	private int nbCell;

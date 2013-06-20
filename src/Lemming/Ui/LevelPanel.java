@@ -13,6 +13,11 @@ import Lemming.Sens;
 import Lemming.Agent.LemmingBody;
 import Lemming.Environment.TerrainType;
 
+
+/**
+ *  Cette classe gere l'affichage du niveau ainsi que des agents dans celui ci
+ *
+ */
 public class LevelPanel extends JPanel implements Runnable {
 
 	/**
@@ -21,7 +26,9 @@ public class LevelPanel extends JPanel implements Runnable {
 	private static final long serialVersionUID = 106948148087030135L;
 
 
-	/*pacman images*/
+	/**
+	 * Images associe au differents terrain et lemmings
+	 */
 	private Image rock;
 	private Image ground;
 	private Image exit;
@@ -39,24 +46,19 @@ public class LevelPanel extends JPanel implements Runnable {
 	private Image lemming_drilling;
 
 
-
-
-
+	/**
+	 * game duquel nous affichons les infos
+	 */
 	private Game game = null;
 
 
-
-
-
-
 	
-
 	public LevelPanel(Game game) {
 		super();
 		this.game = game;
 
 
-		/* load images */
+		/* chargement des images */
 		rock = (new ImageIcon("images/rock.png")).getImage();
 		ground = (new ImageIcon("images/ground.png")).getImage();
 		sky = (new ImageIcon("images/sky.png")).getImage();
@@ -143,7 +145,13 @@ public class LevelPanel extends JPanel implements Runnable {
 			}	
 		}
 	}
-
+	
+	
+	/**
+	 * Retourne l'image associe a un Lemming, en accord avec son sens et ses attributs
+	 * @param lemmingBody
+	 * @return l'image pour afficher ce lemming dans son etat actuel
+	 */
 	private Image getLemmingImg(LemmingBody lemmingBody) {
 		Image img;
 		if(lemmingBody.isDrilling()) {
@@ -187,9 +195,8 @@ public class LevelPanel extends JPanel implements Runnable {
 		while(true) {
 			repaint();
 			try {
-				Thread.currentThread().sleep(100);
+				Thread.currentThread().sleep(50);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
