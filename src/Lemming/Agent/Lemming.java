@@ -16,7 +16,7 @@ import fr.utbm.gi.vi51.learning.qlearning.QLearning;
 
 public class Lemming {
 
-	private final static int NUMBER_OF_QLEARNING_ITERATIONS = 6;
+	private final static int NUMBER_OF_QLEARNING_ITERATIONS =6;
 
 	private LemmingBody lemmingBody;
 	private Action action;
@@ -86,7 +86,6 @@ public class Lemming {
 //			else {
 //				executeAction(new Action(LemmingActionType.Turnback));
 //			}
-			// TODO
 			CellCoord position = new CellCoord((int) getPosition().x, (int)getPosition().y);
 			
 			qProblem.translateCurrentState(lemmingBody.getParachute(),
