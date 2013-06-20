@@ -17,32 +17,38 @@ import Lemming.Environment.Environment;
 import Lemming.Influence.Influence;
 import Lemming.Perception.Perception;
 
+/**
+ * Cette classe decrit le Body du Lemming
+ */
 public class LemmingBody extends PixelCosmetic {
 	
-	private Sens sens;
-	private boolean alive;
+	private Sens sens; // Indique le sens dans lequel regarde le lemming pour adapter le frustrum
+	private boolean alive; // Indique si le Lemming est vivant ou mort
+	
 	public boolean isAlive() {
 		return alive;
 	}
-
 
 	public void setAlive(boolean alive) {
 		this.alive = alive;
 	}
 
-	private boolean digging;
-	private boolean drilling;
-	private boolean climbing;
-	private boolean parachute;
-	private boolean blocked;
-	private final int supportedFall = 3;
-	private int currentFall;
-	private CellCoord cellCoord;
+	private boolean digging; // Indique si le Lemming est en train de creuser
+	private boolean drilling; // Indique si le Lemming est en train de forer
+	private boolean climbing; // Indique si le Lemming est en train de grimper
+	private boolean parachute; // Indique si le Lemming est en train de faire du parachute
+	private final int supportedFall = 3; // Hauteur de case pour laquelle une chute est fatale pour le Lemming 
+	private int currentFall; // Nombre de case dont chute le lemming actuellement
+	private CellCoord cellCoord; 
 	private Action currentAction;
 	private WeakReference<Environment> myEnvironment;
 	private List<Influence> influences;
 	
-	
+	/**
+	 * Constructeur de LemmingBody
+	 * @param cellCoord position du Lemming
+	 * @param environment environnement dans lequel il sera cree
+	 */
 	public LemmingBody(CellCoord cellCoord, Environment environment) {
 		alive = true;
 		sens = Sens.RIGHT;
@@ -56,7 +62,10 @@ public class LemmingBody extends PixelCosmetic {
 		influences = new ArrayList<Influence>();
 	}
 	
-
+	/**
+	 * 
+	 * @param action l'action a executer par le lemmingBody
+	 */
 	public void doAction(Action action) {
 		if(!action.getBuilded()) {
 			action.buildAction(this);
@@ -66,117 +75,55 @@ public class LemmingBody extends PixelCosmetic {
 			// action echoue, reset des flags
 			climbing = false;
 			parachute = false;
-			blocked = false;
 			drilling = false;
 			digging = false;
 		}
 		else {
-			// action réussie
+			// action reussie
 		}
 		
-}
+	}
 
-	
+	/**
+	 * 
+	 * @return la liste des perceptions du LemmingBody
+	 */
 	public LinkedList<Perception> getPerceptions() {
 		LinkedList<Perception> perceptions;
 		
-		perceptions = myEnvironment.get().getPerceptions(this);
+		// ici on utilisise la reference faible sur l'environnement pour appeler sa methode getPerception
+		perceptions = myEnvironment.get().getPerceptions(this); 
 		
 		return perceptions;
 	}
 	
-	
+	/**
+	 * 
+	 * @param e influence a ajouter
+	 */
 	public void addInfluences(Influence e) {
-		System.out.println("ajout d'un new influence : " +e);
 		influences.add(e);
 	}
 	
-	
-	
+	/**
+	 * Le LemmingBody se suicide en demmandant a l'environnement de le tuer
+	 */
 	public void suicide() {
+		// Ici on utilisise la reference faible sur l'environement 
 		myEnvironment.get().kill(this);
 	}
 	
-
-	
-//---------- Getters ----------/
-	public Sens getSens() {
-		return sens;
-	}
-
-	public int getSupportedFall() {
-		return supportedFall;
-	}
-	
-	public int getCurrentFall() {
-		return currentFall;
-	}
-	
-	public CellCoord getCellCoord() {
-		return cellCoord;
-	}
-	
-	public Action getCurrentAction() {
-		return currentAction;
-	}
-	
-//---------- Setters ----------/
-	public void setCurrentFall(int supportedFall) {
-		this.currentFall = supportedFall;
-	}
-	
-	public void setCellCoord(CellCoord cellCoord) {
-		this.cellCoord = cellCoord;
-		updatePixel = true;
-	}
-	
-	public void setCellCoord(int x, int y) {
-		cellCoord.set(x, y);
-		updatePixel = true;
-	}
-
-	public void updatePixel() {
-		updatePixel = true;
-	}
-
-	public void setCurrentAction(Action currentAction) {
-		this.currentAction = currentAction;
-	}
-
-	public List<Influence> getInfluences() {
-		return Collections.unmodifiableList(influences);
-	}
-	
-	
+	/**
+	 * On reinitialise la liste des influences en en creant une nouvelle 
+	 */
 	public void resetInfluences() {
 		influences = new ArrayList<Influence>();
 	}
 
-
-	public boolean isParachute() {
-		return parachute;
-	}
-
-
-	public void setParachute(boolean parachute) {
-		this.parachute = parachute;
-	}
-	
-	public boolean getParachute() {
-		return parachute;
-	}
-
-
-	public boolean isBlocked() {
-		return blocked;
-	}
-
-
-	public void setBlocked(boolean blocked) {
-		this.blocked = blocked;
-		
-	}
-	
+	/**
+	 * On test la valeur des parametres
+	 * @param tag Le tag a tester
+	 */
 	public Boolean executeTestTag(ActionTestTag tag) {
 		switch (tag) {
 		case PARACHUTE:
@@ -190,15 +137,15 @@ public class LemmingBody extends PixelCosmetic {
 		default:
 			break;
 		}
-		return blocked;
-		
+		return false;
 	}
 	
+	/**
+	 * On set le tag passer en paramettre en le transformant en true ou false sur le parametre concerne
+	 * @param tag Le tag a setter
+	 */
 	public Boolean executeProcessTag(ActionProcessTag tag) {
 		switch (tag) {
-		case BLOCK:
-			setBlocked(true);
-		break;
 		case PARACHUTE:
 			setParachute(true);
 		break;
@@ -232,48 +179,97 @@ public class LemmingBody extends PixelCosmetic {
 		default:
 			break;
 		}
-		return true;
 		
+		return true;
 	}
 
-
+//---------- Tests ------------/
 	public boolean isClimbing() {
 		return climbing;
 	}
+	
+	public boolean isParachute() {
+		return parachute;
+	}
+	
+	public boolean isDrilling() {
+		return drilling;
+	}
 
+	public boolean isDigging() {
+		return digging;
+	}
+	
+//---------- Getters ----------/
+	public Sens getSens() {
+		return sens;
+	}
 
+	public int getSupportedFall() {
+		return supportedFall;
+	}
+	
+	public int getCurrentFall() {
+		return currentFall;
+	}
+	
+	public CellCoord getCellCoord() {
+		return cellCoord;
+	}
+	
+	public Action getCurrentAction() {
+		return currentAction;
+	}
+	
+	public List<Influence> getInfluences() {
+		return Collections.unmodifiableList(influences);
+	}
+	
+	public boolean getParachute() {
+		return parachute;
+	}
+	
+//---------- Setters ----------/
+	public void setCurrentFall(int supportedFall) {
+		this.currentFall = supportedFall;
+	}
+	
+	public void setCellCoord(CellCoord cellCoord) {
+		this.cellCoord = cellCoord;
+		updatePixel = true;
+	}
+	
+	public void setCellCoord(int x, int y) {
+		cellCoord.set(x, y);
+		updatePixel = true;
+	}
+
+	public void updatePixel() {
+		updatePixel = true;
+	}
+
+	public void setCurrentAction(Action currentAction) {
+		this.currentAction = currentAction;
+	}
+
+	public void setParachute(boolean parachute) {
+		this.parachute = parachute;
+	}
+	
 	public void setClimbing(boolean climbing) {
 		this.climbing = climbing;
 	}
-
 
 	public void setPreviousPosition(CellCoord cellCoord2) {
 		previousPosition = cellCoord2;
 		
 	}
 	
-	public void changeLemmingState() {
-		
-	}
-
-
-	public boolean isDrilling() {
-		return drilling;
-	}
-
-
 	public void setDrilling(boolean drilling) {
 		this.drilling = drilling;
 	}
-
-
-	public boolean isDigging() {
-		return digging;
-	}
-
-
+	
 	public void setDigging(boolean digging) {
 		this.digging = digging;
 	}
-
 }

@@ -266,7 +266,7 @@ public class Game extends JFrame implements Runnable{
 							else {
 								lemming.live();
 							}
-							if(lb.isBlocked() || !lb.isAlive()) {
+							if(!lb.isAlive()) {
 								QLearning<LemmingProblemState,Action> saveQLearning = lemming.getQLearning();
 								kill(lemming);
 								addLemming(new Lemming(new LemmingBody(new CellCoord(currentLevel.getSpawnPosition().getX(),currentLevel.getSpawnPosition().getY()), this.environment), saveQLearning));

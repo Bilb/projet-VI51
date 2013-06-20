@@ -1,5 +1,8 @@
 package Lemming;
 
+/**
+ * Cette classe abstraite est la gestion des coordonnees dans le logiciel.
+ */
 public abstract class Coord {
 
 	private int x;
