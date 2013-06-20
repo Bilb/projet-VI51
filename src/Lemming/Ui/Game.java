@@ -59,7 +59,7 @@ public class Game extends JFrame implements Runnable{
 			currentLevel = new Level(currentLevelId);
 
 			environment = new Environment(new Point2d(currentLevel.getWidth(), currentLevel.getHeight()), 
-					currentLevel.getMap() , currentLevel.getSpawnPosition(), 0);
+					currentLevel.getMap());
 			generator = new LemmingGenerator(
 					this
 					, currentLevel.getNbLemmings()
@@ -180,7 +180,7 @@ public class Game extends JFrame implements Runnable{
 
 		if(environment == null) {
 			environment = new Environment(new Point2d(currentLevel.getWidth(), currentLevel.getHeight()), 
-					currentLevel.getMap() , currentLevel.getSpawnPosition(), 0);
+					currentLevel.getMap());
 		}
 		else {
 			environment.changeLevel(currentLevel);

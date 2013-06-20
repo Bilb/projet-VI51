@@ -15,7 +15,13 @@ import Lemming.Perception.ExitPerception;
 import Lemming.Perception.Perception;
 import Lemming.Perception.TerrainPerception;
 
-
+/**
+ * 
+ * définie un environnement dans lequel sons suceptibles d'évoluer des agents (ici des lemmings)
+ * l'environnement gère notamment la gravité et contient une liste d'agent
+ * dans notre cas les agents sont des lemmings
+ *
+ */
 public class Environment{
 
 
@@ -28,7 +34,13 @@ public class Environment{
 	private LinkedList<LemmingBody> lemmingBodies;
 	private CellCoord movebuffer;
 
-	public Environment (Point2d  size, int [][] envmap, CellCoord spawnPosition, int nbLemmings) {
+	/**
+	 * 
+	 * @param size taille de l'environnement
+	 * @param envmap tableau des types de terrains pour définir la carte
+	 * 
+	 */
+	public Environment (Point2d  size, int [][] envmap) {
 
 		envSize = size;
 		movebuffer = new CellCoord();
@@ -48,7 +60,14 @@ public class Environment{
 		// We store the lemmings into the array of agent of the environmnent
 		this.lemmingBodies=new LinkedList<LemmingBody>();
 	}
-
+	
+/**
+ * Fonction qui remplie la liste des perceptions de l'agents
+ * c'est ici que la définition de son frustrum prend du sens
+ * a noté que dans notre cas l'agent est un lemming
+ * @param body corps de l'agent qui perçoit
+ * @return liste des perceptions du body
+ */
 	public LinkedList<Perception> getPerceptions(LemmingBody body) {
 
 		CellCoord bodyPosition = body.getCellCoord();
@@ -99,11 +118,22 @@ public class Environment{
 		return percLst;
 	}
 
+	/**
+	 * Permet de supprimer un LemmingBody de l'environnement
+	 * @param lemmingBody body à supprimer de l'environnement
+	 */
 	public void kill(LemmingBody lemmingBody) {
 		lemmingBodies.remove(lemmingBody);
 
 	}
 
+	/**
+	 * Permet d'appliquer la gravité sur une position
+	 * Cette méthode modifie directement le paramètre pos
+	 * Cette méthode vérifie que après application de la gravité, la position reste dans carte
+	 * et reste une case traversable (les élements mobiles ne peuvent se situer sur une case non traversables)
+	 * @param pos position subissant la force
+	 */
 	private boolean applyGravity(CellCoord pos) {
 		int Yg = pos.getY()+1;
 		if(Yg < envSize.y && map[Yg][pos.getX()].isTraversable) {
@@ -113,6 +143,12 @@ public class Environment{
 		return false;
 	}
 
+	/**
+	 * Permet d'appliquer une force sur une position
+	 * Cette méthode modifie directement le paramètre pos
+	 * @param force force à appliquer
+	 * @param pos position subissant la force
+	 */
 	private void applyForce(CellCoord force, CellCoord pos) {
 		pos.setX(pos.getX()+force.getX());
 		pos.setY(pos.getY()+force.getY());
@@ -162,9 +198,15 @@ public class Environment{
 		lemmingBodies.add(lbody);
 	}
 
+	/**
+	 * Fonction qui realise les test de l'action passe en parametre
+	 * si les tests sont valides: les actions process de l'action sont executes
+	 * @param body corps du lemming subissant l'action
+	 * @param action action a traiter
+	 * @return vrai si lest tests de l'action sont tous verifies, faux sinon
+	 */
 	public Boolean tryExecute(LemmingBody body,Action action) {
 		movebuffer= new CellCoord(body.getCellCoord().getX(),body.getCellCoord().getY());
-		//movebuffer.setY();
 		Boolean ok = false;
 		if(action != null) {
 			ok = true; // init
@@ -207,6 +249,13 @@ public class Environment{
 		return ok;
 	}
 
+	/**
+	 * fonction faisant la correspondance entre les ActionProcessTag destine a l'environnement
+	 * et leurs realisations.
+	 * Cette fonction execute egalement les actions
+	 * @param process
+	 * @param body
+	 */
 	private void executeProcess(ActionProcess process, LemmingBody body) {
 		switch(process.getTag()) {
 		case CREATE:
@@ -223,7 +272,15 @@ public class Environment{
 			break;
 		}
 	}
-
+	
+	/**
+	 * fonction faisant la correspondance entre les ActionTestTag destine a l'environnement
+	 * et leurs realisations.
+	 * Cette fonction execute egalement les tests
+	 * @param process
+	 * @param body
+	 * @return valeur du test
+	 */
 	private Boolean executeTestTag(ActionTest test) {
 		TerrainType t;
 		if(test.getCell().getY() < envSize.y && test.getCell().getY() >= 0 && 

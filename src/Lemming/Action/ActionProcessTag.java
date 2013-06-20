@@ -1,11 +1,16 @@
 package Lemming.Action;
 
+/**
+ * un tag equivaux a une action de l'environnement ou d'un agent.
+ * l'enum contient les actions qui doivent etre executer par l'environnement ou l'agent en fonction de l'argument
+ * 1 agent, 0 environnement
+ * ces tag sont traites par l'environnement qui en focntion de l'argument appel 
+ * executeProcessTag de l'agent ou executeProcessTag de l'environnement
+ * ce système permet a l'environnement d'ignorer le comportement de l'agent ou les possibilites de l'agent
+ */
+
 public enum ActionProcessTag {
-	// action qui doivent ï¿½tre executer par l'environnement ou l'agent en fonction de l'argument
-	// 1 agent, 0 environnement
-	// ces tag sont traitï¿½s par l'environnement qui en focntion de l'argument appel matchProcessTagEnvironnement
-	// de l'environnement
-	// ou matchProccessTagAgent(AgentBody ), fonctions qui permettent de convertir le tag en action ï¿½ rï¿½aliser
+
 		DESTROY(0){
 		},
 		PARACHUTE(1){
