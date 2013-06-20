@@ -7,8 +7,8 @@ public abstract class PixelCosmetic {
 	protected Boolean updatePixel = false;
 	protected PixelCoord pixelCoord;
 	protected CellCoord previousPosition;
-	protected float speedX = 30;
-	protected float speedY = 30;
+	protected float speedX = 3;
+	protected float speedY = 3;
 
 	
 	// methode pour le deplacement graphique des elements pixel par pixel

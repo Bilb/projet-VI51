@@ -45,7 +45,7 @@ public class Lemming {
 	}
 
 	public void live() {
-		if(getLemmingBody() != null && !getLemmingBody().isDoingAction()) {
+		if(getLemmingBody() != null) {
 			consumeInfluences();
 			List<Perception> perceptions = lemmingBody.getPerceptions();
 			CellCoord position = new CellCoord((int) getPosition().x, (int)getPosition().y);
@@ -62,9 +62,6 @@ public class Lemming {
 			if(action != null) {
 				executeAction(new Action(action.getLemmingActionType()));
 			}
-		}
-		else {
-			getLemmingBody().doActionTimer();
 		}
 
 	}
@@ -114,11 +111,6 @@ public class Lemming {
 	public void suicide() {
 		lemmingBody.suicide();
 		lemmingBody = null;
-	}
-
-	public List<Perception> getPerceptions() {
-
-		return null;
 	}
 
 	public QLearning<LemmingProblemState, Action> getQLearning() {

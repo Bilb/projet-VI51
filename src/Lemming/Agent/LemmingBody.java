@@ -30,8 +30,6 @@ public class LemmingBody extends PixelCosmetic {
 		this.alive = alive;
 	}
 
-	private boolean doingAction;
-	private boolean enableTimeAction = false;
 	private boolean digging;
 	private boolean drilling;
 	private boolean climbing;
@@ -46,7 +44,6 @@ public class LemmingBody extends PixelCosmetic {
 	
 	
 	public LemmingBody(CellCoord cellCoord, Environment environment) {
-		doingAction = false;
 		alive = true;
 		sens = Sens.RIGHT;
 		currentFall = 0;
@@ -65,26 +62,7 @@ public class LemmingBody extends PixelCosmetic {
 			action.buildAction(this);
 		}
 		currentAction = action;
-		if(enableTimeAction) {
-			if(action.getLemmingActionType() == LemmingActionType.Dig) {
-				digging = true;
-			} else if(action.getLemmingActionType() == LemmingActionType.Drill) {
-				drilling = true;
-			}
-			doingAction = true;
-		}
-		else
-		{
-			tryAction(action);
-		}
-		
-//		System.out.println("Action: tag :::" + currentAction.getActionTestList().get(0).getTag() + " cell" + currentAction.getActionTestList().get(0).getCell());
-//		System.out.println("Action:2 tag :::" + currentAction.getActionTestList().get(1).getTag() + " cell" + currentAction.getActionTestList().get(1).getCell());
-//		System.out.println("Action Pr2 tag :::" + currentAction.getActionProcessList().get(0).getTag() + " cell" + currentAction.getActionProcessList().get(0).getCell());
-	}
-	
-	public void tryAction(Action action ){
-		if(!myEnvironment.get().tryExecute(this,currentAction)){
+		if(!myEnvironment.get().tryExecute(this,action)){
 			// action echoue, reset des flags
 			climbing = false;
 			parachute = false;
@@ -93,9 +71,11 @@ public class LemmingBody extends PixelCosmetic {
 			digging = false;
 		}
 		else {
-			// action rï¿½ussie
+			// action r�ussie
 		}
-	}
+		
+}
+
 	
 	public LinkedList<Perception> getPerceptions() {
 		LinkedList<Perception> perceptions;
@@ -117,13 +97,7 @@ public class LemmingBody extends PixelCosmetic {
 		myEnvironment.get().kill(this);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+
 	
 //---------- Getters ----------/
 	public Sens getSens() {
@@ -301,48 +275,5 @@ public class LemmingBody extends PixelCosmetic {
 	public void setDigging(boolean digging) {
 		this.digging = digging;
 	}
-	
-	private long startTimer = 0;
-	private long currentTime = 0;
-	private long timeElapsed = 0;
-	private boolean initTimer = false;
-	
-	// appele depuis game quand le flag doAction est levé
-	public boolean doActionTimer() {
-		currentTime = System.currentTimeMillis();
-		if(!initTimer) {
-			startTimer = currentTime;
-			initTimer = true;
-		}
-		timeElapsed = (currentTime - startTimer);
-		if(timeElapsed > currentAction.getTime()) {
-			doingAction = false;
-			initTimer = false;
-			tryAction(currentAction);
-		}
-		else {
-			doingAction = true;
-		}
-		return doingAction;
-	}
 
-
-	public boolean isDoingAction() {
-		return doingAction;
-	}
-
-
-	public void setDoingAction(boolean doingAction) {
-		this.doingAction = doingAction;
-	}
-
-
-	public boolean isEnableTimeAction() {
-		return enableTimeAction;
-	}
-
-
-	public void setEnableTimeAction(boolean enableTimeAction) {
-		this.enableTimeAction = enableTimeAction;
-	}
 }
