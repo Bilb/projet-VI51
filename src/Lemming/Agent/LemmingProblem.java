@@ -74,7 +74,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	 */
 	@Override
 	public float getAlpha() {
-		return 0.7f;
+		return 0.5f;
 	}
 
 	/**
@@ -82,15 +82,15 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	 */
 	@Override
 	public float getGamma() {
-		return 0.25f;
+		return 0.5f;
 	}
-
+ 
 	/**
 	 * Proba que l'on tire une action au hasard
 	 */
 	@Override
 	public float getRho() {
-		return 0.1f;
+		return 0.7f;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class LemmingProblem implements QProblem<LemmingProblemState, Action> {
 	 */
 	@Override
 	public float getNu() {
-		return 0.2f;
+		return 0.7f;
 	}
 
 	@Override

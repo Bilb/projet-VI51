@@ -24,6 +24,7 @@ public class LevelPanel extends JPanel implements Runnable {
 	/*pacman images*/
 	private Image rock;
 	private Image ground;
+	private Image exit;
 	private Image sky;
 	private Image water;
 	private Image lemming_right;
@@ -52,6 +53,7 @@ public class LevelPanel extends JPanel implements Runnable {
 		rock = (new ImageIcon("images/rock.png")).getImage();
 		ground = (new ImageIcon("images/ground.png")).getImage();
 		sky = (new ImageIcon("images/sky.png")).getImage();
+		exit = (new ImageIcon("images/exit.png")).getImage();
 		water = (new ImageIcon("images/water.png")).getImage();
 		lemming_left = (new ImageIcon("images/lemming_left.png").getImage());
 		lemming_right = (new ImageIcon("images/lemming_right.png").getImage());
@@ -92,6 +94,9 @@ public class LevelPanel extends JPanel implements Runnable {
 							break;
 						case EMPTY:
 							image = sky;
+							break;
+						case EXIT:
+							image = exit;
 							break;
 						case LEMMING_BLOCKED:
 							image = lemming_blocked;
