@@ -19,3 +19,5 @@ nbproject/private/
 *.swp
 *.out
 .classpath
+
+.DS_Store
